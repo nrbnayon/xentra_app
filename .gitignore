@@ -41,3 +41,9 @@ app-example
 # generated native folders
 /ios
 /android
+
+# Firebase/Google Services
+xentra-service-account.json
+google-services.json
+GoogleService-Info.plist
+

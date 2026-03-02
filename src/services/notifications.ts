@@ -184,12 +184,19 @@ export async function registerForPushNotificationsAsync(): Promise<
   log("Starting push notification registration…");
 
   const permissionGranted = await requestNotificationPermissions();
-  if (!permissionGranted) {
-    return null;
-  }
+  if (!permissionGranted) return null;
 
-  // Retrieve Expo projectId from app config (set automatically by EAS Build,
-  // or manually via app.json extra.eas.projectId)
+  // ── Expo Push Notification Service (Approach 1 — no Firebase setup needed) ──
+  // Expo's servers act as the FCM/APNs middleman automatically.
+  // All you need is your EAS projectId and an Expo push token.
+  // Firebase IS used internally by Android, but EAS auto-configures it
+  // during `eas build` — you do NOT need to set it up manually.
+  //
+  // If you see a "FirebaseApp is not initialized" error it means you are
+  // running an OLD dev build that was not produced by EAS. Just rebuild:
+  //   eas build --profile development --platform android
+  // ──────────────────────────────────────────────────────────────────────────
+
   const projectId: string | undefined =
     Constants?.expoConfig?.extra?.eas?.projectId ??
     Constants?.easConfig?.projectId;
@@ -205,35 +212,37 @@ export async function registerForPushNotificationsAsync(): Promise<
   log(`Using EAS projectId: ${projectId ?? "(none — local/dev mode)"}`);
 
   try {
-    // Expo push token — use this to send via Expo's push service
-    const expoPushTokenData = await Notifications.getExpoPushTokenAsync(
+    // getExpoPushTokenAsync uses Expo's push service — NO manual Firebase setup needed.
+    // EAS Build automatically injects google-services.json during the build process.
+    const { data: expoPushToken } = await Notifications.getExpoPushTokenAsync(
       projectId ? { projectId } : {},
     );
-    const expoPushToken = expoPushTokenData.data;
-    log(`Expo push token obtained: ${expoPushToken}`);
 
-    // Also log the raw device token for FCM/APNs direct use
-    try {
-      const deviceToken = await Notifications.getDevicePushTokenAsync();
-      log(`Device push token (${deviceToken.type}): ${deviceToken.data}`);
-    } catch (deviceTokenError) {
-      warn("Could not fetch raw device push token:", deviceTokenError);
-    }
-
+    log(`✅ Expo push token obtained: ${expoPushToken}`);
     return expoPushToken;
   } catch (error) {
     const msg = error instanceof Error ? error.message : String(error);
 
-    if (msg.includes("FirebaseApp") || msg.includes("firebase")) {
-      // FCM credentials not set up yet — non-fatal in dev builds
-      // Follow: https://docs.expo.dev/push-notifications/fcm-credentials/
+    if (
+      msg.includes("FirebaseApp") ||
+      msg.includes("firebase") ||
+      msg.includes("Firebase")
+    ) {
+      // This is NOT a Firebase credentials problem — it is an OLD BUILD issue.
+      // EAS normally auto-injects google-services.json during `eas build`.
+      // Your current dev APK was not built by EAS (or the build failed earlier).
+      //
+      // Fix: run  eas build --profile development --platform android
+      //      then install the new APK and open the app again.
       warn(
-        "Firebase not initialized — push tokens unavailable until FCM credentials " +
-          "are configured. See: https://docs.expo.dev/push-notifications/fcm-credentials/",
+        "⚠️  Push token unavailable — this dev build lacks EAS-injected FCM credentials.\n" +
+          "This is NOT a manual Firebase setup issue. Expo handles Firebase automatically.\n" +
+          "Fix: rebuild with  eas build --profile development --platform android",
       );
     } else {
       err("Failed to get Expo push token:", error);
     }
+
     return null;
   }
 }
@@ -309,3 +318,83 @@ export async function clearBadge(): Promise<void> {
     warn("Failed to clear badge:", error);
   }
 }
+
+// ----------------Another solution----------------
+// export async function registerForPushNotificationsAsync(): Promise
+//   string | null
+// > {
+//   log("Starting push notification registration…");
+
+//   const permissionGranted = await requestNotificationPermissions();
+//   if (!permissionGranted) return null;
+
+//   const projectId: string | undefined =
+//     Constants?.expoConfig?.extra?.eas?.projectId ??
+//     Constants?.easConfig?.projectId;
+
+//   if (!projectId) {
+//     warn(
+//       "No EAS projectId found. Add it to app.json under extra.eas.projectId",
+//     );
+//     return null;
+//   }
+
+//   log(`Using EAS projectId: ${projectId}`);
+
+//   // ── Approach 1: Expo Push Token (Firebase optional on your end) ────────────
+//   try {
+//     const expoPushTokenData = await Notifications.getExpoPushTokenAsync({
+//       projectId,
+//     });
+//     const expoPushToken = expoPushTokenData.data;
+//     log(`✅ Expo push token obtained: ${expoPushToken}`);
+//     return expoPushToken;
+//   } catch (expoTokenError) {
+//     const msg =
+//       expoTokenError instanceof Error
+//         ? expoTokenError.message
+//         : String(expoTokenError);
+
+//     warn("Expo push token failed — falling back to device token check…", msg);
+
+//     // ── Approach 2: Firebase/FCM Direct Token (optional fallback) ─────────────
+//     if (msg.toLowerCase().includes("firebase") || msg.includes("FCM")) {
+//       warn(
+//         "Firebase not initialized — FCM credentials required for Android production builds.\n" +
+//           "Option A (Recommended): Run `eas build` — Expo injects FCM automatically.\n" +
+//           "Option B (Manual): Add google-services.json + configure FCM credentials.\n" +
+//           "See: https://docs.expo.dev/push-notifications/fcm-credentials/",
+//       );
+
+//       // Still try device token — works on iOS without Firebase
+//       if (Platform.OS === "ios") {
+//         try {
+//           const deviceToken = await Notifications.getDevicePushTokenAsync();
+//           log(`iOS APNs device token obtained: ${deviceToken.data}`);
+//           // NOTE: This is a raw APNs token — use your own backend to send via APNs
+//           // NOT compatible with Expo's push service
+//           return deviceToken.data;
+//         } catch (iosError) {
+//           err("iOS device token also failed:", iosError);
+//         }
+//       }
+//     } else {
+//       err("Failed to get Expo push token (non-Firebase error):", expoTokenError);
+//     }
+
+//     return null;
+//   }
+// }
+// ```
+
+// ## Root Cause & What You Should Actually Do
+// ```
+// Your current situation:
+// ┌─────────────────────────────────────────────────────────┐
+// │  Custom Dev Build / Expo Go                             │
+// │  ↓                                                      │
+// │  getExpoPushTokenAsync() → hits Expo servers            │
+// │  Expo servers → forward to FCM (Google)                 │
+// │  FCM → needs google-services.json in your BUILD         │
+// │  Missing → ⚠️  Firebase warning                         │
+// └─────────────────────────────────────────────────────────┘
