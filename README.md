@@ -54,3 +54,61 @@ Join our community of developers creating universal apps.
 
 - [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
 - [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+
+
+
+
+-------------------
+Push Notification Setup
+🔔 How it works in each state
+App State	What happens
+Foreground	setNotificationHandler shows banner + plays sound; listener fires
+Background	OS delivers it to tray; background task fires on Android
+Terminated (cold start)	getLastNotificationResponse() catches the tap and deep-links
+🛠️ One thing you need to do
+The notification icon reference in 
+
+app.json
+ points to ./assets/images/notification-icon.png. Create a 96×96 all-white PNG with transparent background at that path. On Android, the system colorizes it with the #208AEF tint you've configured.
+
+🔑 EAS / Production setup
+
+-----------------------------------------
+🚀 How to Use
+Option A — <TranslatedText> (simplest, recommended):
+
+import { TranslatedText } from '@/components/ui/TranslatedText';
+<TranslatedText style={styles.title}>Hello World</TranslatedText>
+<TranslatedText style={styles.btn}>Submit</TranslatedText>
+Option B — 
+
+useTranslation
+ hook (for dynamic strings):
+
+tsx
+const { t, tAsync, changeLanguage, language } = useTranslation();
+// Sync — instant from cache (triggers background fetch if not cached)
+const label = t('Welcome back');
+// Async — awaits API if needed  
+const msg = await tAsync('Your order is ready');
+// Batch — single API call for multiple strings
+const [a, b, c] = await tBatch(['Home', 'Profile', 'Settings']);
+// Switch language globally — all components update instantly
+await changeLanguage('bn'); // Bengali
+await changeLanguage('ar'); // Arabic
+await changeLanguage('en'); // back to English
+Option C — 
+
+useLanguage
+ directly (for full context access):
+
+tsx
+const { translate, currentLanguage, supportedLanguages } = useLanguage();
+⚡ Zero-Flicker Design
+First render: Shows original English text immediately (no blank)
+Cache hit: Shows translated text on first render (instant)
+Cache miss: Shows English → kicks background fetch → context ticks → re-renders with translation (typically < 200ms on first use, then cached forever)
+💾 Cache Strategy
+Runtime: In-memory Map (zero latency)
+Persisted: AsyncStorage, 7-day TTL
+On language change: Old cache cleared, common strings pre-warmed in background

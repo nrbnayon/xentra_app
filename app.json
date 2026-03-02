@@ -1,23 +1,43 @@
 {
   "expo": {
-    "name": "xentra",
+    "name": "Xentra",
     "slug": "xentra",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/icons/app-icon.png",
     "scheme": "xentra",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "icon": "./assets/expo.icon"
+      "icon": "./assets/icons/app-icon.png",
+      "bundleIdentifier": "com.xentra.xentra",
+      "supportsTablet": true,
+      "infoPlist": {
+        "UIBackgroundModes": [
+          "remote-notification",
+          "fetch"
+        ],
+        "NSCameraUsageDescription": "Xentra needs access to your camera to take photos for your profile picture.",
+        "NSPhotoLibraryUsageDescription": "Xentra needs access to your photo library to select existing photos for your profile picture.",
+        "NSPhotoLibraryAddUsageDescription": "Xentra needs access to save photos to your photo library."
+      }
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/images/android-icon-foreground.png",
+        "backgroundColor": "#BEE3FF",
+        "foregroundImage": "./assets/icons/app-icon.png",
         "backgroundImage": "./assets/images/android-icon-background.png",
-        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+        "monochromeImage": "./assets/images/logo-glow.png"
       },
-      "predictiveBackGestureEnabled": false
+      "package": "com.xentra.xentra",
+      "predictiveBackGestureEnabled": false,
+      "permissions": [
+        "android.permission.RECEIVE_BOOT_COMPLETED",
+        "android.permission.SCHEDULE_EXACT_ALARM",
+        "android.permission.POST_NOTIFICATIONS",
+        "android.permission.VIBRATE",
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "output": "static",
@@ -28,17 +48,46 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#208AEF",
+          "backgroundColor": "#BEE3FF",
           "android": {
             "image": "./assets/images/splash-icon.png",
             "imageWidth": 76
           }
+        }
+      ],
+      [
+        "expo-image",
+        {
+          "disableLibdav1d": true
+        }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow Xentra to access your camera to take photos for your profile picture.",
+          "microphonePermission": "Allow Xentra to access your microphone to record videos for your profile picture.",
+          "recordAudioAndroid": true,
+          "barcodeScannerEnabled": true
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/icons/notification-icon.png",
+          "color": "#208AEF",
+          "defaultChannel": "default",
+          "enableBackgroundRemoteNotifications": true
         }
       ]
     ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "40130228-1a81-42aa-95e8-4ed5c1608014"
+      }
     }
   }
 }
