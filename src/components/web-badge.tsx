@@ -19,8 +19,8 @@ export function WebBadge() {
       <Image
         source={
           scheme === 'dark'
-            ? require('@/assets/logo.png')
-            : require('@/assets/logo.png')
+            ? require('@/assets/icons/logo.png')
+            : require('@/assets/icons/logo.png')
         }
         style={styles.badgeImage}
       />
