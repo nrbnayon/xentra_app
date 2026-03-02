@@ -13,7 +13,6 @@
  */
 
 import { translationService } from "@/services/translationService";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, {
   createContext,
   useCallback,
@@ -21,6 +20,15 @@ import React, {
   useEffect,
   useState,
 } from "react";
+const getStorage = () => {
+  try {
+    const storage = require("@react-native-async-storage/async-storage");
+    if (!storage) return null;
+    return storage.default || storage;
+  } catch (e) {
+    return null;
+  }
+};
 
 // ─── Config ───────────────────────────────────────────────────────────────────
 
@@ -145,10 +153,13 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 
       // Then restore persisted language choice
       try {
-        const saved = await AsyncStorage.getItem(LANG_STORAGE_KEY);
-        if (saved && saved !== DEFAULT_LANGUAGE) {
-          log(`Restoring saved language: ${saved}`);
-          setLanguage(saved);
+        const storage = getStorage();
+        if (storage) {
+          const saved = await storage.getItem(LANG_STORAGE_KEY);
+          if (saved && saved !== DEFAULT_LANGUAGE) {
+            log(`Restoring saved language: ${saved}`);
+            setLanguage(saved);
+          }
         }
       } catch (e) {
         log("Could not read saved language:", e);
@@ -211,7 +222,10 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
         await translationService.clearCache();
 
         // Persist choice
-        await AsyncStorage.setItem(LANG_STORAGE_KEY, code);
+        const storage = getStorage();
+        if (storage) {
+          await storage.setItem(LANG_STORAGE_KEY, code);
+        }
 
         // Update state — every subscriber re-renders instantly
         setLanguage(code);

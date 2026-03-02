@@ -72,9 +72,9 @@ Notifications.setNotificationHandler({
 // Define the task at the module level so TaskManager can find it when the
 // JS bundle is loaded headlessly (app terminated / backgrounded).
 
-TaskManager.defineTask<Notifications.NotificationTaskPayload>(
+TaskManager.defineTask(
   BACKGROUND_NOTIFICATION_TASK,
-  ({ data, error }) => {
+  async ({ data, error }: TaskManager.TaskManagerTaskBody): Promise<void> => {
     if (error) {
       err("Background notification task error:", error);
       return;
@@ -82,22 +82,20 @@ TaskManager.defineTask<Notifications.NotificationTaskPayload>(
 
     log("Background notification task fired:", data);
 
-    // Distinguish between a remote notification payload and a user response (tap)
-    const isUserResponse = "actionIdentifier" in data;
+    // The payload shape differs: response (user tapped) vs raw notification
+    const payload = data as Record<string, unknown>;
+    const isUserResponse =
+      payload !== null &&
+      typeof payload === "object" &&
+      "actionIdentifier" in payload;
 
     if (isUserResponse) {
       log("User interacted with notification in background:", {
-        actionIdentifier: (data as Notifications.NotificationResponse)
-          .actionIdentifier,
-        title: (data as Notifications.NotificationResponse).notification.request
-          .content.title,
+        actionIdentifier: payload.actionIdentifier,
+        notification: payload.notification,
       });
     } else {
-      // Raw remote notification received while app is backgrounded/terminated
-      log("Background data-only notification received:", {
-        title: (data as Notifications.Notification).request.content.title,
-        data: (data as Notifications.Notification).request.content.data,
-      });
+      log("Background data-only notification received:", payload);
     }
   },
 );
@@ -116,7 +114,7 @@ async function setupAndroidChannels(): Promise<void> {
     vibrationPattern: [0, 250, 250, 250],
     lightColor: "#208AEF",
     showBadge: true,
-    sound: "default",
+    sound: "notification_sound.wav", // base filename only — bundled via expo-notifications plugin
   });
 
   await Notifications.setNotificationChannelAsync("alerts", {
@@ -126,7 +124,7 @@ async function setupAndroidChannels(): Promise<void> {
     vibrationPattern: [0, 500, 200, 500],
     lightColor: "#FF6B6B",
     showBadge: true,
-    sound: "default",
+    sound: "notification_sound.wav",
   });
 
   log("Android notification channels created: [default, alerts]");
@@ -224,7 +222,18 @@ export async function registerForPushNotificationsAsync(): Promise<
 
     return expoPushToken;
   } catch (error) {
-    err("Failed to get Expo push token:", error);
+    const msg = error instanceof Error ? error.message : String(error);
+
+    if (msg.includes("FirebaseApp") || msg.includes("firebase")) {
+      // FCM credentials not set up yet — non-fatal in dev builds
+      // Follow: https://docs.expo.dev/push-notifications/fcm-credentials/
+      warn(
+        "Firebase not initialized — push tokens unavailable until FCM credentials " +
+          "are configured. See: https://docs.expo.dev/push-notifications/fcm-credentials/",
+      );
+    } else {
+      err("Failed to get Expo push token:", error);
+    }
     return null;
   }
 }
@@ -271,7 +280,7 @@ export async function scheduleLocalNotification(
         title,
         body,
         data: data ?? {},
-        sound: "default",
+        // Leave sound undefined — uses OS default (don't set 'default' string)
         badge: 1,
       },
       trigger:
@@ -280,7 +289,7 @@ export async function scheduleLocalNotification(
               type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
               seconds: delaySeconds,
             }
-          : null, // null = show immediately
+          : null,
     });
     log(`Local notification scheduled — id: ${id}`);
     return id;

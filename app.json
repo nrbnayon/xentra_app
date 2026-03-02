@@ -12,10 +12,7 @@
       "bundleIdentifier": "com.xentra.xentra",
       "supportsTablet": true,
       "infoPlist": {
-        "UIBackgroundModes": [
-          "remote-notification",
-          "fetch"
-        ],
+        "UIBackgroundModes": ["remote-notification", "fetch"],
         "NSCameraUsageDescription": "Xentra needs access to your camera to take photos for your profile picture.",
         "NSPhotoLibraryUsageDescription": "Xentra needs access to your photo library to select existing photos for your profile picture.",
         "NSPhotoLibraryAddUsageDescription": "Xentra needs access to save photos to your photo library."
@@ -23,7 +20,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#BEE3FF",
+        "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/icons/app-icon.png",
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/logo-glow.png"
@@ -48,10 +45,13 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#BEE3FF",
-          "android": {
-            "image": "./assets/images/splash-icon.png",
-            "imageWidth": 76
+          "image": "./assets/icons/logo.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#ffffff",
+          "dark": {
+            "image": "./assets/icons/logo.png",
+            "backgroundColor": "#ffffff"
           }
         }
       ],
@@ -76,7 +76,8 @@
           "icon": "./assets/icons/notification-icon.png",
           "color": "#208AEF",
           "defaultChannel": "default",
-          "enableBackgroundRemoteNotifications": true
+          "enableBackgroundRemoteNotifications": true,
+          "sounds": ["./assets/media/notification_sound.wav"]
         }
       ]
     ],

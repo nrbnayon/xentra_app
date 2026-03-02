@@ -11,7 +11,21 @@
  *  - Always falls back to original text on any error
  */
 
-import AsyncStorage from "@react-native-async-storage/async-storage";
+/**
+ * Lazy-load AsyncStorage to prevent crashing during module evaluation
+ * if the native part is missing (e.g. out-of-sync native build).
+ */
+const getStorage = () => {
+  try {
+    const storage = require("@react-native-async-storage/async-storage");
+    // Return .default if it exists (ESM), otherwise return the object itself (CJS)
+    return storage.default || storage;
+  } catch (e) {
+    if (__DEV__)
+      console.warn("[getStorage] Failed to require AsyncStorage:", e);
+    return null;
+  }
+};
 
 // ─── Config ───────────────────────────────────────────────────────────────────
 
@@ -66,7 +80,10 @@ class TranslationService {
 
     this.hydratePromise = (async () => {
       try {
-        const raw = await AsyncStorage.getItem(STORAGE_KEY);
+        const storage = getStorage();
+        if (!storage) return;
+
+        const raw = await storage.getItem(STORAGE_KEY);
         if (!raw) return;
 
         const stored: PersistedStore = JSON.parse(raw);
@@ -76,13 +93,13 @@ class TranslationService {
             (acc, langMap) => acc + Object.keys(langMap).length,
             0,
           );
-          log(`Cache hydrated — ${count} entries loaded from AsyncStorage.`);
+          log(`Cache hydrated — ${count} entries loaded.`);
         } else {
           log("Persisted cache expired — starting fresh.");
-          await AsyncStorage.removeItem(STORAGE_KEY);
+          await storage.removeItem(STORAGE_KEY);
         }
       } catch (e) {
-        warn("Failed to hydrate cache from AsyncStorage:", e);
+        warn("Failed to hydrate cache:", e);
       } finally {
         this.hydrated = true;
       }
@@ -114,11 +131,14 @@ class TranslationService {
 
   private async persist(): Promise<void> {
     try {
+      const storage = getStorage();
+      if (!storage) return;
+
       const store: PersistedStore = {
         cache: this.mem,
         expiresAt: Date.now() + CACHE_TTL_MS,
       };
-      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(store));
+      await storage.setItem(STORAGE_KEY, JSON.stringify(store));
       log("Cache persisted to AsyncStorage.");
     } catch (e) {
       warn("Failed to persist cache:", e);
@@ -225,7 +245,10 @@ class TranslationService {
   /** Wipe in-memory and persisted caches. Call when user switches language. */
   async clearCache(): Promise<void> {
     this.mem = {};
-    await AsyncStorage.removeItem(STORAGE_KEY);
+    const storage = getStorage();
+    if (storage) {
+      await storage.removeItem(STORAGE_KEY);
+    }
     log("Cache cleared.");
   }
 
