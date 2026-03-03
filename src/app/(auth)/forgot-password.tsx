@@ -1,23 +1,23 @@
-import { useState } from "react";
-import {
-  View,
-  Text,
-  Image,
-  Pressable,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  TouchableWithoutFeedback,
-  Keyboard,
-  ActivityIndicator,
-} from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
-import { StatusBar } from "expo-status-bar";
-import { ArrowLeft } from "lucide-react-native";
-import { router } from "expo-router";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
+import { LinearGradient } from "expo-linear-gradient";
+import { router } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import { ArrowLeft } from "lucide-react-native";
+import { useState } from "react";
+import {
+  ActivityIndicator,
+  Image,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  ScrollView,
+  Text,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
@@ -59,7 +59,10 @@ export default function ForgotPasswordPage() {
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000));
       // Navigate to OTP verification
-      router.push({ pathname: "/(auth)/verify-otp", params: { mode: "reset" } });
+      router.push({
+        pathname: "/(auth)/verify-otp",
+        params: { mode: "reset" },
+      });
     } catch (error) {
       console.error(error);
       setEmailError("Failed to send reset code. Please try again.");
@@ -83,7 +86,7 @@ export default function ForgotPasswordPage() {
         <ArrowLeft size={20} color="#000" />
       </Pressable>
 
-      <StatusBar style="dark" />
+      <StatusBar style="auto" />
 
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : undefined}

@@ -348,7 +348,7 @@ export default function LoginPage() {
       end={{ x: 0.45, y: 1 }}
       style={{ flex: 1 }}
     >
-      <StatusBar style="dark" />
+      <StatusBar style="auto" />
 
       <CountryPickerModal
         visible={pickerVisible}
@@ -373,7 +373,6 @@ export default function LoginPage() {
               className="flex-1 items-center justify-center px-5 pb-10"
             >
               <View className="w-full max-w-md">
-
                 {/* ── Header ──────────────────────────────────────── */}
                 <View className="items-center gap-2 mb-10">
                   <Text className="text-4xl font-bold text-primary">

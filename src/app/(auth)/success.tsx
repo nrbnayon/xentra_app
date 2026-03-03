@@ -1,13 +1,13 @@
-import { View, Text, KeyboardAvoidingView, Platform } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
-import { StatusBar } from "expo-status-bar";
-import { router, useLocalSearchParams } from "expo-router";
 import { Button } from "@/components/ui/button";
+import { LinearGradient } from "expo-linear-gradient";
+import { router, useLocalSearchParams } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 import { ShieldCheck } from "lucide-react-native";
+import { KeyboardAvoidingView, Platform, Text, View } from "react-native";
 
 export default function SuccessPage() {
   const { mode } = useLocalSearchParams<{ mode: string }>();
-  
+
   const handleLogin = () => {
     router.replace("/(auth)/login");
   };
@@ -20,7 +20,7 @@ export default function SuccessPage() {
       end={{ x: 0.45, y: 1 }}
       style={{ flex: 1 }}
     >
-      <StatusBar style="dark" />
+      <StatusBar style="auto" />
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={{ flex: 1 }}

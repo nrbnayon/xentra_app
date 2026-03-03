@@ -1,24 +1,24 @@
-import { useState } from "react";
-import {
-  View,
-  Text,
-  Image,
-  Pressable,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  TouchableWithoutFeedback,
-  Keyboard,
-  ActivityIndicator,
-} from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
-import { EyeOff, Eye, ArrowLeft } from "lucide-react-native";
-import { StatusBar } from "expo-status-bar";
-import { router } from "expo-router";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Button } from "@/components/ui/button";
+import { LinearGradient } from "expo-linear-gradient";
+import { router } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import { ArrowLeft, Eye, EyeOff } from "lucide-react-native";
+import { useState } from "react";
+import {
+  ActivityIndicator,
+  Image,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  ScrollView,
+  Text,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
 
 export default function SignUpPage() {
   const [agreeTerms, setAgreeTerms] = useState(false);
@@ -123,7 +123,10 @@ export default function SignUpPage() {
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000));
       // Navigate to verification
-      router.push({ pathname: "/(auth)/verify-otp", params: { mode: "signup" } });
+      router.push({
+        pathname: "/(auth)/verify-otp",
+        params: { mode: "signup" },
+      });
     } catch (error) {
       console.error(error);
     } finally {
@@ -150,7 +153,7 @@ export default function SignUpPage() {
         <ArrowLeft size={20} color="#000" />
       </Pressable>
 
-      <StatusBar style="dark" />
+      <StatusBar style="auto" />
 
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : undefined}

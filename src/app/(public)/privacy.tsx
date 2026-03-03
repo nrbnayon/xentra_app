@@ -1,16 +1,10 @@
-import React from "react";
-import {
-  View,
-  Text,
-  ScrollView,
-  Pressable,
-  Platform,
-} from "react-native";
+import { ThemedView } from "@/components/ui/themed-view";
 import { LinearGradient } from "expo-linear-gradient";
-import { ArrowLeft } from "lucide-react-native";
 import { router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { ThemedView } from "@/components/ui/themed-view";
+import { ArrowLeft } from "lucide-react-native";
+import React from "react";
+import { Platform, Pressable, ScrollView, Text, View } from "react-native";
 
 export default function PrivacyPolicy() {
   return (
@@ -21,7 +15,7 @@ export default function PrivacyPolicy() {
       end={{ x: 1, y: 1 }}
       style={{ flex: 1 }}
     >
-      <StatusBar style="dark" />
+      <StatusBar style="auto" />
       <ThemedView style={{ flex: 1 }}>
         {/* Header */}
         <View className="px-5 py-4 flex-row items-center">

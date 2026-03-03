@@ -1,16 +1,10 @@
-import React from "react";
-import {
-  View,
-  Text,
-  ScrollView,
-  Pressable,
-  Platform,
-} from "react-native";
+import { ThemedView } from "@/components/ui/themed-view";
 import { LinearGradient } from "expo-linear-gradient";
-import { ArrowLeft } from "lucide-react-native";
 import { router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { ThemedView } from "@/components/ui/themed-view";
+import { ArrowLeft } from "lucide-react-native";
+import React from "react";
+import { Platform, Pressable, ScrollView, Text, View } from "react-native";
 
 export default function TermsAndConditions() {
   return (
@@ -21,7 +15,7 @@ export default function TermsAndConditions() {
       end={{ x: 1, y: 1 }}
       style={{ flex: 1 }}
     >
-      <StatusBar style="dark" />
+      <StatusBar style="auto" />
       <ThemedView style={{ flex: 1 }}>
         {/* Header */}
         <View className="px-5 py-4 flex-row items-center">
@@ -41,7 +35,9 @@ export default function TermsAndConditions() {
           contentContainerStyle={{ paddingBottom: 40 }}
           showsVerticalScrollIndicator={false}
         >
-          <View className={`mt-4 p-6 rounded-3xl border border-white/80 shadow-sm ${Platform.OS === 'ios' ? 'bg-white/50' : 'bg-white'}`}>
+          <View
+            className={`mt-4 p-6 rounded-3xl border border-white/80 shadow-sm ${Platform.OS === "ios" ? "bg-white/50" : "bg-white"}`}
+          >
             <Text className="text-sm text-secondary mb-6 italic">
               Last Updated: January 14, 2026
             </Text>
@@ -62,11 +58,12 @@ export default function TermsAndConditions() {
             />
             <View className="mb-6 ml-4">
               <Text className="text-base text-secondary leading-6">
-                • Providing accurate and complete registration information{'\n'}
-                • Maintaining the confidentiality of your account credentials{'\n'}
-                • All activities that occur under your account{'\n'}
-                • Notifying us immediately of any unauthorized access{'\n'}
-                • Ensuring you have the legal right to operate the vehicle associated with your account
+                • Providing accurate and complete registration information{"\n"}
+                • Maintaining the confidentiality of your account credentials
+                {"\n"}• All activities that occur under your account{"\n"}•
+                Notifying us immediately of any unauthorized access{"\n"}•
+                Ensuring you have the legal right to operate the vehicle
+                associated with your account
               </Text>
             </View>
 
@@ -76,11 +73,16 @@ export default function TermsAndConditions() {
             />
             <View className="mb-6 ml-4">
               <Text className="text-base text-secondary leading-6">
-                • Grant foreground and background location permissions{'\n'}
-                • Keep location services enabled on your device at all times during active deliveries{'\n'}
-                • Allow the app to track your location even when the app is closed or not in use{'\n'}
-                • Understand that disabling location services will prevent the app from functioning{'\n\n'}
-                <Text className="font-semibold">Important:</Text> Background location tracking is essential for delivery monitoring, driver safety, and service quality. Refusing to grant these permissions may result in account suspension or termination.
+                • Grant foreground and background location permissions{"\n"}•
+                Keep location services enabled on your device at all times
+                during active deliveries{"\n"}• Allow the app to track your
+                location even when the app is closed or not in use{"\n"}•
+                Understand that disabling location services will prevent the app
+                from functioning{"\n\n"}
+                <Text className="font-semibold">Important:</Text> Background
+                location tracking is essential for delivery monitoring, driver
+                safety, and service quality. Refusing to grant these permissions
+                may result in account suspension or termination.
               </Text>
             </View>
 
@@ -90,11 +92,14 @@ export default function TermsAndConditions() {
             />
             <View className="mb-6 ml-4">
               <Text className="text-base text-secondary leading-6">
-                • Tracking data may be subject to delays or inaccuracies based on GPS signal strength, network connectivity, and device limitations{'\n'}
-                • We strive for accuracy but do not guarantee 100% precision in location data{'\n'}
-                • Your location, delivery status, and performance metrics will be visible to authorized fleet managers{'\n'}
-                • You are responsible for completing deliveries professionally and on time{'\n'}
-                • You must follow all traffic laws and safety regulations while making deliveries
+                • Tracking data may be subject to delays or inaccuracies based
+                on GPS signal strength, network connectivity, and device
+                limitations{"\n"}• We strive for accuracy but do not guarantee
+                100% precision in location data{"\n"}• Your location, delivery
+                status, and performance metrics will be visible to authorized
+                fleet managers{"\n"}• You are responsible for completing
+                deliveries professionally and on time{"\n"}• You must follow all
+                traffic laws and safety regulations while making deliveries
               </Text>
             </View>
 
@@ -104,13 +109,15 @@ export default function TermsAndConditions() {
             />
             <View className="mb-6 ml-4">
               <Text className="text-base text-secondary leading-6">
-                • Use the app only for lawful purposes and in accordance with these Terms{'\n'}
-                • Provide accurate data and information when using the app{'\n'}
-                • Not interfere with or disrupt the app's functionality or servers{'\n'}
-                • Not attempt to gain unauthorized access to any part of the app{'\n'}
-                • Not use the app in any way that could damage, disable, or impair the service{'\n'}
-                • Maintain a valid driver's license and vehicle insurance (if applicable){'\n'}
-                • Report any technical issues or security vulnerabilities to us promptly
+                • Use the app only for lawful purposes and in accordance with
+                these Terms{"\n"}• Provide accurate data and information when
+                using the app{"\n"}• Not interfere with or disrupt the app's
+                functionality or servers{"\n"}• Not attempt to gain unauthorized
+                access to any part of the app{"\n"}• Not use the app in any way
+                that could damage, disable, or impair the service{"\n"}•
+                Maintain a valid driver's license and vehicle insurance (if
+                applicable){"\n"}• Report any technical issues or security
+                vulnerabilities to us promptly
               </Text>
             </View>
 
@@ -130,12 +137,14 @@ export default function TermsAndConditions() {
             />
             <View className="mb-6 ml-4">
               <Text className="text-base text-secondary leading-6">
-                • Violation of these Terms{'\n'}
-                • Fraudulent or illegal activity{'\n'}
-                • Providing false or misleading information{'\n'}
-                • Disabling location services or refusing to grant required permissions{'\n'}
-                • Poor performance or repeated customer complaints{'\n\n'}
-                You may delete your account at any time by navigating to Profile → Settings → Delete Account. Account deletion is permanent and irreversible.
+                • Violation of these Terms{"\n"}• Fraudulent or illegal activity
+                {"\n"}• Providing false or misleading information{"\n"}•
+                Disabling location services or refusing to grant required
+                permissions{"\n"}• Poor performance or repeated customer
+                complaints{"\n\n"}
+                You may delete your account at any time by navigating to Profile
+                → Settings → Delete Account. Account deletion is permanent and
+                irreversible.
               </Text>
             </View>
 
@@ -150,12 +159,12 @@ export default function TermsAndConditions() {
             />
             <View className="mb-6 ml-4">
               <Text className="text-base text-secondary leading-6">
-                • Your use or inability to use the app{'\n'}
-                • Any unauthorized access to or alteration of your data{'\n'}
-                • Any interruption or cessation of the service{'\n'}
-                • Any bugs, viruses, or malicious code transmitted through the app{'\n'}
-                • GPS inaccuracies or location tracking errors{'\n'}
-                • Any accidents, injuries, or damages occurring during deliveries
+                • Your use or inability to use the app{"\n"}• Any unauthorized
+                access to or alteration of your data{"\n"}• Any interruption or
+                cessation of the service{"\n"}• Any bugs, viruses, or malicious
+                code transmitted through the app{"\n"}• GPS inaccuracies or
+                location tracking errors{"\n"}• Any accidents, injuries, or
+                damages occurring during deliveries
               </Text>
             </View>
 
@@ -181,7 +190,8 @@ export default function TermsAndConditions() {
 
             <View className="mt-8 pt-6 border-t border-gray-100">
               <Text className="text-sm text-secondary text-center">
-                If you have any questions about these Terms, please contact us at support@trackfleet.com
+                If you have any questions about these Terms, please contact us
+                at support@trackfleet.com
               </Text>
             </View>
           </View>

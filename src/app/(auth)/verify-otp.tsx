@@ -1,18 +1,18 @@
-import { useState, useRef } from "react";
+import { Button } from "@/components/ui/button";
+import { LinearGradient } from "expo-linear-gradient";
+import { router, useLocalSearchParams } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import { ArrowLeft } from "lucide-react-native";
+import { useRef, useState } from "react";
 import {
-  View,
-  Text,
   Image,
-  Pressable,
   KeyboardAvoidingView,
   Platform,
+  Pressable,
+  Text,
   TextInput,
+  View,
 } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
-import { StatusBar } from "expo-status-bar";
-import { router, useLocalSearchParams } from "expo-router";
-import { ArrowLeft } from "lucide-react-native";
-import { Button } from "@/components/ui/button";
 
 export default function VerifyOTPPage() {
   const { mode } = useLocalSearchParams<{ mode: string }>();
@@ -62,7 +62,7 @@ export default function VerifyOTPPage() {
       >
         <ArrowLeft size={20} color="#000" />
       </Pressable>
-      <StatusBar style="dark" />
+      <StatusBar style="auto" />
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={{ flex: 1 }}

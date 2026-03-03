@@ -80,6 +80,7 @@ export const SUPPORTED_LANGUAGES: Language[] = [
   { code: "uk", name: "Ukrainian", nativeName: "Українська" },
   { code: "ur", name: "Urdu", nativeName: "اردو", rtl: true },
   { code: "vi", name: "Vietnamese", nativeName: "Tiếng Việt" },
+  { code: "ht", name: "Haitian Kreyòl", nativeName: "Kreyòl ayisyen" },
 ];
 
 // ─── Context type ─────────────────────────────────────────────────────────────
