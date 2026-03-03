@@ -1,4 +1,4 @@
-import { Text, Pressable, type PressableProps } from "react-native";
+import { Pressable, Text, type PressableProps } from "react-native";
 import { cn } from "../../lib/utils";
 
 interface ButtonProps extends PressableProps {
@@ -17,10 +17,10 @@ export function Button({
     <Pressable
       className={cn(
         "items-center justify-center rounded-full px-6 py-3.5",
-        variant === "default" && "bg-bluenormal active:opacity-80",
-        variant === "outline" && "border border-bluenormal",
+        variant === "default" && "bg-primary/90 active:opacity-80",
+        variant === "outline" && "border border-primary/90",
         variant === "ghost" && "bg-transparent",
-        className
+        className,
       )}
       {...props}
     >
@@ -28,8 +28,8 @@ export function Button({
         className={cn(
           "text-base font-bold",
           variant === "default" && "text-white",
-          variant === "outline" && "text-bluenormal",
-          variant === "ghost" && "text-bluenormal"
+          variant === "outline" && "text-primary/90",
+          variant === "ghost" && "text-primary/90",
         )}
       >
         {children}

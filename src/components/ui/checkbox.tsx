@@ -1,5 +1,5 @@
-import { Pressable, View, type PressableProps } from "react-native";
 import { Check } from "lucide-react-native";
+import { Pressable, type PressableProps } from "react-native";
 import { cn } from "../../lib/utils";
 
 interface CheckboxProps extends Omit<PressableProps, "onPress"> {
@@ -20,9 +20,9 @@ export function Checkbox({
       className={cn(
         "h-6 w-6 items-center justify-center rounded border-2",
         checked
-          ? "border-bluenormal bg-bluenormal"
-          : "border-bluenormal bg-transparent",
-        className
+          ? "border-primary/90 bg-primary/90"
+          : "border-primary/90 bg-transparent",
+        className,
       )}
       {...props}
     >
