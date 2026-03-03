@@ -44,6 +44,6 @@ app-example
 
 # Firebase/Google Services
 xentra-service-account.json
-google-services.json
-GoogleService-Info.plist
+# google-services.json
+# GoogleService-Info.plist
 

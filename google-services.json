@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "798355641136",
+    "project_id": "xentra-app",
+    "storage_bucket": "xentra-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:798355641136:android:5661776e7ba30fabac6ef5",
+        "android_client_info": {
+          "package_name": "com.xentra.xentra"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6qwcND_ENUN46WUerUwi7lgLJeHCSJDM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

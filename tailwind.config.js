@@ -16,6 +16,5 @@ module.exports = {
       mono: ["monospace"],
     },
   },
-  plugins: [require("prettier-plugin-tailwindcss")],
+  plugins: [],
 };
-
