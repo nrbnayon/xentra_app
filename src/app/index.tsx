@@ -34,7 +34,7 @@ export default function HomeScreen() {
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.heroSection}>
           <AnimatedIcon />
-          <Text className="text-5xl font-bold">Welcome to&nbsp;Xentra</Text>
+          <Text className="text-5xl font-bold text-center">Welcome to&nbsp;Xentra</Text>
         </View>
 
         <ThemedText type="code" style={styles.code}>
