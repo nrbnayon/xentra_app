@@ -6,11 +6,11 @@ import {
   Pressable,
   Platform,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
 import { ArrowLeft } from "lucide-react-native";
 import { router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+import { ThemedView } from "@/components/ui/themed-view";
 
 export default function TermsAndConditions() {
   return (
@@ -22,7 +22,7 @@ export default function TermsAndConditions() {
       style={{ flex: 1 }}
     >
       <StatusBar style="dark" />
-      <SafeAreaView style={{ flex: 1 }}>
+      <ThemedView style={{ flex: 1 }}>
         {/* Header */}
         <View className="px-5 py-4 flex-row items-center">
           <Pressable
@@ -186,7 +186,7 @@ export default function TermsAndConditions() {
             </View>
           </View>
         </ScrollView>
-      </SafeAreaView>
+      </ThemedView>
     </LinearGradient>
   );
 }

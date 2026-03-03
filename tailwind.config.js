@@ -7,7 +7,15 @@ module.exports = {
   ],
   presets: [require("nativewind/preset")],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        primary: "var(--primary)",
+        secondary: "var(--secondary)",
+        "border-default": "var(--border-default)",
+        "primary-yellow": "var(--primary-yellow)",
+        background: "var(--app-bg)",
+      },
+    },
     fontFamily: {
       sans: ["Inter_400Regular", "system-ui", "sans-serif"],
       medium: ["Inter_500Medium", "system-ui", "sans-serif"],

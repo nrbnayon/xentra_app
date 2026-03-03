@@ -31,10 +31,40 @@ import React, { useEffect } from "react";
 import { useColorScheme } from "react-native";
 import "../../global.css";
 
+const BRAND_PRIMARY = "#16467A";
+const BORDER_DEFAULT = "#E9E9E9";
+
+const MyDefaultTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: BRAND_PRIMARY,
+    background: "#FFFFFF",
+    card: "#FFFFFF",
+    text: "#1A1A1A",
+    border: BORDER_DEFAULT,
+    notification: BRAND_PRIMARY,
+  },
+};
+
+const MyDarkTheme = {
+  ...DarkTheme,
+  colors: {
+    ...DarkTheme.colors,
+    primary: BRAND_PRIMARY,
+    background: "#121212",
+    card: "#1A1A1A",
+    text: "#FFFFFF",
+    border: "#333333",
+    notification: BRAND_PRIMARY,
+  },
+};
+
 import { AnimatedSplashOverlay } from "@/components/ui/animated-icon";
+import { Toast } from "@/components/ui/Toast";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { useNotifications } from "@/hooks/use-notifications";
-import { Toast } from "@/components/ui/Toast";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 // Prevent auto-hiding the splash screen while fonts are loading
 SplashScreen.preventAutoHideAsync();
@@ -81,17 +111,22 @@ export default function RootLayout() {
   }
 
   return (
-    <LanguageProvider>
-      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <AnimatedSplashOverlay />
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-          <Stack.Screen name="(public)" options={{ headerShown: false }} />
-        </Stack>
-        <Toast />
-        {/* Mount after AppTabs so expo-router is ready for deep-links */}
-        <NotificationBootstrap />
-      </ThemeProvider>
-    </LanguageProvider>
+    <SafeAreaProvider>
+      <LanguageProvider>
+        <ThemeProvider
+          value={colorScheme === "dark" ? MyDarkTheme : MyDefaultTheme}
+        >
+          <AnimatedSplashOverlay />
+          <Stack screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+            <Stack.Screen name="(public)" options={{ headerShown: false }} />
+            <Stack.Screen name="(protected)" options={{ headerShown: false }} />
+          </Stack>
+          <Toast />
+          {/* Mount after AppTabs so expo-router is ready for deep-links */}
+          <NotificationBootstrap />
+        </ThemeProvider>
+      </LanguageProvider>
+    </SafeAreaProvider>
   );
 }
