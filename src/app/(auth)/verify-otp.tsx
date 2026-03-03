@@ -50,10 +50,10 @@ export default function VerifyOTPPage() {
 
   return (
     <LinearGradient
-      colors={["#D0E9FD", "#FFFFFF", "#FFFFFF", "#D0E9FD"]}
-      locations={[0.0854, 0.2055, 0.8274, 0.9902]}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
+      colors={["#BEE3FF", "#FFFFFF", "#FFFFFF"]}
+      locations={[0, 0.238, 0.9525]}
+      start={{ x: 0.5, y: 0 }}
+      end={{ x: 0.45, y: 1 }}
       style={{ flex: 1 }}
     >
       <Pressable

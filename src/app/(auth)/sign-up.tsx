@@ -137,10 +137,10 @@ export default function SignUpPage() {
 
   return (
     <LinearGradient
-      colors={["#D0E9FD", "#FFFFFF", "#FFFFFF", "#D0E9FD"]}
-      locations={[0.0854, 0.2055, 0.8274, 0.9902]}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
+      colors={["#BEE3FF", "#FFFFFF", "#FFFFFF"]}
+      locations={[0, 0.238, 0.9525]}
+      start={{ x: 0.5, y: 0 }}
+      end={{ x: 0.45, y: 1 }}
       style={{ flex: 1 }}
     >
       <Pressable
@@ -265,7 +265,7 @@ export default function SignUpPage() {
                       />
                       <Text className="text-sm text-secondary leading-5 flex-1">
                         By using the Track Fleet app you agree to our{" "}
-                        <Text 
+                        <Text
                           className="font-bold underline text-primary"
                           onPress={(e) => {
                             e.stopPropagation();
@@ -275,7 +275,7 @@ export default function SignUpPage() {
                           Terms & Conditions
                         </Text>{" "}
                         and{" "}
-                        <Text 
+                        <Text
                           className="font-bold underline text-primary"
                           onPress={(e) => {
                             e.stopPropagation();
@@ -314,7 +314,9 @@ export default function SignUpPage() {
 
                 {/* FOOTER */}
                 <View className="flex-row justify-center mt-6">
-                  <Text className="text-secondary">Already have an account? </Text>
+                  <Text className="text-secondary">
+                    Already have an account?{" "}
+                  </Text>
                   <Pressable onPress={handleLogin}>
                     <Text className="text-primary font-bold">Log In</Text>
                   </Pressable>

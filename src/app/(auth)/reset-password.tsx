@@ -123,10 +123,10 @@ export default function ResetPasswordPage() {
 
   return (
     <LinearGradient
-      colors={["#D0E9FD", "#FFFFFF", "#FFFFFF", "#D0E9FD"]}
-      locations={[0.0854, 0.2055, 0.8274, 0.9902]}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
+      colors={["#BEE3FF", "#FFFFFF", "#FFFFFF"]}
+      locations={[0, 0.238, 0.9525]}
+      start={{ x: 0.5, y: 0 }}
+      end={{ x: 0.45, y: 1 }}
       style={{ flex: 1 }}
     >
       <Pressable
@@ -198,9 +198,12 @@ export default function ResetPasswordPage() {
                       </Text>
                     ) : null}
                     {/* Password hint when no error */}
-                    {!passwordError && password.length > 0 && password.length < 8 ? (
+                    {!passwordError &&
+                    password.length > 0 &&
+                    password.length < 8 ? (
                       <Text className="text-gray-500 text-xs mt-1">
-                        Use 8+ characters with numbers and letters for a strong password
+                        Use 8+ characters with numbers and letters for a strong
+                        password
                       </Text>
                     ) : null}
                   </View>
@@ -217,7 +220,9 @@ export default function ResetPasswordPage() {
                         className={`pr-12 ${confirmPasswordError ? "border-red-500" : ""}`}
                       />
                       <Pressable
-                        onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+                        onPress={() =>
+                          setShowConfirmPassword(!showConfirmPassword)
+                        }
                         className="absolute right-4 h-14 justify-center"
                         hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                       >
@@ -234,9 +239,9 @@ export default function ResetPasswordPage() {
                       </Text>
                     ) : null}
                     {/* Success message when passwords match */}
-                    {!confirmPasswordError && 
-                     confirmPassword.length > 0 && 
-                     password === confirmPassword ? (
+                    {!confirmPasswordError &&
+                    confirmPassword.length > 0 &&
+                    password === confirmPassword ? (
                       <Text className="text-green-600 text-sm mt-1">
                         ✓ Passwords match
                       </Text>
