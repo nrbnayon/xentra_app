@@ -1,11 +1,20 @@
 import { TranslatedText } from "@/components/ui/TranslatedText";
 import { useLanguage } from "@/context/LanguageContext";
+import { mockLeagues } from "@/data/mock";
 import { SHADOWS } from "@/lib/shadows";
 import { SportCategory } from "@/types";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { Calendar, ChevronDown } from "lucide-react-native";
+import { Calendar, Check, ChevronDown } from "lucide-react-native";
 import { useState } from "react";
-import { Platform, Pressable, ScrollView, Text, View } from "react-native";
+import {
+  Modal,
+  Platform,
+  Pressable,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 interface Props {
   sports: SportCategory[];
@@ -20,6 +29,8 @@ export default function SportFilters({
 }: Props) {
   const [date, setDate] = useState<Date | null>(null);
   const [showPicker, setShowPicker] = useState(false);
+  const [showLeaguePicker, setShowLeaguePicker] = useState(false);
+  const [selectedLeagueName, setSelectedLeagueName] = useState("Select League");
   const { currentLanguage } = useLanguage();
 
   const onChangeDate = (event: any, selectedDate?: Date) => {
@@ -34,14 +45,19 @@ export default function SportFilters({
     });
   };
 
+  const handleSelectLeague = (leagueName: string) => {
+    setSelectedLeagueName(leagueName);
+    setShowLeaguePicker(false);
+  };
+
   return (
     <View className="mb-6">
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
-        className="pl-6 mb-4 -mx-6 pr-6"
+        className="pl-6 my-5 -mx-6 pr-6"
       >
-        <View className="flex-row gap-3 pr-8">
+        <View className="flex-row gap-3 pr-8 py-2">
           {sports.map((sport) => {
             const isActive = sport.id === selectedSportId;
             return (
@@ -50,7 +66,7 @@ export default function SportFilters({
                 onPress={() => onSelectSport(sport.id)}
                 style={[!isActive && SHADOWS.soft]}
                 className={`flex-row items-center justify-center px-5 py-2.5 rounded-full ${
-                  isActive ? "bg-primary" : "bg-white border border-gray-100"
+                  isActive ? "bg-primary" : "bg-white border border-border"
                 }`}
               >
                 {/* Simulated Icons based on name or ID */}
@@ -81,11 +97,19 @@ export default function SportFilters({
       <View className="flex-row gap-3">
         <Pressable
           style={SHADOWS.soft}
+          onPress={() => setShowLeaguePicker(true)}
           className="flex-row items-center justify-between flex-1 bg-white px-4 py-3 rounded-full border border-gray-100"
         >
-          <TranslatedText className="text-secondary font-medium">
-            Select League
-          </TranslatedText>
+          <Text
+            className="text-secondary font-medium truncate flex-shrink"
+            numberOfLines={1}
+          >
+            {selectedLeagueName === "Select League" ? (
+              <TranslatedText skip={false}>Select League</TranslatedText>
+            ) : (
+              <TranslatedText skip={false}>{selectedLeagueName}</TranslatedText>
+            )}
+          </Text>
           <ChevronDown size={18} color="#6B7280" />
         </Pressable>
 
@@ -113,6 +137,47 @@ export default function SportFilters({
           />
         )}
       </View>
+
+      {/* League Selection Modal */}
+      <Modal visible={showLeaguePicker} transparent animationType="fade">
+        <TouchableOpacity
+          className="flex-1 bg-black/50 justify-center px-6"
+          activeOpacity={1}
+          onPress={() => setShowLeaguePicker(false)}
+        >
+          <View className="bg-white rounded-2xl overflow-hidden shadow-lg p-2 max-h-[70%]">
+            <View className="px-4 py-4 border-b border-gray-100">
+              <TranslatedText className="text-lg font-bold text-primary">
+                Select League
+              </TranslatedText>
+            </View>
+            <ScrollView showsVerticalScrollIndicator={false}>
+              {[{ id: "all", name: "All Leagues" }, ...mockLeagues].map(
+                (league) => {
+                  const isSelected =
+                    selectedLeagueName === league.name ||
+                    (selectedLeagueName === "Select League" &&
+                      league.id === "all");
+                  return (
+                    <Pressable
+                      key={league.id}
+                      onPress={() => handleSelectLeague(league.name)}
+                      className={`flex-row items-center justify-between px-4 py-4 border-b border-gray-50 active:bg-gray-50 ${isSelected ? "bg-primary/5" : ""}`}
+                    >
+                      <TranslatedText
+                        className={`text-base ${isSelected ? "font-bold text-primary" : "font-medium text-[#111111]"}`}
+                      >
+                        {league.name}
+                      </TranslatedText>
+                      {isSelected && <Check size={20} color="#16467A" />}
+                    </Pressable>
+                  );
+                },
+              )}
+            </ScrollView>
+          </View>
+        </TouchableOpacity>
+      </Modal>
     </View>
   );
 }

@@ -123,6 +123,9 @@ export interface LanguageContextValue {
 
   /** Change app language. Clears old cache, fetches common strings, updates listeners. */
   changeLanguage: (code: string) => Promise<void>;
+
+  /** Internal translation cycle tick, explicitly updates when new translations are ready */
+  tick: number;
 }
 
 // ─── Context ─────────────────────────────────────────────────────────────────
@@ -140,7 +143,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [isReady, setIsReady] = useState(false);
   const [isChanging, setIsChanging] = useState(false);
   /** Incrementing to force re-renders when new translations arrive */
-  const [, setTick] = useState(0);
+  const [tick, setTick] = useState(0);
 
   const rerender = useCallback(() => setTick((n) => n + 1), []);
 
@@ -285,6 +288,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     translateAsync,
     translateBatch,
     changeLanguage,
+    tick,
   };
 
   return (

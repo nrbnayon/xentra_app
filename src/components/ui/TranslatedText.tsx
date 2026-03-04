@@ -37,7 +37,7 @@ interface TranslatedTextProps extends TextProps {
 
 export const TranslatedText = React.memo<TranslatedTextProps>(
   ({ children, skip = false, ...textProps }) => {
-    const { translate } = useLanguage();
+    const { translate, tick } = useLanguage();
 
     // Safely translate strings or string arrays, ignores React nodes
     const displayText = React.useMemo(() => {
@@ -60,7 +60,7 @@ export const TranslatedText = React.memo<TranslatedTextProps>(
       }
 
       return children;
-    }, [children, skip, translate]);
+    }, [children, skip, translate, tick]);
 
     return <Text {...textProps}>{displayText}</Text>;
   },
