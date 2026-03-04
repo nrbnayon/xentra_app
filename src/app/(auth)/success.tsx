@@ -1,63 +1,53 @@
+import AuthLayout from "@/components/Auth/AuthLayout";
 import { Button } from "@/components/ui/button";
-import { LinearGradient } from "expo-linear-gradient";
 import { router, useLocalSearchParams } from "expo-router";
-import { StatusBar } from "expo-status-bar";
-import { ShieldCheck } from "lucide-react-native";
-import { KeyboardAvoidingView, Platform, Text, View } from "react-native";
+import { Check } from "lucide-react-native";
+import { Text, View } from "react-native";
 
 export default function SuccessPage() {
   const { mode } = useLocalSearchParams<{ mode: string }>();
 
-  const handleLogin = () => {
+  const handleSignIn = () => {
     router.replace("/(auth)/login");
   };
 
   return (
-    <LinearGradient
-      colors={["#BEE3FF", "#FFFFFF", "#FFFFFF"]}
-      locations={[0, 0.238, 0.9525]}
-      start={{ x: 0.5, y: 0 }}
-      end={{ x: 0.45, y: 1 }}
-      style={{ flex: 1 }}
-    >
-      <StatusBar style="auto" />
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={{ flex: 1 }}
-      >
-        <View className="flex-1 items-center justify-center px-5">
-          <View className="w-full max-w-md items-center">
-            {/* Success Icon Placeholder - Replicating the distinct blue circle look */}
-            <View className="relative items-center justify-center mb-10">
-              {/* Decorative elements (dots) */}
-              <View className="absolute -top-8 -left-10 w-4 h-4 rounded-full bg-primary opacity-80" />
-              <View className="absolute top-10 -left-16 w-3 h-3 rounded-full bg-primary opacity-80" />
-              <View className="absolute -top-5 right-10 w-5 h-5 rounded-full bg-primary opacity-80" />
-              <View className="absolute bottom-0 -right-12 w-3 h-3 rounded-full bg-primary opacity-80" />
-              <View className="absolute top-20 right-14 w-3 h-3 rounded-full bg-primary opacity-80" />
-              <View className="absolute bottom-[-20px] left-[-20px] w-5 h-5 rounded-full bg-primary opacity-80" />
-
-              {/* Main Circle */}
-              <View className="w-32 h-32 rounded-full bg-primary items-center justify-center shadow-lg shadow-blue-200">
-                <ShieldCheck size={48} color="white" strokeWidth={3} />
+    <AuthLayout showBackButton={false} scrollable={false}>
+      <View className="flex-1 items-center justify-center gap-8 px-4">
+        {/* Layered Circles with Checkmark — matches image 3 exactly */}
+        <View className="items-center justify-center">
+          {/* Outermost faint ring */}
+          <View className="w-52 h-52 rounded-full bg-[#D6E9FA] items-center justify-center">
+            {/* Middle ring */}
+            <View className="w-40 h-40 rounded-full bg-[#C0DCF5] items-center justify-center">
+              {/* Inner solid navy circle */}
+              <View className="w-24 h-24 rounded-full bg-primary items-center justify-center shadow-lg shadow-blue-400">
+                <Check size={44} color="white" strokeWidth={3.5} />
               </View>
             </View>
-
-            <Text className="text-3xl font-bold text-black text-center leading-10 mb-3">
-              Congratulations !
-            </Text>
-            <Text className="text-sm text-blackblack-400 text-center leading-5 px-8 mb-10">
-              {mode === "signup"
-                ? "Account created successfully! You'll be redirected to the login screen now"
-                : "Password Reset successful! You'll be redirected to the login screen now"}
-            </Text>
-
-            <Button onPress={handleLogin} className="w-full">
-              Log In
-            </Button>
           </View>
         </View>
-      </KeyboardAvoidingView>
-    </LinearGradient>
+
+        {/* Text Section */}
+        <View className="items-center gap-3">
+          <Text className="text-4xl font-bold text-primary text-center">
+            Congratulations!
+          </Text>
+          <Text className="text-base text-secondary text-center px-8 leading-6">
+            {mode === "signup"
+              ? "Account created successful! You'll be redirected to the sign in screen now"
+              : "Password Reset successful! You'll be redirected to the sign in screen now"}
+          </Text>
+        </View>
+
+        {/* Button */}
+        <Button
+          onPress={handleSignIn}
+          className="w-full h-14 rounded-xl bg-primary"
+        >
+          <Text className="text-white font-bold text-base">Sign In</Text>
+        </Button>
+      </View>
+    </AuthLayout>
   );
 }

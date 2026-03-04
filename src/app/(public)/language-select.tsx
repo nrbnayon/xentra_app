@@ -90,7 +90,7 @@ export default function LanguageSelectScreen() {
           <TranslatedText className="text-[28px] font-bold text-primary mb-2 text-center leading-tight">
             Select Language
           </TranslatedText>
-          <TranslatedText className="text-[15px] font-medium text-secondary text-center opacity-80">
+          <TranslatedText className="text-base font-medium text-secondary text-center opacity-80">
             Choose your preferred language
           </TranslatedText>
         </View>

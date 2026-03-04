@@ -1,167 +1,113 @@
+import AuthLayout from "@/components/Auth/AuthLayout";
+import CountryPicker from "@/components/Auth/CountryPicker";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { LinearGradient } from "expo-linear-gradient";
+import { Country } from "@/constants/countries";
 import { router } from "expo-router";
-import { StatusBar } from "expo-status-bar";
-import { ArrowLeft } from "lucide-react-native";
 import { useState } from "react";
-import {
-  ActivityIndicator,
-  Image,
-  Keyboard,
-  KeyboardAvoidingView,
-  Platform,
-  Pressable,
-  ScrollView,
-  Text,
-  TouchableWithoutFeedback,
-  View,
-} from "react-native";
+import { ActivityIndicator, Text, TextInput, View } from "react-native";
 
 export default function ForgotPasswordPage() {
-  const [email, setEmail] = useState("");
-  const [emailError, setEmailError] = useState("");
+  const [phone, setPhone] = useState("");
+  const [phoneError, setPhoneError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState<Country>({
+    code: "HT",
+    name: "Haiti",
+    dial: "+509",
+    flag: "🇭🇹",
+  });
 
-  // Email validation regex
-  const validateEmail = (email: string): boolean => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+  const formatPhoneDisplay = (raw: string): string => {
+    const digits = raw.replace(/\D/g, "");
+    if (digits.length <= 3) return digits;
+    if (digits.length <= 6) return `${digits.slice(0, 3)} ${digits.slice(3)}`;
+    if (digits.length <= 10)
+      return `${digits.slice(0, 3)} ${digits.slice(3, 6)} ${digits.slice(6)}`;
+    return `${digits.slice(0, 3)} ${digits.slice(3, 6)} ${digits.slice(6, 10)} ${digits.slice(10, 15)}`;
   };
 
-  // Handle email change with error clearing
-  const handleEmailChange = (text: string) => {
-    setEmail(text);
-    if (emailError) {
-      setEmailError("");
-    }
+  const handlePhoneChange = (text: string) => {
+    const digitsOnly = text.replace(/\D/g, "");
+    setPhone(digitsOnly);
+    if (phoneError) setPhoneError("");
   };
 
   const handleResetPassword = async () => {
-    // Reset error
-    setEmailError("");
-
-    // Validate email
-    if (!email.trim()) {
-      setEmailError("Email is required");
+    if (!phone.trim()) {
+      setPhoneError("Phone number is required");
       return;
     }
-
-    if (!validateEmail(email.trim())) {
-      setEmailError("Please enter a valid email address");
+    if (phone.length < 5) {
+      setPhoneError("Enter a valid phone number");
       return;
     }
 
     try {
       setIsSubmitting(true);
-      console.log("Reset Password clicked", { email: email.trim() });
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const fullPhone = `${selectedCountry.dial}${phone}`;
+      console.log("Forgot Password - Reset OTP sending to:", fullPhone);
+      // Mock API call
+      await new Promise((resolve) => setTimeout(resolve, 1500));
       // Navigate to OTP verification
       router.push({
         pathname: "/(auth)/verify-otp",
-        params: { mode: "reset" },
+        params: { mode: "reset", phone: fullPhone },
       });
     } catch (error) {
       console.error(error);
-      setEmailError("Failed to send reset code. Please try again.");
+      setPhoneError("Failed to send reset code. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <LinearGradient
-      colors={["#BEE3FF", "#FFFFFF", "#FFFFFF"]}
-      locations={[0, 0.238, 0.9525]}
-      start={{ x: 0.5, y: 0 }}
-      end={{ x: 0.45, y: 1 }}
-      style={{ flex: 1 }}
+    <AuthLayout
+      title="Forget Password"
+      subtitle="Enter your phone number to change your password"
     >
-      <Pressable
-        onPress={() => router.back()}
-        className="absolute top-14 left-5 z-20 w-10 h-10 items-center justify-center rounded-full border border-gray-100 bg-transparent shadow-sm"
-      >
-        <ArrowLeft size={20} color="#000" />
-      </Pressable>
-
-      <StatusBar style="auto" />
-
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : undefined}
-        style={{ flex: 1 }}
-        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
-      >
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <ScrollView
-            contentContainerStyle={{ flexGrow: 1 }}
-            keyboardShouldPersistTaps="handled"
-            showsVerticalScrollIndicator={false}
-            bounces={false}
+      {/* Phone Field */}
+      <View className="gap-2 mb-8">
+        <Text className="text-base font-semibold text-foreground">Phone</Text>
+        <View className="flex-row gap-2">
+          <CountryPicker
+            selectedCountry={selectedCountry}
+            onSelect={setSelectedCountry}
+            error={!!phoneError}
+          />
+          <View
+            className={`flex-1 flex-row items-center h-14 rounded-xl border px-3.5 bg-white ${
+              phoneError ? "border-red-500" : "border-gray-200"
+            }`}
           >
-            <View className="flex-1 items-center justify-center px-5 py-10">
-              <View className="w-full max-w-md">
-                {/* HEADER */}
-                <View className="items-center gap-3 mb-14">
-                  <Image
-                    source={require("@/assets/icons/logo.png")}
-                    className="w-20 h-10"
-                    resizeMode="contain"
-                  />
+            <TextInput
+              value={formatPhoneDisplay(phone)}
+              onChangeText={handlePhoneChange}
+              placeholder="Enter your number"
+              placeholderTextColor="#9CA3AF"
+              keyboardType="phone-pad"
+              className="flex-1 text-base text-foreground h-full"
+              style={{ includeFontPadding: false }}
+            />
+          </View>
+        </View>
+        {phoneError ? (
+          <Text className="text-red-500 text-xs px-1">{phoneError}</Text>
+        ) : null}
+      </View>
 
-                  <Text className="text-3xl font-bold text-primary text-center leading-12 mt-3">
-                    Forget Password?
-                  </Text>
-                  <Text className="text-sm text-secondary text-center leading-5 px-4">
-                    Enter the email used for your account and we'll send you a
-                    code for the confirmation
-                  </Text>
-                </View>
-
-                {/* FORM */}
-                <View className="gap-5 mb-14">
-                  <View className="gap-2">
-                    <Label>Email</Label>
-                    <Input
-                      value={email}
-                      onChangeText={handleEmailChange}
-                      placeholder="eg. mail@gmail.com"
-                      keyboardType="email-address"
-                      autoCapitalize="none"
-                      autoCorrect={false}
-                      className={emailError ? "border-red-500" : ""}
-                    />
-                    {emailError ? (
-                      <Text className="text-red-500 text-sm mt-1">
-                        {emailError}
-                      </Text>
-                    ) : null}
-                  </View>
-                </View>
-
-                {/* BUTTON */}
-                <Button
-                  onPress={handleResetPassword}
-                  className="w-full"
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? (
-                    <View className="flex-row items-center justify-center gap-2">
-                      <ActivityIndicator color="white" />
-                      <Text className="text-white font-medium">
-                        Sending code...
-                      </Text>
-                    </View>
-                  ) : (
-                    "Reset Password"
-                  )}
-                </Button>
-              </View>
-            </View>
-          </ScrollView>
-        </TouchableWithoutFeedback>
-      </KeyboardAvoidingView>
-    </LinearGradient>
+      {/* Submit Button */}
+      <Button
+        onPress={handleResetPassword}
+        className="w-full h-14 rounded-xl bg-primary"
+        disabled={isSubmitting}
+      >
+        {isSubmitting ? (
+          <ActivityIndicator color="white" />
+        ) : (
+          <Text className="text-white font-bold text-base">Reset Password</Text>
+        )}
+      </Button>
+    </AuthLayout>
   );
 }

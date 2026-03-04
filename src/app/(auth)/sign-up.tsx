@@ -1,131 +1,77 @@
+import AuthInput from "@/components/Auth/AuthInput";
+import AuthLayout from "@/components/Auth/AuthLayout";
+import CountryPicker from "@/components/Auth/CountryPicker";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { LinearGradient } from "expo-linear-gradient";
+import { Country } from "@/constants/countries";
+import { cn } from "@/lib/utils";
 import { router } from "expo-router";
-import { StatusBar } from "expo-status-bar";
-import { ArrowLeft, Eye, EyeOff } from "lucide-react-native";
+import { Lock, User } from "lucide-react-native";
 import { useState } from "react";
 import {
   ActivityIndicator,
-  Image,
-  Keyboard,
-  KeyboardAvoidingView,
-  Platform,
   Pressable,
-  ScrollView,
   Text,
-  TouchableWithoutFeedback,
+  TextInput,
   View,
 } from "react-native";
 
 export default function SignUpPage() {
-  const [agreeTerms, setAgreeTerms] = useState(false);
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [agreeTerms, setAgreeTerms] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState<Country>({
+    code: "HT",
+    name: "Haiti",
+    dial: "+509",
+    flag: "🇭🇹",
+  });
+
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
-  // Error states
-  const [fullNameError, setFullNameError] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
-  const [termsError, setTermsError] = useState("");
-
-  // Email validation regex
-  const validateEmail = (email: string): boolean => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+  const formatPhoneDisplay = (raw: string): string => {
+    const digits = raw.replace(/\D/g, "");
+    if (digits.length <= 3) return digits;
+    if (digits.length <= 6) return `${digits.slice(0, 3)} ${digits.slice(3)}`;
+    if (digits.length <= 10)
+      return `${digits.slice(0, 3)} ${digits.slice(3, 6)} ${digits.slice(6)}`;
+    return `${digits.slice(0, 3)} ${digits.slice(3, 6)} ${digits.slice(
+      6,
+      10,
+    )} ${digits.slice(10, 15)}`;
   };
 
-  // Validate full name (minimum 2 characters)
-  const validateFullName = (name: string): boolean => {
-    return name.trim().length >= 2;
+  const handlePhoneChange = (text: string) => {
+    const digitsOnly = text.replace(/\D/g, "");
+    setPhone(digitsOnly);
+    if (errors.phone) setErrors((prev) => ({ ...prev, phone: "" }));
   };
 
-  // Validate password (minimum 6 characters)
-  const validatePassword = (password: string): boolean => {
-    return password.length >= 6;
-  };
+  const validate = () => {
+    const newErrors: Record<string, string> = {};
+    if (!phone) newErrors.phone = "Phone number is required";
+    if (!password) newErrors.password = "Password is required";
+    if (password !== confirmPassword)
+      newErrors.confirmPassword = "Passwords do not match";
+    if (!agreeTerms) newErrors.terms = "You must agree to terms";
 
-  // Handle field changes with error clearing
-  const handleFullNameChange = (text: string) => {
-    setFullName(text);
-    if (fullNameError) setFullNameError("");
-  };
-
-  const handleEmailChange = (text: string) => {
-    setEmail(text);
-    if (emailError) setEmailError("");
-  };
-
-  const handlePasswordChange = (text: string) => {
-    setPassword(text);
-    if (passwordError) setPasswordError("");
-  };
-
-  const handleAgreeTermsChange = (checked: boolean) => {
-    setAgreeTerms(checked);
-    if (termsError) setTermsError("");
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSignUp = async () => {
-    // Reset all errors
-    setFullNameError("");
-    setEmailError("");
-    setPasswordError("");
-    setTermsError("");
-
-    let hasError = false;
-
-    // Validate full name
-    if (!fullName.trim()) {
-      setFullNameError("Full name is required");
-      hasError = true;
-    } else if (!validateFullName(fullName)) {
-      setFullNameError("Full name must be at least 2 characters");
-      hasError = true;
-    }
-
-    // Validate email
-    if (!email.trim()) {
-      setEmailError("Email is required");
-      hasError = true;
-    } else if (!validateEmail(email.trim())) {
-      setEmailError("Please enter a valid email address");
-      hasError = true;
-    }
-
-    // Validate password
-    if (!password) {
-      setPasswordError("Password is required");
-      hasError = true;
-    } else if (!validatePassword(password)) {
-      setPasswordError("Password must be at least 6 characters");
-      hasError = true;
-    }
-
-    // Validate terms agreement
-    if (!agreeTerms) {
-      setTermsError("You must agree to Terms & Conditions");
-      hasError = true;
-    }
-
-    if (hasError) {
-      return;
-    }
+    if (!validate()) return;
 
     try {
       setIsSubmitting(true);
-      console.log("Sign Up clicked", { fullName, email, password, agreeTerms });
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      // Navigate to verification
+      // Mock API call
+      await new Promise((resolve) => setTimeout(resolve, 1500));
       router.push({
         pathname: "/(auth)/verify-otp",
-        params: { mode: "signup" },
+        params: { mode: "signup", phone: `${selectedCountry.dial}${phone}` },
       });
     } catch (error) {
       console.error(error);
@@ -134,201 +80,132 @@ export default function SignUpPage() {
     }
   };
 
-  const handleLogin = () => {
-    router.push("/(auth)/login");
-  };
-
   return (
-    <LinearGradient
-      colors={["#BEE3FF", "#FFFFFF", "#FFFFFF"]}
-      locations={[0, 0.238, 0.9525]}
-      start={{ x: 0.5, y: 0 }}
-      end={{ x: 0.45, y: 1 }}
-      style={{ flex: 1 }}
-    >
-      <Pressable
-        onPress={() => router.back()}
-        className="absolute top-14 left-5 z-20 w-10 h-10 items-center justify-center rounded-full border border-gray-100 bg-transparent shadow-sm"
-      >
-        <ArrowLeft size={20} color="#000" />
-      </Pressable>
-
-      <StatusBar style="auto" />
-
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : undefined}
-        style={{ flex: 1 }}
-        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
-      >
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <ScrollView
-            contentContainerStyle={{ flexGrow: 1 }}
-            keyboardShouldPersistTaps="handled"
-            showsVerticalScrollIndicator={false}
-            bounces={false}
-          >
-            <View className="flex-1 items-center justify-center px-5 py-20">
-              <View className="w-full max-w-md">
-                {/* HEADER */}
-                <View className="items-center gap-3 mb-10">
-                  <Image
-                    source={require("@/assets/icons/logo.png")}
-                    className="w-20 h-10"
-                    resizeMode="contain"
-                  />
-
-                  <Text className="text-3xl font-bold text-primary text-center leading-12 mt-3">
-                    Register New Account
-                  </Text>
-                  <Text className="text-sm text-secondary text-center leading-5">
-                    Hey! welcome to our app
-                  </Text>
-                </View>
-
-                {/* FORM */}
-                <View className="gap-5 mb-10">
-                  {/* Full Name */}
-                  <View className="gap-2">
-                    <Label>Full Name</Label>
-                    <Input
-                      value={fullName}
-                      onChangeText={handleFullNameChange}
-                      placeholder="eg. John Doe"
-                      autoCapitalize="words"
-                      autoCorrect={false}
-                      className={fullNameError ? "border-red-500" : ""}
-                    />
-                    {fullNameError ? (
-                      <Text className="text-red-500 text-sm mt-1">
-                        {fullNameError}
-                      </Text>
-                    ) : null}
-                  </View>
-
-                  {/* Email */}
-                  <View className="gap-2">
-                    <Label>Email</Label>
-                    <Input
-                      value={email}
-                      onChangeText={handleEmailChange}
-                      placeholder="eg. mail@gmail.com"
-                      keyboardType="email-address"
-                      autoCapitalize="none"
-                      autoCorrect={false}
-                      className={emailError ? "border-red-500" : ""}
-                    />
-                    {emailError ? (
-                      <Text className="text-red-500 text-sm mt-1">
-                        {emailError}
-                      </Text>
-                    ) : null}
-                  </View>
-
-                  {/* Password */}
-                  <View className="gap-2">
-                    <Label>Password</Label>
-                    <View className="relative">
-                      <Input
-                        value={password}
-                        onChangeText={handlePasswordChange}
-                        placeholder="••••••••••••••••••••"
-                        secureTextEntry={!showPassword}
-                        className={`pr-12 ${passwordError ? "border-red-500" : ""}`}
-                      />
-                      <Pressable
-                        onPress={() => setShowPassword(!showPassword)}
-                        className="absolute right-4 h-14 justify-center"
-                        hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-                      >
-                        {showPassword ? (
-                          <Eye size={20} color="#b5b5b5" />
-                        ) : (
-                          <EyeOff size={20} color="#b5b5b5" />
-                        )}
-                      </Pressable>
-                    </View>
-                    {passwordError ? (
-                      <Text className="text-red-500 text-sm mt-1">
-                        {passwordError}
-                      </Text>
-                    ) : null}
-                  </View>
-
-                  {/* Terms & Conditions */}
-                  <View className="gap-2">
-                    <Pressable
-                      onPress={() => handleAgreeTermsChange(!agreeTerms)}
-                      className="flex-row items-start gap-2"
-                      hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-                    >
-                      <Checkbox
-                        checked={agreeTerms}
-                        onCheckedChange={handleAgreeTermsChange}
-                        className="mt-1"
-                      />
-                      <Text className="text-sm text-secondary leading-5 flex-1">
-                        By using the Track Fleet app you agree to our{" "}
-                        <Text
-                          className="font-bold underline text-primary"
-                          onPress={(e) => {
-                            e.stopPropagation();
-                            router.push("/(public)/terms" as any);
-                          }}
-                        >
-                          Terms & Conditions
-                        </Text>{" "}
-                        and{" "}
-                        <Text
-                          className="font-bold underline text-primary"
-                          onPress={(e) => {
-                            e.stopPropagation();
-                            router.push("/(public)/privacy" as any);
-                          }}
-                        >
-                          Privacy-Policy
-                        </Text>
-                      </Text>
-                    </Pressable>
-                    {termsError ? (
-                      <Text className="text-red-500 text-sm mt-1">
-                        {termsError}
-                      </Text>
-                    ) : null}
-                  </View>
-                </View>
-
-                {/* BUTTON */}
-                <Button
-                  onPress={handleSignUp}
-                  className="w-full"
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? (
-                    <View className="flex-row items-center justify-center gap-2">
-                      <ActivityIndicator color="white" />
-                      <Text className="text-white font-medium">
-                        Creating account...
-                      </Text>
-                    </View>
-                  ) : (
-                    "Sign Up"
-                  )}
-                </Button>
-
-                {/* FOOTER */}
-                <View className="flex-row justify-center mt-6">
-                  <Text className="text-secondary">
-                    Already have an account?{" "}
-                  </Text>
-                  <Pressable onPress={handleLogin}>
-                    <Text className="text-primary font-bold">Log In</Text>
-                  </Pressable>
-                </View>
-              </View>
+    <AuthLayout title="Sign Up" subtitle="Sign up to access your account">
+      <View className="gap-1 mb-6">
+        {/* Phone Field */}
+        <View className="gap-2 mb-4">
+          <Text className="text-base font-semibold text-foreground">Phone</Text>
+          <View className="flex-row gap-2">
+            <CountryPicker
+              selectedCountry={selectedCountry}
+              onSelect={setSelectedCountry}
+              error={!!errors.phone}
+            />
+            <View
+              className={`flex-1 flex-row items-center h-14 rounded-xl border px-3.5 bg-white ${
+                errors.phone ? "border-red-500" : "border-gray-200"
+              }`}
+            >
+              <TextInput
+                value={formatPhoneDisplay(phone)}
+                onChangeText={handlePhoneChange}
+                placeholder="Enter your number"
+                placeholderTextColor="#9CA3AF"
+                keyboardType="phone-pad"
+                className="flex-1 text-base text-foreground h-full"
+              />
             </View>
-          </ScrollView>
-        </TouchableWithoutFeedback>
-      </KeyboardAvoidingView>
-    </LinearGradient>
+          </View>
+          {errors.phone ? (
+            <Text className="text-red-500 text-xs px-1">{errors.phone}</Text>
+          ) : null}
+        </View>
+
+        {/* Name Field */}
+        <AuthInput
+          label="Name(Optional)"
+          value={name}
+          onChangeText={(v) => {
+            setName(v);
+            if (errors.name) setErrors((prev) => ({ ...prev, name: "" }));
+          }}
+          placeholder="Enter your name"
+          icon={<User size={18} color="#6C6C6C" />}
+        />
+
+        {/* Password Field */}
+        <AuthInput
+          label="Password"
+          value={password}
+          onChangeText={(v) => {
+            setPassword(v);
+            if (errors.password)
+              setErrors((prev) => ({ ...prev, password: "" }));
+          }}
+          placeholder="Enter your password"
+          isPassword
+          icon={<Lock size={18} color="#6C6C6C" />}
+          error={errors.password}
+        />
+
+        {/* Re-type Password Field */}
+        <AuthInput
+          label="Re-type Password"
+          value={confirmPassword}
+          onChangeText={(v) => {
+            setConfirmPassword(v);
+            if (errors.confirmPassword)
+              setErrors((prev) => ({ ...prev, confirmPassword: "" }));
+          }}
+          placeholder="Enter your password"
+          isPassword
+          icon={<Lock size={18} color="#6C6C6C" />}
+          error={errors.confirmPassword}
+        />
+
+        {/* Terms Checkbox */}
+        <View className="gap-2 mb-8">
+          <Pressable
+            onPress={() => setAgreeTerms(!agreeTerms)}
+            className="flex-row items-start gap-3"
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+          >
+            <Checkbox
+              checked={agreeTerms}
+              onCheckedChange={(v) => {
+                setAgreeTerms(v);
+                if (errors.terms) setErrors((prev) => ({ ...prev, terms: "" }));
+              }}
+              className="mt-0.5 rounded-md border-gray-300"
+            />
+            <Text className="text-[13px] text-foreground/80 leading-[20px] flex-1">
+              I confirm that I am 18+ and agree to XENTRA's{" "}
+              <Text className="text-yellow font-bold">Terms & Conditions</Text>{" "}
+              and <Text className="text-yellow font-bold">Contest Rules</Text>
+            </Text>
+          </Pressable>
+          {errors.terms ? (
+            <Text className="text-red-500 text-xs px-1">{errors.terms}</Text>
+          ) : null}
+        </View>
+      </View>
+
+      {/* Submit Button */}
+      <Button
+        onPress={handleSignUp}
+        className={cn(
+          "w-full rounded-xl h-14",
+          !phone || !password || !confirmPassword || !agreeTerms
+            ? "bg-gray-300"
+            : "bg-primary",
+        )}
+        disabled={isSubmitting}
+      >
+        {isSubmitting ? (
+          <ActivityIndicator color="white" />
+        ) : (
+          <Text className="text-white font-bold text-lg">Sign Up</Text>
+        )}
+      </Button>
+
+      {/* Footer */}
+      <View className="flex-row justify-center mt-6">
+        <Text className="text-foreground">Already have an account? </Text>
+        <Pressable onPress={() => router.push("/(auth)/login")}>
+          <Text className="text-yellow font-bold">Sign In</Text>
+        </Pressable>
+      </View>
+    </AuthLayout>
   );
 }

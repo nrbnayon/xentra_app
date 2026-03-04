@@ -1,279 +1,140 @@
+import AuthInput from "@/components/Auth/AuthInput";
+import AuthLayout from "@/components/Auth/AuthLayout";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
-import { StatusBar } from "expo-status-bar";
-import { ArrowLeft, Eye, EyeOff } from "lucide-react-native";
+import { Lock } from "lucide-react-native";
 import { useState } from "react";
-import {
-  ActivityIndicator,
-  Image,
-  Keyboard,
-  KeyboardAvoidingView,
-  Platform,
-  Pressable,
-  ScrollView,
-  Text,
-  TouchableWithoutFeedback,
-  View,
-} from "react-native";
+import { ActivityIndicator, Text, View } from "react-native";
 
 export default function ResetPasswordPage() {
-  const [password, setPassword] = useState("");
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Error states
-  const [passwordError, setPasswordError] = useState("");
-  const [confirmPasswordError, setConfirmPasswordError] = useState("");
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
-  // Validate password (minimum 6 characters)
-  const validatePassword = (password: string): boolean => {
-    return password.length >= 6;
-  };
+  const validate = () => {
+    const newErrors: Record<string, string> = {};
 
-  // Validate password strength (optional - can be enhanced)
-  const validatePasswordStrength = (password: string): string | null => {
-    if (password.length < 6) {
-      return "Password must be at least 6 characters";
+    if (!currentPassword) {
+      newErrors.currentPassword = "Current password is required";
     }
-    if (password.length < 8) {
-      return "Password should be at least 8 characters for better security";
+    if (!newPassword) {
+      newErrors.newPassword = "New password is required";
+    } else if (newPassword.length < 6) {
+      newErrors.newPassword = "Password must be at least 6 characters";
     }
-    // Check for at least one number
-    if (!/\d/.test(password)) {
-      return "Password should contain at least one number";
+    if (!confirmPassword) {
+      newErrors.confirmPassword = "Please confirm your new password";
+    } else if (newPassword !== confirmPassword) {
+      newErrors.confirmPassword = "Passwords do not match";
     }
-    // Check for at least one letter
-    if (!/[a-zA-Z]/.test(password)) {
-      return "Password should contain at least one letter";
-    }
-    return null;
-  };
 
-  // Handle password change with error clearing
-  const handlePasswordChange = (text: string) => {
-    setPassword(text);
-    if (passwordError) {
-      setPasswordError("");
-    }
-    // Also clear confirm password error if they previously didn't match
-    if (confirmPasswordError && confirmPassword && text === confirmPassword) {
-      setConfirmPasswordError("");
-    }
-  };
-
-  // Handle confirm password change with error clearing
-  const handleConfirmPasswordChange = (text: string) => {
-    setConfirmPassword(text);
-    if (confirmPasswordError) {
-      setConfirmPasswordError("");
-    }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleReset = async () => {
-    // Reset all errors
-    setPasswordError("");
-    setConfirmPasswordError("");
-
-    let hasError = false;
-
-    // Validate password
-    if (!password) {
-      setPasswordError("Password is required");
-      hasError = true;
-    } else {
-      const strengthError = validatePasswordStrength(password);
-      if (strengthError) {
-        setPasswordError(strengthError);
-        hasError = true;
-      }
-    }
-
-    // Validate confirm password
-    if (!confirmPassword) {
-      setConfirmPasswordError("Please confirm your password");
-      hasError = true;
-    } else if (password !== confirmPassword) {
-      setConfirmPasswordError("Passwords do not match");
-      hasError = true;
-    }
-
-    if (hasError) {
-      return;
-    }
+    if (!validate()) return;
 
     try {
       setIsSubmitting(true);
-      console.log("Reset Password Submit clicked", {
-        password,
-        confirmPassword,
+      console.log("Reset password submitted");
+      // Mock API call
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+      // Navigate to success
+      router.replace({
+        pathname: "/(auth)/success",
+        params: { mode: "reset" },
       });
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      // Navigate to success page
-      router.replace("/(auth)/success");
     } catch (error) {
       console.error(error);
-      setPasswordError("Failed to reset password. Please try again.");
+      setErrors((prev) => ({
+        ...prev,
+        currentPassword: "Failed to reset password. Please try again.",
+      }));
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <LinearGradient
-      colors={["#BEE3FF", "#FFFFFF", "#FFFFFF"]}
-      locations={[0, 0.238, 0.9525]}
-      start={{ x: 0.5, y: 0 }}
-      end={{ x: 0.45, y: 1 }}
-      style={{ flex: 1 }}
+    <AuthLayout
+      title="Create New Password"
+      subtitle="Create a new unique password"
     >
-      <Pressable
-        onPress={() => router.back()}
-        className="absolute top-14 left-5 z-20 w-10 h-10 items-center justify-center rounded-full border border-gray-100 bg-transparent shadow-sm"
+      <View className="gap-1 mb-6">
+        {/* Current Password */}
+        <AuthInput
+          label="Current Password"
+          value={currentPassword}
+          onChangeText={(v) => {
+            setCurrentPassword(v);
+            if (errors.currentPassword)
+              setErrors((prev) => ({ ...prev, currentPassword: "" }));
+          }}
+          placeholder="Enter your password"
+          isPassword
+          icon={<Lock size={18} color="#6C6C6C" />}
+          error={errors.currentPassword}
+        />
+
+        {/* New Password */}
+        <AuthInput
+          label="New Password"
+          value={newPassword}
+          onChangeText={(v) => {
+            setNewPassword(v);
+            if (errors.newPassword)
+              setErrors((prev) => ({ ...prev, newPassword: "" }));
+            // clear confirm mismatch in real time
+            if (errors.confirmPassword && v === confirmPassword)
+              setErrors((prev) => ({ ...prev, confirmPassword: "" }));
+          }}
+          placeholder="Enter your password"
+          isPassword
+          icon={<Lock size={18} color="#6C6C6C" />}
+          error={errors.newPassword}
+        />
+
+        {/* Confirm New Password */}
+        <AuthInput
+          label="Re-type New Password"
+          value={confirmPassword}
+          onChangeText={(v) => {
+            setConfirmPassword(v);
+            if (errors.confirmPassword)
+              setErrors((prev) => ({ ...prev, confirmPassword: "" }));
+          }}
+          placeholder="Enter your password"
+          isPassword
+          icon={<Lock size={18} color="#6C6C6C" />}
+          error={errors.confirmPassword}
+        />
+
+        {/* Passwords match indicator */}
+        {!errors.confirmPassword &&
+          confirmPassword.length > 0 &&
+          newPassword === confirmPassword && (
+            <Text className="text-green-600 text-xs px-1 -mt-2">
+              ✓ Passwords match
+            </Text>
+          )}
+      </View>
+
+      {/* Submit Button */}
+      <Button
+        onPress={handleReset}
+        className="w-full h-14 rounded-xl bg-primary"
+        disabled={isSubmitting}
       >
-        <ArrowLeft size={20} color="#000" />
-      </Pressable>
-
-      <StatusBar style="auto" />
-
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : undefined}
-        style={{ flex: 1 }}
-        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
-      >
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <ScrollView
-            contentContainerStyle={{ flexGrow: 1 }}
-            keyboardShouldPersistTaps="handled"
-            showsVerticalScrollIndicator={false}
-            bounces={false}
-          >
-            <View className="flex-1 items-center justify-center px-5 py-10">
-              <View className="w-full max-w-md">
-                {/* HEADER */}
-                <View className="items-center gap-3 mb-14">
-                  <Image
-                    source={require("@/assets/icons/logo.png")}
-                    className="w-20 h-10"
-                    resizeMode="contain"
-                  />
-                  <Text className="text-3xl font-bold text-primary text-center leading-12 mt-3">
-                    Create New Password
-                  </Text>
-                  <Text className="text-sm text-secondary text-center leading-5">
-                    Create a new unique password
-                  </Text>
-                </View>
-
-                {/* FORM */}
-                <View className="gap-5 mb-14">
-                  {/* Password Field */}
-                  <View className="gap-2">
-                    <Label>Password</Label>
-                    <View className="relative">
-                      <Input
-                        value={password}
-                        onChangeText={handlePasswordChange}
-                        placeholder="••••••••••••••••••••"
-                        secureTextEntry={!showPassword}
-                        className={`pr-12 ${passwordError ? "border-red-500" : ""}`}
-                      />
-                      <Pressable
-                        onPress={() => setShowPassword(!showPassword)}
-                        className="absolute right-4 h-14 justify-center"
-                        hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-                      >
-                        {showPassword ? (
-                          <Eye size={20} color="#b5b5b5" />
-                        ) : (
-                          <EyeOff size={20} color="#b5b5b5" />
-                        )}
-                      </Pressable>
-                    </View>
-                    {passwordError ? (
-                      <Text className="text-red-500 text-sm mt-1">
-                        {passwordError}
-                      </Text>
-                    ) : null}
-                    {/* Password hint when no error */}
-                    {!passwordError &&
-                    password.length > 0 &&
-                    password.length < 8 ? (
-                      <Text className="text-gray-500 text-xs mt-1">
-                        Use 8+ characters with numbers and letters for a strong
-                        password
-                      </Text>
-                    ) : null}
-                  </View>
-
-                  {/* Confirm Password Field */}
-                  <View className="gap-2">
-                    <Label>Confirm Password</Label>
-                    <View className="relative">
-                      <Input
-                        value={confirmPassword}
-                        onChangeText={handleConfirmPasswordChange}
-                        placeholder="••••••••••••••••••••"
-                        secureTextEntry={!showConfirmPassword}
-                        className={`pr-12 ${confirmPasswordError ? "border-red-500" : ""}`}
-                      />
-                      <Pressable
-                        onPress={() =>
-                          setShowConfirmPassword(!showConfirmPassword)
-                        }
-                        className="absolute right-4 h-14 justify-center"
-                        hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-                      >
-                        {showConfirmPassword ? (
-                          <Eye size={20} color="#b5b5b5" />
-                        ) : (
-                          <EyeOff size={20} color="#b5b5b5" />
-                        )}
-                      </Pressable>
-                    </View>
-                    {confirmPasswordError ? (
-                      <Text className="text-red-500 text-sm mt-1">
-                        {confirmPasswordError}
-                      </Text>
-                    ) : null}
-                    {/* Success message when passwords match */}
-                    {!confirmPasswordError &&
-                    confirmPassword.length > 0 &&
-                    password === confirmPassword ? (
-                      <Text className="text-green-600 text-sm mt-1">
-                        ✓ Passwords match
-                      </Text>
-                    ) : null}
-                  </View>
-                </View>
-
-                {/* BUTTON */}
-                <Button
-                  onPress={handleReset}
-                  className="w-full"
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? (
-                    <View className="flex-row items-center justify-center gap-2">
-                      <ActivityIndicator color="white" />
-                      <Text className="text-white font-medium">
-                        Resetting password...
-                      </Text>
-                    </View>
-                  ) : (
-                    "Reset Password"
-                  )}
-                </Button>
-              </View>
-            </View>
-          </ScrollView>
-        </TouchableWithoutFeedback>
-      </KeyboardAvoidingView>
-    </LinearGradient>
+        {isSubmitting ? (
+          <ActivityIndicator color="white" />
+        ) : (
+          <Text className="text-white font-bold text-base">Reset Password</Text>
+        )}
+      </Button>
+    </AuthLayout>
   );
 }
