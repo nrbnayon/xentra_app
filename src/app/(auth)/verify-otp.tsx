@@ -70,7 +70,7 @@ export default function VerifyOTPPage() {
         />
 
         <View className="flex-row justify-center mt-6">
-          <Text className="text-[#505050] text-sm font-medium">
+          <Text className="text-secondary text-sm font-medium">
             Didn't get OTP?{" "}
           </Text>
           <Pressable onPress={handleResend}>

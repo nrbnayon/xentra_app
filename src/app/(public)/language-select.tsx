@@ -103,13 +103,13 @@ export default function LanguageSelectScreen() {
               <Pressable
                 key={lang.code}
                 onPress={() => setSelected(lang.code)}
-                className={`flex-row items-center px-6 py-4 bg-white rounded-2xl border-2 ${
+                className={`flex-row items-center px-6 py-4 bg-white rounded-lg border-2 ${
                   isSelected
                     ? "border-primary bg-primary/5"
-                    : "border-[#EDEDED]"
+                    : "border-border dark:border-border-dark"
                 } shadow-sm active:opacity-70`}
               >
-                <View className="w-14 h-10 rounded-lg overflow-hidden border border-[#E0E0E0] mr-5 shadow-sm bg-white">
+                <View className="w-12 h-8 rounded-sm overflow-hidden border border-[#E0E0E0] mr-5 shadow-sm bg-white">
                   <Image
                     source={{ uri: lang.flag }}
                     className="w-full h-full"

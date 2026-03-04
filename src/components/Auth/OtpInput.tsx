@@ -58,7 +58,7 @@ export default function OtpInput({
         <View
           key={index}
           className={cn(
-            "w-[52px] h-[58px] rounded-2xl border-2 items-center justify-center bg-white",
+            "w-16 h-16 rounded-xl border-2 items-center justify-center bg-white",
             error
               ? "border-red-500"
               : focusedIndex === index

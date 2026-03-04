@@ -1,13 +1,3 @@
-/**
- * _layout.tsx  (root layout)
- *
- * Wraps the entire app in:
- *  1. LanguageProvider  — global translation context (default: English)
- *  2. ThemeProvider     — react-navigation theming
- *  3. AnimatedSplashOverlay + AppTabs — app UI
- *  4. NotificationBootstrap — push notification setup
- */
-
 import {
   Inter_400Regular,
   Inter_500Medium,
@@ -22,41 +12,43 @@ import {
   useFonts as useRobotoFonts,
 } from "@expo-google-fonts/roboto";
 import {
-  DefaultTheme,
-  ThemeProvider,
+  DarkTheme as NavDarkTheme,
+  DefaultTheme as NavLightTheme,
+  ThemeProvider as NavThemeProvider,
 } from "@react-navigation/native";
 import { SplashScreen, Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 import React, { useEffect } from "react";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import "../../global.css";
-
 
 import { AnimatedSplashOverlay } from "@/components/ui/animated-icon";
 import { Toast } from "@/components/ui/Toast";
 import { LanguageProvider } from "@/context/LanguageContext";
-// import { useNotifications } from "@/hooks/use-notifications";
-import { SafeAreaProvider } from "react-native-safe-area-context";
-import { StatusBar } from "expo-status-bar";
+import { ThemeProvider, useAppTheme } from "@/context/ThemeContext";
 
-// Prevent auto-hiding the splash screen while fonts are loading
 SplashScreen.preventAutoHideAsync();
 
-// ─── Notification bootstrap (side-effect only) ────────────────────────────────
-// function NotificationBootstrap() {
-//   const { expoPushToken, permissionGranted } = useNotifications();
+function MainLayout() {
+  const { theme } = useAppTheme();
+  const navTheme = theme === "dark" ? NavDarkTheme : NavLightTheme;
 
-//   if (__DEV__) {
-//     console.log("[_layout] Notification bootstrap:", {
-//       permissionGranted,
-//       expoPushToken: expoPushToken ? `${expoPushToken.slice(0, 30)}…` : null,
-//     });
-//   }
-
-//   return null;
-// }
+  return (
+    <NavThemeProvider value={navTheme}>
+      <AnimatedSplashOverlay />
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+        <Stack.Screen name="(public)" options={{ headerShown: false }} />
+        <Stack.Screen name="(protected)" options={{ headerShown: false }} />
+      </Stack>
+      <Toast />
+      <StatusBar style="auto" />
+    </NavThemeProvider>
+  );
+}
 
 // ─── Root layout ──────────────────────────────────────────────────────────────
 export default function RootLayout() {
-
   const [interLoaded, interError] = useInterFonts({
     Inter_400Regular,
     Inter_500Medium,
@@ -83,17 +75,8 @@ export default function RootLayout() {
   return (
     <SafeAreaProvider>
       <LanguageProvider>
-        <ThemeProvider value={DefaultTheme}>
-          <AnimatedSplashOverlay />
-          <Stack screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-            <Stack.Screen name="(public)" options={{ headerShown: false }} />
-            <Stack.Screen name="(protected)" options={{ headerShown: false }} />
-          </Stack>
-          <Toast />
-          {/* Mount after AppTabs so expo-router is ready for deep-links */}
-          {/* <NotificationBootstrap /> */}
-          <StatusBar style="dark" />
+        <ThemeProvider>
+          <MainLayout />
         </ThemeProvider>
       </LanguageProvider>
     </SafeAreaProvider>

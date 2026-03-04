@@ -71,7 +71,7 @@ export default function ResetPasswordPage() {
     >
       <View className="gap-1 mb-6">
         {/* Current Password */}
-        <AuthInput
+        {/* <AuthInput
           label="Current Password"
           value={currentPassword}
           onChangeText={(v) => {
@@ -83,7 +83,7 @@ export default function ResetPasswordPage() {
           isPassword
           icon={<Lock size={18} color="#6C6C6C" />}
           error={errors.currentPassword}
-        />
+        /> */}
 
         {/* New Password */}
         <AuthInput
