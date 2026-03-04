@@ -6,7 +6,7 @@ import React from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-export default function TermsAndConditions() {
+export default function ContestRules() {
   const insets = useSafeAreaInsets();
 
   return (
@@ -29,7 +29,7 @@ export default function TermsAndConditions() {
             <ChevronLeft size={22} color="#1E3A8A" />
           </Pressable>
           <Text className="text-2xl font-bold text-primary ml-4">
-            Terms and Conditions
+            Contest Rules
           </Text>
         </View>
 
@@ -41,107 +41,92 @@ export default function TermsAndConditions() {
           <View className="mt-4">
             <Section
               number="1"
-              title="Eligibility"
-              items={[
-                "You must be 18 years or older to use XENTRA.",
-                "By registering, you confirm you meet the legal age.",
-              ]}
+              title="Qualification"
+              items={["Players must be 18 years or older to participate."]}
             />
 
             <Section
               number="2"
-              title="Account Registration"
+              title="How to Participate"
+              content="Each contest requires players to:"
               items={[
-                "Registration is completed using your phone number.",
-                "You are responsible for keeping your login information secure.",
-                "Each person is allowed only one account.",
-                "XENTRA reserves the right to suspend or close accounts involved in fraud, abuse, or suspicious activity.",
+                "Choose the team they think will win (Team A / Team B / Draw).",
+                "Predict the exact final score of the match",
               ]}
             />
 
             <Section
               number="3"
-              title="Nature of the Platform"
-              items={[
-                "XENTRA is a skill-based prediction platform, not a traditional sportsbook.",
-                "Users participate in contests with a shared prize pool.",
-                "XENTRA does not provide betting odds.",
-              ]}
+              title="Ranking System"
+              content="Rankings are determined as follows:"
+              items={["Exact score + correct winning team = highest score."]}
+              footer={`If no player predicts the exact score, rankings are based on the closest difference, using this formula:
+• (|Predicted Team A score – Actual Team A score| + |Predicted Team B score – Actual Team B score|)
+• The smallest total difference gives the best rank.`}
             />
 
             <Section
               number="4"
-              title="Wallet & Payments"
+              title="Payment Structure"
               items={[
-                "Deposits are made via MonCash or Natcash.",
-                "Wallet funds are used only within the app.",
-                "Withdrawals are subject to verification.",
-                "XENTRA may delay or cancel withdrawals if fraud is suspected.",
+                "Only the Top 5 players for each match receive payment.",
+                "The distribution of payments is based on the position in the ranking.",
               ]}
             />
 
             <Section
               number="5"
-              title="Platform Fees"
+              title="Prize Fund"
               items={[
-                "A service fee is deducted before distributing prizes.",
-                "The remaining amount forms the prize pool.",
+                "The total prize fund is calculated after deducting platform service fees.",
+                "The remaining amount is distributed to the qualifying winners.",
               ]}
             />
 
             <Section
               number="6"
-              title="Winners & Rankings"
+              title="Jackpot Rules"
+              content="If no player predicts the exact score:"
               items={[
-                "Winners are determined based on prediction accuracy.",
-                "Only the top players receive payouts.",
-                "Detailed rules are in the Contest Rules section.",
+                "The prize fund may be transferred to the next qualifying match as a jackpot.",
               ]}
             />
 
             <Section
               number="7"
-              title="Fair Play"
-              content="Any attempt to:"
+              title="Match Results"
               items={[
-                "Manipulate results",
-                "Abuse the system",
-                "Use multiple accounts",
-                "Exploit technical errors",
+                "The administrator enters official results after the match ends.",
+                "Rankings are automatically calculated based on the final results.",
               ]}
-              footer="May result in:\n• Account suspension\n• Loss of funds\n• Permanent ban"
             />
 
             <Section
               number="8"
-              title="No Profit Guarantee"
+              title="Wallet Updates"
               items={[
-                "Participation involves risk.",
-                "XENTRA does not guarantee profits.",
+                "Wallet balances are automatically updated once results are confirmed.",
               ]}
             />
 
             <Section
               number="9"
-              title="Service Availability"
-              items={["XENTRA may modify or suspend services at any time."]}
-            />
-
-            <Section
-              number="10"
-              title="Changes to Conditions"
+              title="Fraud & Abuse"
+              content="XENTRA reserves the right to suspend or close accounts involved in:"
               items={[
-                "These conditions may change at any time.",
-                "Continued use of the app indicates acceptance of changes.",
+                "Fraud",
+                "Collusion",
+                "System abuse",
+                "Manipulation of contests",
               ]}
             />
 
             <Section
-              number="11"
-              title="Contact"
+              number="10"
+              title="Kind of Contests"
               items={[
-                "These conditions may change at any time.",
-                "For assistance, contact XENTRA through the app.",
+                "All contests on XENTRA are skill-based prediction games and are not sports betting.",
+                "By participating, you agree to these Contest Rules.",
               ]}
             />
           </View>
@@ -184,7 +169,7 @@ function Section({
           </View>
         ))}
       {footer ? (
-        <Text className="text-base text-secondary leading-6 mt-2">
+        <Text className="text-base text-secondary leading-6 mt-2 ml-4">
           {footer}
         </Text>
       ) : null}

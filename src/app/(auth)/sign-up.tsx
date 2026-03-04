@@ -171,8 +171,26 @@ export default function SignUpPage() {
             />
             <Text className="text-[13px] text-foreground/80 leading-[20px] flex-1">
               I confirm that I am 18+ and agree to XENTRA's{" "}
-              <Text className="text-yellow font-bold">Terms & Conditions</Text>{" "}
-              and <Text className="text-yellow font-bold">Contest Rules</Text>
+              <Text
+                onPress={() => router.push("/(public)/terms")}
+                className="text-yellow font-bold"
+              >
+                Terms & Conditions
+              </Text>
+              {", "}
+              <Text
+                onPress={() => router.push("/(public)/privacy")}
+                className="text-yellow font-bold"
+              >
+                Privacy Policy
+              </Text>
+              {" and "}
+              <Text
+                onPress={() => router.push("/(public)/contest-rules")}
+                className="text-yellow font-bold"
+              >
+                Contest Rules
+              </Text>
             </Text>
           </Pressable>
           {errors.terms ? (

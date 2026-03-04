@@ -16,13 +16,14 @@ interface AuthState {
   isAuthenticated: boolean;
   isLoading: boolean;
 
-  signIn: (email: string, password: string) => Promise<void>;
+  signIn: (phone: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
   checkAuth: () => Promise<void>;
+  deleteAccount: () => Promise<void>;
 }
 
-const TOKEN_KEY = "track-fleet-auth-token";
-const USER_KEY = "track-fleet-user-data";
+const TOKEN_KEY = "xentra-auth-token";
+const USER_KEY = "xentra-user-data";
 
 // Safe Storage Abstraction
 const safeStorage = {
@@ -82,21 +83,20 @@ export const useAuthStore = create<AuthState>((set) => ({
   isAuthenticated: false,
   isLoading: true,
 
-  signIn: async (email: string, password: string) => {
+  signIn: async (phone: string, password: string) => {
     try {
       // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 1500));
 
       const dummyUser: User = {
         id: "user_123",
-        email_address: email,
-        full_name: "Nayon",
-        phone_number: "1234567890",
+        full_name: "Xentra User",
+        phone_number: phone,
         role: "user",
       };
-      const dummyToken = "dummy-jwt-token-123456";
+      const dummyToken =
+        "xentra-jwt-token-" + Math.random().toString(36).substr(2);
 
-      // Persist safely
       await safeStorage.setItem(TOKEN_KEY, dummyToken);
       await safeStorage.setItem(USER_KEY, JSON.stringify(dummyUser));
 
@@ -119,6 +119,18 @@ export const useAuthStore = create<AuthState>((set) => ({
       set({ user: null, token: null, isAuthenticated: false });
     } catch (error) {
       console.error("Sign out error:", error);
+    }
+  },
+
+  deleteAccount: async () => {
+    try {
+      // In a real app, this would also call a DELETE /api/user endpoint
+      await safeStorage.removeItem(TOKEN_KEY);
+      await safeStorage.removeItem(USER_KEY);
+      set({ user: null, token: null, isAuthenticated: false });
+      console.log("Account deleted successfully");
+    } catch (error) {
+      console.error("Delete account error:", error);
     }
   },
 
