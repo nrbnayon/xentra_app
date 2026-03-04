@@ -4,7 +4,7 @@ import { mockLeagues } from "@/data/mock";
 import { SHADOWS } from "@/lib/shadows";
 import { SportCategory } from "@/types";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { Calendar, Check, ChevronDown } from "lucide-react-native";
+import { Calendar, Check, ChevronDown, X } from "lucide-react-native";
 import { useState } from "react";
 import {
   Modal,
@@ -119,20 +119,30 @@ export default function SportFilters({
           <ChevronDown size={18} color="#6B7280" />
         </Pressable>
 
-        <Pressable
+        <View
           style={SHADOWS.soft}
-          onPress={() => setShowPicker(true)}
-          className="flex-row items-center justify-start flex-1 bg-white px-4 py-3 rounded-full border border-gray-100"
+          className="flex-row items-center justify-between flex-1 bg-white px-4 py-3 rounded-full border border-gray-100"
         >
-          <Calendar size={18} color="#6B7280" className="mr-2" />
-          <Text className="text-secondary font-medium">
-            {date ? (
-              formatDate(date)
-            ) : (
-              <TranslatedText skip={false}>Pick a Date</TranslatedText>
-            )}
-          </Text>
-        </Pressable>
+          <Pressable
+            onPress={() => setShowPicker(true)}
+            className="flex-row items-center flex-1"
+          >
+            <Calendar size={18} color="#6B7280" className="mr-2" />
+            <Text className="text-secondary font-medium mr-1">
+              {date ? (
+                formatDate(date)
+              ) : (
+                <TranslatedText skip={false}>Pick a Date</TranslatedText>
+              )}
+            </Text>
+          </Pressable>
+
+          {date && (
+            <Pressable onPress={() => onSelectDate(null)} className="p-1">
+              <X size={14} color="#ef4444" />
+            </Pressable>
+          )}
+        </View>
 
         {showPicker && (
           <DateTimePicker

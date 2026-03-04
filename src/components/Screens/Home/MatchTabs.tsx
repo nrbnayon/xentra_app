@@ -1,7 +1,7 @@
 import { TranslatedText } from "@/components/ui/TranslatedText";
 import { Pressable, View } from "react-native";
 
-type TabStatus = "latest" | "upcoming" | "completed";
+type TabStatus = "all" | "latest" | "upcoming" | "complete";
 
 interface Props {
   selectedStatus: TabStatus;
@@ -10,9 +10,10 @@ interface Props {
 
 export default function MatchTabs({ selectedStatus, onSelectStatus }: Props) {
   const tabs: { label: string; value: TabStatus }[] = [
+    { label: "All", value: "all" },
     { label: "Latest", value: "latest" },
     { label: "Upcoming", value: "upcoming" },
-    { label: "Completed", value: "completed" },
+    { label: "Complete", value: "complete" },
   ];
 
   return (

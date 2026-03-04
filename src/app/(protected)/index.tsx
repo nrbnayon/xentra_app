@@ -1,3 +1,4 @@
+import { TranslatedText } from "@/components/ui/TranslatedText";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import { useState } from "react";
@@ -8,21 +9,28 @@ import HomeHeader from "@/components/Screens/Home/HomeHeader";
 import MatchCard from "@/components/Screens/Home/MatchCard";
 import MatchTabs from "@/components/Screens/Home/MatchTabs";
 import SportFilters from "@/components/Screens/Home/SportFilters";
+import { MatchSkeleton } from "@/components/Skeleton/MatchSkeleton";
 import { mockMatches, mockSports } from "@/data/mock";
 
 export default function ProtectedIndex() {
   const insets = useSafeAreaInsets();
   const [selectedSport, setSelectedSport] = useState(mockSports[0].id);
   const [selectedStatus, setSelectedStatus] = useState<
-    "latest" | "upcoming" | "completed"
-  >("latest");
+    "all" | "latest" | "upcoming" | "complete"
+  >("all");
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedLeagueName, setSelectedLeagueName] = useState("Select League");
+  const [refreshing, setRefreshing] = useState(false);
 
   // Filtering matches based on all select filters
   const filteredMatches = mockMatches.filter((match) => {
-    // Filter by status
-    if (match.status !== selectedStatus) return false;
+    // Filter by status (ignore if 'all' is selected)
+    if (
+      selectedStatus !== "all" &&
+      match.status !==
+        ((selectedStatus === "complete" ? "completed" : selectedStatus) as any)
+    )
+      return false;
 
     // Filter by sport
     if (selectedSport !== "all" && match.sportId !== selectedSport)
@@ -57,6 +65,13 @@ export default function ProtectedIndex() {
     router.push(`/(protected)/match-details/${matchId}` as any);
   };
 
+  const onRefresh = () => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1500);
+  };
+
   return (
     <LinearGradient
       colors={["#FFF0CE", "#FFFFFF", "#FFFFFF"]}
@@ -81,10 +96,14 @@ export default function ProtectedIndex() {
         }}
       >
         <FlatList
-          data={filteredMatches}
-          keyExtractor={(item) => item.id}
+          data={refreshing ? ([1, 2, 3] as any) : filteredMatches}
+          keyExtractor={(item, index) =>
+            refreshing ? `skeleton-${index}` : item.id
+          }
           className="px-6 flex-1"
           showsVerticalScrollIndicator={false}
+          refreshing={refreshing}
+          onRefresh={onRefresh}
           ListHeaderComponent={
             <View>
               <HomeHeader />
@@ -103,19 +122,27 @@ export default function ProtectedIndex() {
               />
             </View>
           }
-          renderItem={({ item }) => (
-            <MatchCard match={item} onPredict={handlePredict} />
-          )}
+          renderItem={({ item }) =>
+            refreshing ? (
+              <MatchSkeleton />
+            ) : (
+              <MatchCard match={item} onPredict={handlePredict} />
+            )
+          }
           ListEmptyComponent={
-            <View className="py-10 items-center justify-center">
-              <View className="bg-gray-100 rounded-full px-4 py-2">
-                <View className="flex-row items-center gap-2">
-                  <View className="w-2 h-2 rounded-full bg-gray-400" />
-                  <View className="w-2 h-2 rounded-full bg-gray-400" />
-                  <View className="w-2 h-2 rounded-full bg-gray-400" />
+            !refreshing ? (
+              <View className="py-20 items-center justify-center">
+                <View className="w-20 h-20 bg-gray-100 rounded-full items-center justify-center mb-4">
+                  <TranslatedText className="text-4xl">🔍</TranslatedText>
                 </View>
+                <TranslatedText className="text-secondary text-lg font-bold mb-1">
+                  No data available
+                </TranslatedText>
+                <TranslatedText className="text-secondary/60 text-center px-10">
+                  We couldn't find any matches matching your current filters.
+                </TranslatedText>
               </View>
-            </View>
+            ) : null
           }
         />
       </View>
