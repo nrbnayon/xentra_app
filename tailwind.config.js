@@ -122,6 +122,12 @@ module.exports = {
           "dark-foreground": "#F1F5F9",
         },
 
+        // ─── Input placeholder color ─────────────────────────────
+        placeholder: {
+          DEFAULT: "#6C6C6C",
+          dark: "#9CA3AF",
+        },
+
         // ─── Chart palette ─────────────────────────────────────
         chart: {
           1: "#16467A",

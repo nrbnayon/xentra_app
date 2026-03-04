@@ -9,7 +9,7 @@ export function Input({ className, ...props }: InputProps) {
   return (
     <TextInput
       className={cn(
-        "h-14 rounded-3xl border border-[#E7E7E7] bg-white px-4 text-base placeholder:text-[#b5b5b5]",
+        "h-14 rounded-3xl border border-secondary bg-white px-4 text-base placeholder:text-secondary",
         className
       )}
       placeholderTextColor="#b5b5b5"

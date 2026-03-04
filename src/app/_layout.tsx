@@ -33,7 +33,7 @@ import "../../global.css";
 import { AnimatedSplashOverlay } from "@/components/ui/animated-icon";
 import { Toast } from "@/components/ui/Toast";
 import { LanguageProvider } from "@/context/LanguageContext";
-import { useNotifications } from "@/hooks/use-notifications";
+// import { useNotifications } from "@/hooks/use-notifications";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 
@@ -41,18 +41,18 @@ import { StatusBar } from "expo-status-bar";
 SplashScreen.preventAutoHideAsync();
 
 // ─── Notification bootstrap (side-effect only) ────────────────────────────────
-function NotificationBootstrap() {
-  const { expoPushToken, permissionGranted } = useNotifications();
+// function NotificationBootstrap() {
+//   const { expoPushToken, permissionGranted } = useNotifications();
 
-  if (__DEV__) {
-    console.log("[_layout] Notification bootstrap:", {
-      permissionGranted,
-      expoPushToken: expoPushToken ? `${expoPushToken.slice(0, 30)}…` : null,
-    });
-  }
+//   if (__DEV__) {
+//     console.log("[_layout] Notification bootstrap:", {
+//       permissionGranted,
+//       expoPushToken: expoPushToken ? `${expoPushToken.slice(0, 30)}…` : null,
+//     });
+//   }
 
-  return null;
-}
+//   return null;
+// }
 
 // ─── Root layout ──────────────────────────────────────────────────────────────
 export default function RootLayout() {
@@ -92,7 +92,7 @@ export default function RootLayout() {
           </Stack>
           <Toast />
           {/* Mount after AppTabs so expo-router is ready for deep-links */}
-          <NotificationBootstrap />
+          {/* <NotificationBootstrap /> */}
           <StatusBar style="dark" />
         </ThemeProvider>
       </LanguageProvider>

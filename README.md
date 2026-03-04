@@ -112,3 +112,6 @@ Cache miss: Shows English → kicks background fetch → context ticks → re-re
 Runtime: In-memory Map (zero latency)
 Persisted: AsyncStorage, 7-day TTL
 On language change: Old cache cleared, common strings pre-warmed in background
+
+
+<!-- "expo-dev-client": "~55.0.10", -->

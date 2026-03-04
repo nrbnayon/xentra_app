@@ -80,7 +80,7 @@ export default function LanguageSelectScreen() {
       >
         {/* ── Globe Icon ──────────────────────────────────────────────── */}
         <View className="items-center mb-8">
-          <View className="w-[84px] h-[84px] rounded-full bg-primary items-center justify-center shadow-lg transform active:scale-95 transition-transform">
+          <View className="w-20 h-20 rounded-full bg-primary items-center justify-center shadow-lg transform active:scale-95 transition-transform">
             <Globe size={42} color="white" />
           </View>
         </View>
@@ -103,21 +103,22 @@ export default function LanguageSelectScreen() {
               <Pressable
                 key={lang.code}
                 onPress={() => setSelected(lang.code)}
-                className={`flex-row items-center px-6 py-[18px] bg-white rounded-2xl border-[1.5px] ${
+                className={`flex-row items-center px-6 py-4 bg-white rounded-2xl border-2 ${
                   isSelected
                     ? "border-primary bg-primary/5"
-                    : "border-[#E9E9E9]"
+                    : "border-[#EDEDED]"
                 } shadow-sm active:opacity-70`}
               >
-                <View className="w-13 h-9 rounded-lg overflow-hidden border border-gray-100 mr-5 shadow-sm">
+                <View className="w-14 h-10 rounded-lg overflow-hidden border border-[#E0E0E0] mr-5 shadow-sm bg-white">
                   <Image
                     source={{ uri: lang.flag }}
                     className="w-full h-full"
+                    style={{ width: "100%", height: "100%" }}
                     resizeMode="cover"
                   />
                 </View>
                 <Text
-                  className={`text-[17px] ${
+                  className={`text-base ${
                     isSelected
                       ? "font-bold text-primary"
                       : "font-semibold text-[#111111]"

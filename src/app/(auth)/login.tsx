@@ -154,23 +154,12 @@ function CountryPickerModal({
       transparent
       onRequestClose={onClose}
     >
-      <Pressable
-        style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.45)" }}
-        onPress={onClose}
-      >
-        <Pressable
-          style={{ marginTop: "auto" }}
-          onPress={(e) => e.stopPropagation()}
-        >
+      <Pressable className="flex-1 bg-black/45" onPress={onClose}>
+        <Pressable className="mt-auto" onPress={(e) => e.stopPropagation()}>
           <View
+            className="bg-white rounded-t-3xl max-h-[80%] w-[90%] self-center"
             style={{
-              backgroundColor: "#fff",
-              borderTopLeftRadius: 24,
-              borderTopRightRadius: 24,
               paddingBottom: insets.bottom + 8,
-              maxHeight: "80%",
-              width: "90%",
-              alignSelf: "center",
             }}
           >
             {/* Handle */}
@@ -184,7 +173,9 @@ function CountryPickerModal({
             </Text>
 
             {/* Search */}
-            <View className="mx-4 mb-3 flex-row items-center gap-2 px-3 rounded-xl border border-border bg-gray-50">
+            <View
+              className={`mx-4 mb-3 flex-row items-center gap-2 px-3 rounded-xl border bg-gray-50 border-border focus-within:border-primary/80`}
+            >
               <Search size={16} color="#9CA3AF" />
               <TextInput
                 value={query}
@@ -201,69 +192,44 @@ function CountryPickerModal({
               data={filtered}
               keyExtractor={(item) => item.code}
               keyboardShouldPersistTaps="handled"
-              style={{ maxHeight: 380 }}
+              className="max-h-[380px]"
               renderItem={({ item }) => (
                 <Pressable
                   onPress={() => {
                     onSelect(item);
                     onClose();
                   }}
-                  style={({ pressed }) => ({
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    paddingHorizontal: 20,
-                    paddingVertical: 13,
-                    backgroundColor:
-                      item.code === selected.code
-                        ? "#E8F0F9"
-                        : pressed
-                          ? "#F5F7FA"
-                          : "transparent",
-                  })}
+                  className={`flex-row items-center justify-between px-5 py-3 ${
+                    item.code === selected.code
+                      ? "bg-[#E8F0F9]"
+                      : "active:bg-muted"
+                  }`}
                 >
                   <View className="flex-row items-center gap-2 px-5">
                     {/* Flag */}
-                    <Text
-                      style={{ fontSize: 26, width: 36, textAlign: "center" }}
-                    >
+                    <Text className="text-2xl w-9 text-center focus:text-primary">
                       {item.flag}
                     </Text>
                     {/* Country name */}
                     <Text
-                      style={{
-                        flex: 1,
-                        fontSize: 15,
-                        color: "#111111",
-                        fontWeight: item.code === selected.code ? "600" : "400",
-                        marginLeft: 10,
-                      }}
                       numberOfLines={1}
+                      className={`flex-1 text-base text-foreground ml-2.5 ${
+                        item.code === selected.code
+                          ? "font-semibold"
+                          : "font-normal"
+                      }`}
                     >
                       {item.name}
                     </Text>
                     {/* Dial code — fixed width so it never wraps */}
-                    <Text
-                      style={{
-                        fontSize: 14,
-                        color: "#505050",
-                        minWidth: 48,
-                        textAlign: "right",
-                      }}
-                    >
+                    <Text className="text-sm text-secondary min-w-[48px] text-right">
                       {item.dial}
                     </Text>
                   </View>
                 </Pressable>
               )}
               ItemSeparatorComponent={() => (
-                <View
-                  style={{
-                    height: 1,
-                    backgroundColor: "#F5F7FA",
-                    marginHorizontal: 20,
-                  }}
-                />
+                <View className="h-[1px] bg-muted mx-5" />
               )}
             />
           </View>
@@ -346,7 +312,7 @@ export default function LoginPage() {
       locations={[0, 0.238, 0.9525]}
       start={{ x: 0.5, y: 0 }}
       end={{ x: 0.45, y: 1 }}
-      style={{ flex: 1 }}
+      className="flex-1"
     >
       <StatusBar style="auto" />
 
@@ -359,11 +325,11 @@ export default function LoginPage() {
 
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : undefined}
-        style={{ flex: 1 }}
+        className="flex-1"
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <ScrollView
-            contentContainerStyle={{ flexGrow: 1 }}
+            contentContainerClassName="flex-grow"
             keyboardShouldPersistTaps="handled"
             showsVerticalScrollIndicator={false}
             bounces={false}
@@ -397,18 +363,10 @@ export default function LoginPage() {
                         onPress={() => setPickerVisible(true)}
                         className={`flex-row items-center justify-center px-2 h-15 rounded-xl border border-gray-200 bg-white ${phoneError ? "border-red-500" : ""}`}
                       >
-                        <Text style={{ fontSize: 22, lineHeight: 28 }}>
+                        <Text className="text-[22px] leading-7">
                           {selectedCountry.flag}
                         </Text>
-                        <Text
-                          style={{
-                            fontSize: 14,
-                            color: "#111111",
-                            fontWeight: "500",
-                            marginLeft: 6,
-                            marginRight: 4,
-                          }}
-                        >
+                        <Text className="text-sm text-foreground font-medium ml-1.5 mr-1">
                           {selectedCountry.dial}
                         </Text>
                         <ChevronDown size={13} color="#505050" />
@@ -416,18 +374,11 @@ export default function LoginPage() {
 
                       {/* Number Input */}
                       <View
-                        style={{
-                          flex: 1,
-                          flexDirection: "row",
-                          alignItems: "center",
-                          height: 52,
-                          borderRadius: 12,
-                          borderWidth: 1,
-                          borderColor: phoneError ? "#EF4444" : "#E9E9E9",
-                          backgroundColor: "#FFFFFF",
-                          paddingHorizontal: 14,
-                          gap: 8,
-                        }}
+                        className={`flex-1 flex-row items-center h-14 rounded-xl border px-3.5 gap-2 bg-white ${
+                          phoneError
+                            ? "border-red-500"
+                            : "border-border focus:border-primary/80"
+                        }`}
                       >
                         <TextInput
                           ref={phoneRef}
@@ -436,13 +387,8 @@ export default function LoginPage() {
                           placeholder="Enter your number"
                           placeholderTextColor="#9CA3AF"
                           keyboardType="phone-pad"
-                          maxLength={19} // formatted max
-                          style={{
-                            flex: 1,
-                            fontSize: 15,
-                            color: "#111111",
-                            padding: 0,
-                          }}
+                          maxLength={19}
+                          className="flex-1 text-base text-foreground p-0"
                         />
                       </View>
                     </View>
@@ -459,40 +405,29 @@ export default function LoginPage() {
                     </Text>
 
                     <View
-                      style={{
-                        flexDirection: "row",
-                        alignItems: "center",
-                        height: 52,
-                        borderRadius: 12,
-                        borderWidth: 1,
-                        borderColor: passwordError ? "#EF4444" : "#E9E9E9",
-                        backgroundColor: "#FFFFFF",
-                        paddingHorizontal: 14,
-                        gap: 10,
-                      }}
+                      className={`flex-row items-center h-14 rounded-xl border px-3.5 gap-2 bg-white ${
+                        passwordError
+                          ? "border-red-500"
+                          : "border-border focus:border-primary/80"
+                      }`}
                     >
-                      <Lock size={18} color="#9CA3AF" />
+                      <Lock size={18} color="#6C6C6C" />
                       <TextInput
                         value={password}
                         onChangeText={handlePasswordChange}
                         placeholder="Enter your password"
-                        placeholderTextColor="#9CA3AF"
+                        placeholderTextColor="#6C6C6C"
                         secureTextEntry={!showPassword}
-                        style={{
-                          flex: 1,
-                          fontSize: 15,
-                          color: "#111111",
-                          padding: 0,
-                        }}
+                        className="flex-1 text-base text-foreground p-0"
                       />
                       <Pressable
                         onPress={() => setShowPassword(!showPassword)}
                         hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                       >
                         {showPassword ? (
-                          <Eye size={18} color="#9CA3AF" />
+                          <Eye size={18} color="#6C6C6C" />
                         ) : (
-                          <EyeOff size={18} color="#9CA3AF" />
+                          <EyeOff size={18} color="#6C6C6C" />
                         )}
                       </Pressable>
                     </View>
@@ -534,7 +469,7 @@ export default function LoginPage() {
                 {/* ── Submit Button ────────────────────────────────── */}
                 <Button
                   onPress={handleLogin}
-                  className="w-full"
+                  className="w-full rounded-lg"
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? (
