@@ -41,8 +41,10 @@ type LangCode = (typeof LANGUAGES)[number]["code"];
 
 export default function LanguageSelectScreen() {
   const insets = useSafeAreaInsets();
-  const { changeLanguage } = useLanguage();
-  const [selected, setSelected] = useState<LangCode>("en");
+  const { currentLanguage, changeLanguage } = useLanguage();
+  const [selected, setSelected] = useState<LangCode>(
+    (currentLanguage.code as LangCode) || "en",
+  );
   const [isContinuing, setIsContinuing] = useState(false);
 
   const handleContinue = async () => {
@@ -57,7 +59,11 @@ export default function LanguageSelectScreen() {
       // Non-critical — proceed anyway
     } finally {
       setIsContinuing(false);
-      router.replace("/(auth)/login");
+      if (router.canGoBack()) {
+        router.back();
+      } else {
+        router.replace("/(auth)/login");
+      }
     }
   };
 

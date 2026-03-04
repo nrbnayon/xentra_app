@@ -13,7 +13,10 @@
       "supportsTablet": true,
       "googleServicesFile": "./GoogleService-Info.plist",
       "infoPlist": {
-        "UIBackgroundModes": ["remote-notification", "fetch"],
+        "UIBackgroundModes": [
+          "remote-notification",
+          "fetch"
+        ],
         "NSCameraUsageDescription": "Xentra needs access to your camera to take photos for your profile picture.",
         "NSPhotoLibraryUsageDescription": "Xentra needs access to your photo library to select existing photos for your profile picture.",
         "NSPhotoLibraryAddUsageDescription": "Xentra needs access to save photos to your photo library."
@@ -80,9 +83,12 @@
           "color": "#208AEF",
           "defaultChannel": "default",
           "enableBackgroundRemoteNotifications": true,
-          "sounds": ["./assets/media/notification_sound.wav"]
+          "sounds": [
+            "./assets/media/notification_sound.wav"
+          ]
         }
-      ]
+      ],
+      "@react-native-community/datetimepicker"
     ],
     "experiments": {
       "typedRoutes": true,

@@ -1,68 +1,61 @@
-import { Platform, ViewStyle } from 'react-native';
+import { Platform } from "react-native";
 
-export const shadows = {
-  // Main card shadow: box-shadow: 0px 4px 60px 0px #9793934D;
-  card: Platform.select({
+export const SHADOWS = {
+  soft: Platform.select({
     ios: {
-      shadowColor: '#979393',
-      shadowOffset: { width: 0, height: 4 },
-      shadowOpacity: 0.3, 
-      shadowRadius: 30, // 60px blur is very large, 30 is a reasonable RN approximation
-    },
-    android: {
-      elevation: 10,
-      shadowColor: '#979393',
-    },
-  }) as ViewStyle,
-
-  box: Platform.select({
-  ios: {
-    shadowColor: '#B3B3B3',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.25, 
-    shadowRadius: 12,
-  },
-  android: {
-    elevation: 6,
-    shadowColor: '#B3B3B3',
-  },
-}) as ViewStyle,
-
-
-  tab: Platform.select({
-    ios: {
-      shadowColor: '#000000',
-      shadowOffset: { width: 4, height: 4 },
-      shadowOpacity: 0.12,
-      shadowRadius: 8,
-    },
-    android: {
-      elevation: 4,
-    },
-  }) as ViewStyle,
-
-  button: Platform.select({
-    ios: {
-      shadowColor: '#000000',
+      shadowColor: "#000",
       shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.1,
-      shadowRadius: 4,
-    },
-    android: {
-      elevation: 3,
-    },
-  }) as ViewStyle,
-
-  // Truck icon card shadow
-  truckCard: Platform.select({
-    ios: {
-      shadowColor: '#000000',
-      shadowOffset: { width: 0, height: 1 },
-      shadowOpacity: 0.25,
-      shadowRadius: 2,
+      shadowOpacity: 0.05,
+      shadowRadius: 8,
     },
     android: {
       elevation: 2,
     },
-  }) as ViewStyle,
+    web: {
+      boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.05)",
+    },
+  }),
+  medium: Platform.select({
+    ios: {
+      shadowColor: "#16467A",
+      shadowOffset: { width: 0, height: 8 },
+      shadowOpacity: 0.08,
+      shadowRadius: 24,
+    },
+    android: {
+      elevation: 6,
+      shadowColor: "#16467A",
+    },
+    web: {
+      boxShadow: "0px 8px 24px rgba(22, 70, 122, 0.08)",
+    },
+  }),
+  floating: Platform.select({
+    ios: {
+      shadowColor: "#000",
+      shadowOffset: { width: 0, height: 20 },
+      shadowOpacity: 0.06,
+      shadowRadius: 32,
+    },
+    android: {
+      elevation: 10,
+    },
+    web: {
+      boxShadow: "0px 20px 32px rgba(0, 0, 0, 0.06)",
+    },
+  }),
+  tab: Platform.select({
+    ios: {
+      shadowColor: "#000",
+      shadowOffset: { width: 0, height: -4 },
+      shadowOpacity: 0.04,
+      shadowRadius: 16,
+    },
+    android: {
+      elevation: 12,
+    },
+    web: {
+      boxShadow: "0px -4px 16px rgba(0,0,0,0.04)",
+    },
+  }),
 };

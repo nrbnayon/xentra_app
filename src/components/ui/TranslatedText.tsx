@@ -26,8 +26,8 @@ import { Text, type TextProps } from "react-native";
 // ─── Props ────────────────────────────────────────────────────────────────────
 
 interface TranslatedTextProps extends TextProps {
-  /** The English source string to translate. Must be a plain string. */
-  children: string;
+  /** The English source string(s) to translate. Supports ReactNode array as well. */
+  children: React.ReactNode;
 
   /** If true, renders children as-is without any translation attempt. */
   skip?: boolean;
@@ -39,10 +39,28 @@ export const TranslatedText = React.memo<TranslatedTextProps>(
   ({ children, skip = false, ...textProps }) => {
     const { translate } = useLanguage();
 
-    // translate() is sync: returns cached value or kicks off background fetch.
-    // When the fetch resolves, the context tick re-renders this component.
-    const displayText =
-      skip || typeof children !== "string" ? children : translate(children);
+    // Safely translate strings or string arrays, ignores React nodes
+    const displayText = React.useMemo(() => {
+      if (skip || !children) return children;
+
+      if (typeof children === "string") {
+        return translate(children);
+      }
+
+      if (Array.isArray(children)) {
+        return children.map((child, index) => {
+          if (typeof child === "string") {
+            // translate returns string. React arrays like text mixed with vars are joined natively
+            return (
+              <React.Fragment key={index}>{translate(child)}</React.Fragment>
+            );
+          }
+          return <React.Fragment key={index}>{child}</React.Fragment>;
+        });
+      }
+
+      return children;
+    }, [children, skip, translate]);
 
     return <Text {...textProps}>{displayText}</Text>;
   },
