@@ -16,12 +16,39 @@ export default function ProtectedIndex() {
   const [selectedStatus, setSelectedStatus] = useState<
     "latest" | "upcoming" | "completed"
   >("latest");
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [selectedLeagueName, setSelectedLeagueName] = useState("Select League");
 
-  // Filtering matches based on selected category and sport
+  // Filtering matches based on all select filters
   const filteredMatches = mockMatches.filter((match) => {
+    // Filter by status
     if (match.status !== selectedStatus) return false;
+
+    // Filter by sport
     if (selectedSport !== "all" && match.sportId !== selectedSport)
       return false;
+
+    // Filter by league
+    if (
+      selectedLeagueName !== "Select League" &&
+      selectedLeagueName !== "All Leagues" &&
+      match.title !== selectedLeagueName
+    ) {
+      return false;
+    }
+
+    // Filter by date (Compare only Year, Month, Day)
+    if (selectedDate) {
+      const matchDate = match.date;
+      if (
+        matchDate.getFullYear() !== selectedDate.getFullYear() ||
+        matchDate.getMonth() !== selectedDate.getMonth() ||
+        matchDate.getDate() !== selectedDate.getDate()
+      ) {
+        return false;
+      }
+    }
+
     return true;
   });
 
@@ -65,6 +92,10 @@ export default function ProtectedIndex() {
                 sports={mockSports}
                 selectedSportId={selectedSport}
                 onSelectSport={setSelectedSport}
+                date={selectedDate}
+                onSelectDate={setSelectedDate}
+                selectedLeagueName={selectedLeagueName}
+                onSelectLeague={setSelectedLeagueName}
               />
               <MatchTabs
                 selectedStatus={selectedStatus}

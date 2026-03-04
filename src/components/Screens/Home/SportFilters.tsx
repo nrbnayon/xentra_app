@@ -20,22 +20,28 @@ interface Props {
   sports: SportCategory[];
   selectedSportId: string;
   onSelectSport: (id: string) => void;
+  date: Date | null;
+  onSelectDate: (date: Date | null) => void;
+  selectedLeagueName: string;
+  onSelectLeague: (name: string) => void;
 }
 
 export default function SportFilters({
   sports,
   selectedSportId,
   onSelectSport,
+  date,
+  onSelectDate,
+  selectedLeagueName,
+  onSelectLeague,
 }: Props) {
-  const [date, setDate] = useState<Date | null>(null);
   const [showPicker, setShowPicker] = useState(false);
   const [showLeaguePicker, setShowLeaguePicker] = useState(false);
-  const [selectedLeagueName, setSelectedLeagueName] = useState("Select League");
   const { currentLanguage } = useLanguage();
 
   const onChangeDate = (event: any, selectedDate?: Date) => {
     setShowPicker(Platform.OS === "ios");
-    if (selectedDate) setDate(selectedDate);
+    if (selectedDate) onSelectDate(selectedDate);
   };
 
   const formatDate = (dateValue: Date) => {
@@ -46,7 +52,7 @@ export default function SportFilters({
   };
 
   const handleSelectLeague = (leagueName: string) => {
-    setSelectedLeagueName(leagueName);
+    onSelectLeague(leagueName);
     setShowLeaguePicker(false);
   };
 

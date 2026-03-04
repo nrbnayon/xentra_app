@@ -27,7 +27,8 @@ export interface MatchCompetition {
   entryFee: number;
   prizePool: number;
   dateTime: string;
-  backgroundImage: string;
+  date: Date;
+  backgroundImage: any;
 }
 
 export interface UserPrediction {

@@ -2,7 +2,7 @@ import { League, MatchCompetition, SportCategory } from "@/types";
 
 export const mockSports: SportCategory[] = [
   { id: "all", name: "All", icon: "" },
-  { id: "s1", name: "Football", icon: "soccer-ball" }, // We'll use lucide or expo/vector-icons
+  { id: "s1", name: "Football", icon: "soccer-ball" },
   { id: "s2", name: "Basketball", icon: "basketball-ball" },
 ];
 
@@ -32,6 +32,7 @@ export const mockMatches: MatchCompetition[] = [
     entryFee: 20,
     prizePool: 20,
     dateTime: "Saturday 27, Feb, 8:30 AM",
+    date: new Date("2026-02-27T08:30:00"),
     backgroundImage:
       "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?q=80&w=600&auto=format&fit=crop",
   },
@@ -54,8 +55,8 @@ export const mockMatches: MatchCompetition[] = [
     entryFee: 20,
     prizePool: 20,
     dateTime: "Saturday 27, Feb, 8:30 AM",
-    backgroundImage:
-      "https://images.unsplash.com/photo-1543326727-cf6c39e8f84c?q=80&w=600&auto=format&fit=crop",
+    date: new Date("2026-02-27T08:30:00"),
+    backgroundImage: require("../../assets/match/match1.jpg"),
   },
   {
     id: "m3",
@@ -76,6 +77,7 @@ export const mockMatches: MatchCompetition[] = [
     entryFee: 50,
     prizePool: 100,
     dateTime: "Sunday 28, Feb, 9:00 PM",
+    date: new Date("2026-02-28T21:00:00"),
     backgroundImage:
       "https://images.unsplash.com/photo-1504450758481-7338eba7524a?q=80&w=600&auto=format&fit=crop",
   },
@@ -98,6 +100,7 @@ export const mockMatches: MatchCompetition[] = [
     entryFee: 100,
     prizePool: 500,
     dateTime: "Monday 1, Mar, 6:30 PM",
+    date: new Date("2026-03-01T18:30:00"),
     backgroundImage:
       "https://images.unsplash.com/photo-1566577739112-5180d4bf9390?q=80&w=600&auto=format&fit=crop",
   },
@@ -120,6 +123,7 @@ export const mockMatches: MatchCompetition[] = [
     entryFee: 10,
     prizePool: 30,
     dateTime: "Tuesday 2, Mar, 3:00 PM",
+    date: new Date("2026-03-02T15:00:00"),
     backgroundImage:
       "https://images.unsplash.com/photo-1518605368461-1e18ac49b6ce?q=80&w=600&auto=format&fit=crop",
   },
@@ -142,6 +146,7 @@ export const mockMatches: MatchCompetition[] = [
     entryFee: 25,
     prizePool: 80,
     dateTime: "Friday 26, Feb, 7:00 PM",
+    date: new Date("2026-02-26T19:00:00"),
     backgroundImage:
       "https://images.unsplash.com/photo-1546519638-68e109498ffc?q=80&w=600&auto=format&fit=crop",
   },
@@ -164,6 +169,7 @@ export const mockMatches: MatchCompetition[] = [
     entryFee: 75,
     prizePool: 150,
     dateTime: "Wednesday 3, Mar, 8:00 PM",
+    date: new Date("2026-03-03T20:00:00"),
     backgroundImage:
       "https://images.unsplash.com/photo-1489944440615-453fc2b6a9a9?q=80&w=600&auto=format&fit=crop",
   },
@@ -186,6 +192,7 @@ export const mockMatches: MatchCompetition[] = [
     entryFee: 40,
     prizePool: 120,
     dateTime: "Sunday 7, Mar, 4:00 PM",
+    date: new Date("2026-03-07T16:00:00"),
     backgroundImage:
       "https://images.unsplash.com/photo-1628891435222-06592f61eade?q=80&w=600&auto=format&fit=crop",
   },
@@ -208,6 +215,7 @@ export const mockMatches: MatchCompetition[] = [
     entryFee: 5,
     prizePool: 15,
     dateTime: "Thursday 4, Mar, 7:30 PM",
+    date: new Date("2026-03-04T19:30:00"),
     backgroundImage:
       "https://images.unsplash.com/photo-1627627256672-027a461c36ae?q=80&w=600&auto=format&fit=crop",
   },
@@ -226,6 +234,7 @@ export const mockMatches: MatchCompetition[] = [
     entryFee: 15,
     prizePool: 40,
     dateTime: "Monday 22, Feb, 8:45 PM",
+    date: new Date("2026-02-22T20:45:00"),
     backgroundImage:
       "https://images.unsplash.com/photo-1551280857-bcaf13d4bdf7?q=80&w=600&auto=format&fit=crop",
   },

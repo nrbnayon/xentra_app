@@ -1,5 +1,4 @@
 import { TranslatedText } from "@/components/ui/TranslatedText";
-import { SHADOWS } from "@/lib/shadows";
 import { MatchCompetition } from "@/types";
 import { LinearGradient } from "expo-linear-gradient";
 import { ImageBackground, Pressable, Text, View } from "react-native";
@@ -11,12 +10,13 @@ interface Props {
 
 export default function MatchCard({ match, onPredict }: Props) {
   return (
-    <View
-      style={SHADOWS.medium}
-      className="w-full bg-white rounded-3xl overflow-hidden mb-6"
-    >
+    <View className="w-full bg-white rounded-t-xl rounded-bl-xl overflow-hidden mb-6 shadow-none">
       <ImageBackground
-        source={{ uri: match.backgroundImage }}
+        source={
+          typeof match.backgroundImage === "string"
+            ? { uri: match.backgroundImage }
+            : match.backgroundImage
+        }
         className="w-full overflow-hidden"
         resizeMode="cover"
       >
@@ -62,18 +62,19 @@ export default function MatchCard({ match, onPredict }: Props) {
             </Text>
 
             {/* The distinctive 'Predict Now' Button Layout */}
-            {/* Creates the inverted border radius effect by grouping view layers */}
-            <View className="bg-white rounded-tl-2xl pl-2 pt-2 pb-0 pr-0 -mr-5 border-0">
+            <View className="bg-white rounded-tl-2xl pl-3 pt-3 pb-0 pr-0 -mr-5 border-0">
               <Pressable
                 onPress={() => onPredict(match.id)}
-                className={`px-6 py-3.5 rounded-2xl rounded-tr-none rounded-br-none ${
+                className={`px-6 py-3.5 rounded-md ${
                   match.status === "upcoming" ? "bg-gray-300" : "bg-primary"
                 }`}
-                disabled={match.status === "upcoming"} // Optionally disable if it's upcoming
+                disabled={match.status === "upcoming"}
               >
                 <TranslatedText
                   className={`font-semibold ${
-                    match.status === "upcoming" ? "text-secondary" : "text-white"
+                    match.status === "upcoming"
+                      ? "text-secondary"
+                      : "text-white"
                   }`}
                 >
                   Predict Now
