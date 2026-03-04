@@ -1,6 +1,7 @@
 import AuthInput from "@/components/Auth/AuthInput";
 import AuthLayout from "@/components/Auth/AuthLayout";
 import { Button } from "@/components/ui/button";
+import { useToastStore } from "@/store/useToastStore";
 import { router } from "expo-router";
 import { Lock } from "lucide-react-native";
 import { useState } from "react";
@@ -35,6 +36,8 @@ export default function ResetPasswordPage() {
     return Object.keys(newErrors).length === 0;
   };
 
+  const { showToast } = useToastStore();
+
   const handleReset = async () => {
     if (!validate()) return;
 
@@ -44,6 +47,7 @@ export default function ResetPasswordPage() {
       // Mock API call
       await new Promise((resolve) => setTimeout(resolve, 1500));
       // Navigate to success
+      showToast("Password reset successfully", "success");
       router.replace({
         pathname: "/(auth)/success",
         params: { mode: "reset" },
@@ -54,6 +58,7 @@ export default function ResetPasswordPage() {
         ...prev,
         currentPassword: "Failed to reset password. Please try again.",
       }));
+      showToast("Failed to reset password", "error");
     } finally {
       setIsSubmitting(false);
     }

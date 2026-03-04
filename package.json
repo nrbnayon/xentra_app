@@ -45,6 +45,7 @@
     "expo-system-ui": "~55.0.9",
     "expo-task-manager": "~55.0.9",
     "expo-web-browser": "~55.0.9",
+    "libphonenumber-js": "^1.12.38",
     "lucide-react-native": "^0.562.0",
     "nativewind": "^4.2.2",
     "prettier-plugin-tailwindcss": "^0.5.14",

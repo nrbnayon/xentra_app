@@ -5,7 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Country } from "@/constants/countries";
 import { cn } from "@/lib/utils";
+import { useToastStore } from "@/store/useToastStore";
 import { router } from "expo-router";
+import parsePhoneNumberFromString, { CountryCode } from "libphonenumber-js";
 import { Lock, User } from "lucide-react-native";
 import { useState } from "react";
 import {
@@ -31,6 +33,7 @@ export default function SignUpPage() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const { showToast } = useToastStore();
 
   const formatPhoneDisplay = (raw: string): string => {
     const digits = raw.replace(/\D/g, "");
@@ -52,10 +55,27 @@ export default function SignUpPage() {
 
   const validate = () => {
     const newErrors: Record<string, string> = {};
-    if (!phone) newErrors.phone = "Phone number is required";
-    if (!password) newErrors.password = "Password is required";
-    if (password !== confirmPassword)
+    if (!phone) {
+      newErrors.phone = "Phone number is required";
+    } else {
+      const phoneNumber = parsePhoneNumberFromString(
+        phone,
+        selectedCountry.code as CountryCode,
+      );
+      if (!phoneNumber || !phoneNumber.isValid()) {
+        newErrors.phone = `Enter a valid phone number for ${selectedCountry.name}`;
+      }
+    }
+
+    if (!password) {
+      newErrors.password = "Password is required";
+    } else if (password.length < 4) {
+      newErrors.password = "Password must be at least 4 characters";
+    }
+
+    if (password !== confirmPassword) {
       newErrors.confirmPassword = "Passwords do not match";
+    }
     if (!agreeTerms) newErrors.terms = "You must agree to terms";
 
     setErrors(newErrors);
@@ -67,14 +87,25 @@ export default function SignUpPage() {
 
     try {
       setIsSubmitting(true);
+      const phoneNumber = parsePhoneNumberFromString(
+        phone,
+        selectedCountry.code as CountryCode,
+      );
+      const fullPhone = phoneNumber
+        ? phoneNumber.number
+        : `${selectedCountry.dial}${phone}`;
+
       // Mock API call
       await new Promise((resolve) => setTimeout(resolve, 1500));
+
+      showToast("Verification code sent", "success");
       router.push({
         pathname: "/(auth)/verify-otp",
-        params: { mode: "signup", phone: `${selectedCountry.dial}${phone}` },
+        params: { mode: "signup", phone: fullPhone },
       });
     } catch (error) {
       console.error(error);
+      showToast("Something went wrong", "error");
     } finally {
       setIsSubmitting(false);
     }

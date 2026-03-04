@@ -4,12 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Country } from "@/constants/countries";
 import { useAuthStore } from "@/store/useAuthStore";
+import { useToastStore } from "@/store/useToastStore";
 import { router } from "expo-router";
+import parsePhoneNumberFromString, { CountryCode } from "libphonenumber-js";
 import { Eye, EyeOff, Lock } from "lucide-react-native";
 import { useRef, useState } from "react";
 import {
   ActivityIndicator,
-  Alert,
   Pressable,
   Text,
   TextInput,
@@ -17,10 +18,6 @@ import {
 } from "react-native";
 
 // ─── Phone Validation ─────────────────────────────────────────────────────────
-const validatePhone = (phone: string): boolean => {
-  const digits = phone.replace(/\D/g, "");
-  return digits.length >= 5 && digits.length <= 15;
-};
 
 const formatPhoneDisplay = (raw: string): string => {
   const digits = raw.replace(/\D/g, "");
@@ -50,6 +47,7 @@ export default function LoginPage() {
   });
 
   const { signIn } = useAuthStore();
+  const { showToast } = useToastStore();
   const phoneRef = useRef<TextInput>(null);
 
   // ── Handlers ──────────────────────────────────────────────────────────────
@@ -72,9 +70,15 @@ export default function LoginPage() {
     if (!phone.trim()) {
       setPhoneError("Phone number is required");
       hasError = true;
-    } else if (!validatePhone(phone)) {
-      setPhoneError("Enter a valid phone number (5–15 digits)");
-      hasError = true;
+    } else {
+      const phoneNumber = parsePhoneNumberFromString(
+        phone,
+        selectedCountry.code as CountryCode,
+      );
+      if (!phoneNumber || !phoneNumber.isValid()) {
+        setPhoneError(`Enter a valid phone number for ${selectedCountry.name}`);
+        hasError = true;
+      }
     }
 
     if (!password) {
@@ -89,11 +93,20 @@ export default function LoginPage() {
 
     try {
       setIsSubmitting(true);
-      const fullPhone = `${selectedCountry.dial}${phone}`;
+      const phoneNumber = parsePhoneNumberFromString(
+        phone,
+        selectedCountry.code as CountryCode,
+      );
+      const fullPhone = phoneNumber
+        ? phoneNumber.number
+        : `${selectedCountry.dial}${phone}`;
+
       await signIn(fullPhone, password);
+      showToast("Login Successful", "success");
+      router.replace("/(protected)");
     } catch (error) {
       console.error(error);
-      Alert.alert("Login Failed", "Invalid credentials or network error");
+      showToast("Invalid credentials or network error", "error");
     } finally {
       setIsSubmitting(false);
     }

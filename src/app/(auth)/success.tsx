@@ -4,12 +4,21 @@ import { router, useLocalSearchParams } from "expo-router";
 import { Check } from "lucide-react-native";
 import { Text, View } from "react-native";
 
+import { useEffect } from "react";
+
 export default function SuccessPage() {
   const { mode } = useLocalSearchParams<{ mode: string }>();
 
   const handleSignIn = () => {
     router.replace("/(auth)/login");
   };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      handleSignIn();
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <AuthLayout showBackButton={false} scrollable={false}>

@@ -1,6 +1,7 @@
 import AuthLayout from "@/components/Auth/AuthLayout";
 import OtpInput from "@/components/Auth/OtpInput";
 import { Button } from "@/components/ui/button";
+import { useToastStore } from "@/store/useToastStore";
 import { router, useLocalSearchParams } from "expo-router";
 import { useState } from "react";
 import { ActivityIndicator, Pressable, Text, View } from "react-native";
@@ -13,6 +14,7 @@ export default function VerifyOTPPage() {
   const [otp, setOtp] = useState("");
   const [isVerifying, setIsVerifying] = useState(false);
   const [error, setError] = useState(false);
+  const { showToast } = useToastStore();
 
   const handleVerify = async () => {
     if (otp.length < 6) {
@@ -25,6 +27,7 @@ export default function VerifyOTPPage() {
       // Mock API call
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
+      showToast("Verification successful", "success");
       if (mode === "signup") {
         router.push({
           pathname: "/(auth)/success",
@@ -36,6 +39,7 @@ export default function VerifyOTPPage() {
     } catch (err) {
       setError(true);
       console.error(err);
+      showToast("Invalid OTP", "error");
     } finally {
       setIsVerifying(false);
     }
@@ -46,6 +50,7 @@ export default function VerifyOTPPage() {
     // Mock resend
     setOtp("");
     setError(false);
+    showToast("OTP resent successfully", "info");
   };
 
   return (

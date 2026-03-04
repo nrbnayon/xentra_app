@@ -2,7 +2,9 @@ import AuthLayout from "@/components/Auth/AuthLayout";
 import CountryPicker from "@/components/Auth/CountryPicker";
 import { Button } from "@/components/ui/button";
 import { Country } from "@/constants/countries";
+import { useToastStore } from "@/store/useToastStore";
 import { router } from "expo-router";
+import parsePhoneNumberFromString, { CountryCode } from "libphonenumber-js";
 import { useState } from "react";
 import { ActivityIndicator, Text, TextInput, View } from "react-native";
 
@@ -10,6 +12,7 @@ export default function ForgotPasswordPage() {
   const [phone, setPhone] = useState("");
   const [phoneError, setPhoneError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { showToast } = useToastStore();
   const [selectedCountry, setSelectedCountry] = useState<Country>({
     code: "HT",
     name: "Haiti",
@@ -33,21 +36,30 @@ export default function ForgotPasswordPage() {
   };
 
   const handleResetPassword = async () => {
+    setPhoneError("");
+
     if (!phone.trim()) {
       setPhoneError("Phone number is required");
       return;
     }
-    if (phone.length < 5) {
-      setPhoneError("Enter a valid phone number");
+
+    const phoneNumber = parsePhoneNumberFromString(
+      phone,
+      selectedCountry.code as CountryCode,
+    );
+    if (!phoneNumber || !phoneNumber.isValid()) {
+      setPhoneError(`Enter a valid phone number for ${selectedCountry.name}`);
       return;
     }
 
     try {
       setIsSubmitting(true);
-      const fullPhone = `${selectedCountry.dial}${phone}`;
-      console.log("Forgot Password - Reset OTP sending to:", fullPhone);
+      const fullPhone = phoneNumber.number;
+
       // Mock API call
       await new Promise((resolve) => setTimeout(resolve, 1500));
+
+      showToast("Reset code sent", "success");
       // Navigate to OTP verification
       router.push({
         pathname: "/(auth)/verify-otp",
@@ -56,6 +68,7 @@ export default function ForgotPasswordPage() {
     } catch (error) {
       console.error(error);
       setPhoneError("Failed to send reset code. Please try again.");
+      showToast("Failed to send reset code", "error");
     } finally {
       setIsSubmitting(false);
     }
