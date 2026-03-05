@@ -47,16 +47,16 @@ export const SHADOWS = {
   }),
   tab: Platform.select({
     ios: {
-      shadowColor: "#000",
-      shadowOffset: { width: 0, height: -4 },
-      shadowOpacity: 0.04,
-      shadowRadius: 16,
+      shadowColor: "#181818",
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.18,
+      shadowRadius: 10,
     },
     android: {
-      elevation: 12,
+      elevation: 4, // close visual match to blur 10
     },
     web: {
-      boxShadow: "0px -4px 16px rgba(0,0,0,0.04)",
+      boxShadow: "0px 2px 10px rgba(24,24,24,0.18)",
     },
   }),
 };

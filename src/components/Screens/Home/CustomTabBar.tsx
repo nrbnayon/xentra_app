@@ -1,10 +1,10 @@
 import { SHADOWS } from "@/lib/shadows";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
+import { LinearGradient } from "expo-linear-gradient";
 import { Home, LineChart, Trophy, User, Wallet } from "lucide-react-native";
-import { Platform, Pressable, Text, View } from "react-native";
+import { Platform, Pressable, Text } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-// Mock translation func inside component purely for layout mapping, though 'AnimatedSplashOverlay' isn't needed here.
 export function CustomTabBar({
   state,
   descriptors,
@@ -13,11 +13,20 @@ export function CustomTabBar({
   const insets = useSafeAreaInsets();
 
   return (
-    <View
+    <LinearGradient
+      colors={[
+        "rgba(255, 255, 255, 0)",
+        "rgba(255, 255, 255, 1)",
+        "rgba(255, 255, 255, 1)",
+      ]}
+      locations={[0.012, 0.5455, 1]}
+      start={{ x: 0.5, y: 0 }}
+      end={{ x: 0.45, y: 1 }}
       style={{
-        paddingBottom: insets.bottom + (Platform.OS === "ios" ? -10 : 15),
+        paddingBottom: insets.bottom + (Platform.OS === "ios" ? 10 : 15),
+        paddingTop: 40,
       }}
-      className="bg-transparent absolute bottom-0 w-full flex-row justify-between items-center px-4 pt-4 pb-2 pb-safe"
+      className="absolute bottom-0 w-full flex-row justify-between items-center px-6"
     >
       {/* Background layer gradient underneath if needed, currently transparent as tabs float over the screen */}
       {state.routes.map((route, index) => {
@@ -55,7 +64,7 @@ export function CustomTabBar({
                 <Home
                   size={size}
                   color={color}
-                  fill={isFocused ? color : "transparent"}
+                  fill={isFocused ? color : "white"}
                 />
               );
             case "prediction":
@@ -118,6 +127,6 @@ export function CustomTabBar({
           </Pressable>
         );
       })}
-    </View>
+    </LinearGradient>
   );
 }

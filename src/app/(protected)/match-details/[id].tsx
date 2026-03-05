@@ -78,10 +78,10 @@ export default function MatchDetails() {
           <View className="flex-row gap-4 mb-8">
             <Pressable
               onPress={() => setSelectedTeam(match.teamA.id)}
-              className={`flex-1 bg-white border-2 rounded-2xl items-center p-6 shadow-sm ${
+              className={`flex-1 bg-white border rounded-lg items-center p-6 shadow-sm ${
                 selectedTeam === match.teamA.id
                   ? "border-primary"
-                  : "border-[#E5E7EB]"
+                  : "border-[#DBDBDB]"
               }`}
             >
               <View className="w-16 h-12 mb-3 shadow-sm border border-gray-100 bg-white items-center justify-center rounded">
@@ -98,10 +98,10 @@ export default function MatchDetails() {
 
             <Pressable
               onPress={() => setSelectedTeam(match.teamB.id)}
-              className={`flex-1 bg-white border-2 rounded-2xl items-center p-6 shadow-sm ${
+              className={`flex-1 bg-white border rounded-lg items-center p-6 shadow-sm ${
                 selectedTeam === match.teamB.id
                   ? "border-primary"
-                  : "border-[#E5E7EB]"
+                  : "border-[#DBDBDB]"
               }`}
             >
               <View className="w-16 h-12 mb-3 shadow-sm border border-gray-100 bg-white items-center justify-center rounded">
@@ -120,25 +120,25 @@ export default function MatchDetails() {
           {/* Scores Inputs */}
           <View className="flex-row gap-4 mb-10">
             <View className="flex-1">
-              <Text className="text-[#4B5563] mb-2">
+              <Text className="text-foreground mb-2">
                 {match.teamA.name} Score
               </Text>
               <TextInput
                 value={teamAScore}
                 onChangeText={setTeamAScore}
                 keyboardType="numeric"
-                className="w-full bg-white border border-[#D1D5DB] rounded-xl px-4 py-3.5 text-[#111111] font-medium"
+                className="w-full bg-white border border-border rounded-lg px-4 py-3.5 text-[#111111] font-medium focus:border-primary/80"
               />
             </View>
             <View className="flex-1">
-              <Text className="text-[#4B5563] mb-2">
+              <Text className="text-foreground mb-2">
                 {match.teamB.name} Score
               </Text>
               <TextInput
                 value={teamBScore}
                 onChangeText={setTeamBScore}
                 keyboardType="numeric"
-                className="w-full bg-white border border-[#D1D5DB] rounded-xl px-4 py-3.5 text-[#111111] font-medium"
+                className="w-full bg-white border border-border rounded-lg px-4 py-3.5 text-[#111111] font-medium focus:border-primary/80"
               />
             </View>
           </View>
@@ -146,22 +146,22 @@ export default function MatchDetails() {
           {/* Balance summary */}
           <View className="mb-10">
             <View className="flex-row justify-between mb-4">
-              <Text className="text-[#4B5563]">Current balance:</Text>
-              <Text className="text-[#111111] font-bold">
+              <Text className="text-foreground">Current balance:</Text>
+              <Text className="text-[#303030] font-bold">
                 {currentBalance} HTG
               </Text>
             </View>
             <View className="flex-row justify-between mb-4">
-              <Text className="text-[#4B5563]">Entry Fee:</Text>
-              <Text className="text-[#111111] font-bold">{entryFee} HTG</Text>
+              <Text className="text-foreground">Entry Fee:</Text>
+              <Text className="text-[#303030] font-bold">{entryFee} HTG</Text>
             </View>
 
             {/* Separator */}
             <View className="h-[1px] bg-[#E5E7EB] w-full my-4" />
 
             <View className="flex-row justify-between">
-              <Text className="text-[#4B5563]">Remaining Balance:</Text>
-              <Text className="text-[#111111] font-bold">
+              <Text className="text-foreground">Remaining Balance:</Text>
+              <Text className="text-[#303030] font-bold">
                 {remainingBalance} HTG
               </Text>
             </View>
