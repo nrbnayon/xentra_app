@@ -1,112 +1,169 @@
 import { TranslatedText } from "@/components/ui/TranslatedText";
 import { PredictionHistoryItem } from "@/data/mockPredictions";
 import { SHADOWS } from "@/lib/shadows";
-import { Image, Text, View } from "react-native";
+import { Image, View } from "react-native";
 
 interface Props {
   prediction: PredictionHistoryItem;
 }
 
+const STATUS_CONFIG = {
+  won: {
+    badgeBg: "#148914",
+    label: "Won",
+    amountColor: "#148914",
+    formatAmount: (v: number) => `+${v.toFixed(2)} HTG`,
+  },
+  lose: {
+    badgeBg: "#cc3417",
+    label: "Lose",
+    amountColor: "#cc3417",
+    formatAmount: (v: number) => `-${Math.abs(v).toFixed(2)} HTG`,
+  },
+  pending: {
+    badgeBg: "#ffae00",
+    label: "Latest",
+    amountColor: "#f3b530",
+    formatAmount: () => `0.00 HTG`,
+  },
+  latest: {
+    badgeBg: "#ffae00",
+    label: "Latest",
+    amountColor: "#f3b530",
+    formatAmount: () => `0.00 HTG`,
+  },
+} as const;
+
 export default function PredictionCard({ prediction }: Props) {
   const { match, status, rank, actualWin } = prediction;
 
-  // Determine styles and labels based on prediction status
-  const badgeConfig = {
-    won: { bg: "bg-[#22C55E]", text: "text-white", label: "Won" },
-    lose: { bg: "bg-[#EF4444]", text: "text-white", label: "Lose" },
-    pending: { bg: "bg-yellow-500", text: "text-white", label: "Latest" },
-    latest: { bg: "bg-yellow-500", text: "text-white", label: "Latest" },
-  } as const;
+  const config =
+    STATUS_CONFIG[status as keyof typeof STATUS_CONFIG] ??
+    STATUS_CONFIG.pending;
 
-  const footerConfig = {
-    won: { text: "text-green-600", val: `+${actualWin.toFixed(2)} HTG` },
-    lose: { text: "text-red-500", val: `${actualWin.toFixed(2)} HTG` },
-    pending: {
-      text: "text-yellow-600",
-      val: `${parseFloat("0").toFixed(2)} HTG`,
-    },
-    latest: {
-      text: "text-yellow-600",
-      val: `${parseFloat("0").toFixed(2)} HTG`,
-    },
-  } as const;
-
-  const badge =
-    badgeConfig[status as keyof typeof badgeConfig] || badgeConfig.pending;
-  const footer =
-    footerConfig[status as keyof typeof footerConfig] || footerConfig.pending;
+  const displayRank = rank && rank !== "N/A" ? String(rank) : null;
 
   return (
     <View
-      className="w-full bg-white rounded-2xl mb-4 pt-4 pb-1"
-      style={SHADOWS.card}
+      className="w-full bg-white rounded-xl overflow-visible"
+      style={[
+        SHADOWS.card,
+        {
+          shadowColor: "#656565",
+          shadowOpacity: 0.18,
+          shadowRadius: 45,
+          shadowOffset: { width: 0, height: 0 },
+          elevation: 8,
+        },
+      ]}
     >
-      {/* Top row: Title, Badge, Date */}
-      <View className="flex-row justify-between items-center px-4 mb-3">
-        <TranslatedText className="text-secondary text-sm font-semibold flex-1">
-          {match.title}
+      {/* Top badge — centered, hangs off top edge */}
+      <View
+        className="absolute self-center top-0 px-[10px] py-[4px] rounded-bl-[8px] rounded-br-[8px] z-10 items-center justify-center"
+        style={{
+          backgroundColor: config.badgeBg,
+          left: "50%",
+          transform: [{ translateX: -30 }],
+        }}
+      >
+        <TranslatedText className="text-white text-sm font-semibold leading-[20px]">
+          {config.label}
         </TranslatedText>
+      </View>
 
-        <View className="flex-row items-center gap-2">
-          <View className={`px-2 py-0.5 rounded ${badge.bg}`}>
-            <Text className={`text-xs font-bold ${badge.text}`}>
-              {badge.label}
-            </Text>
+      {/* Card content with top padding to clear the badge */}
+      <View className="pt-4 px-4 pb-4 gap-3 items-center">
+        {/* Inner content above separator */}
+        <View
+          className="w-full pb-3 gap-3 items-center"
+          style={{ borderBottomWidth: 1, borderBottomColor: "#ededed" }}
+        >
+          {/* Title row */}
+          <View className="flex-row justify-between items-center w-full">
+            <TranslatedText
+              className="text-sm font-medium text-[#3e3e3e] font-roboto"
+            >
+              {match.title}
+            </TranslatedText>
+            <TranslatedText
+              className="text-sm text-[#686868] font-roboto"
+            >
+              Date:15 Jan, 2026
+            </TranslatedText>
           </View>
-          <Text className="text-secondary/60 text-xs text-right min-w-[100]">
-            Date: 15 Jan, 2026
-          </Text>
+
+          {/* Teams + Score */}
+          <View className="flex-row items-center w-full gap-14">
+            {/* Team A */}
+            <View className="flex-1 flex-row items-center justify-center gap-2">
+              <Image
+                source={{ uri: match.teamA.logo }}
+                className="w-6 h-6 rounded"
+                resizeMode="contain"
+              />
+              <TranslatedText
+                className="text-sm font-semibold text-[#3e3e3e] font-roboto"              >
+                {match.teamA.name}
+              </TranslatedText>
+            </View>
+
+            {/* Score box */}
+            <View
+              className="items-center justify-center px-3 py-2 rounded-xs"
+              style={{ backgroundColor: "#fdf4e0" }}
+            >
+              <TranslatedText
+                className="text-[32px] font-semibold text-center font-roboto"
+                style={{
+                  color: "#ffac33",
+                  lineHeight: 36,
+                }}
+              >
+                {prediction.predictedTeamAScore}:
+                {prediction.predictedTeamBScore}
+              </TranslatedText>
+            </View>
+
+            {/* Team B */}
+            <View className="flex-1 flex-row items-center justify-center gap-2">
+              <Image
+                source={{ uri: match.teamB.logo }}
+                className="w-6 h-6 rounded"
+                resizeMode="contain"
+              />
+              <TranslatedText
+                className="text-md font-semibold text-[#3e3e3e] font-roboto"
+              >
+                {match.teamB.name}
+              </TranslatedText>
+            </View>
+          </View>
+
+          {/* Rank row */}
+          <View className="flex-row justify-between items-center w-full">
+            <TranslatedText
+              className="text-md text-[#686868] font-roboto"
+            >
+              Rank
+            </TranslatedText>
+            {displayRank && (
+              <TranslatedText
+                className="text-base font-medium text-[#686868] font-roboto"              >
+                {displayRank}
+              </TranslatedText>
+            )}
+          </View>
         </View>
-      </View>
 
-      {/* Middle row: Team A, Score box, Team B */}
-      <View className="flex-row justify-between items-center px-4 mb-4">
-        {/* Team A */}
-        <View className="flex-row items-center gap-2 flex-1">
-          <Image
-            source={{ uri: match.teamA.logo }}
-            className="w-8 h-8 rounded border border-gray-100"
-            resizeMode="contain"
-          />
-          <Text className="text-secondary font-semibold text-sm">
-            {match.teamA.name}
-          </Text>
-        </View>
-
-        {/* Score Box */}
-        <View className="bg-orange-50 px-4 py-2 rounded shadow-sm">
-          <Text className="text-orange-300 font-bold text-xl tracking-widest">
-            {prediction.predictedTeamAScore}:{prediction.predictedTeamBScore}
-          </Text>
-        </View>
-
-        {/* Team B */}
-        <View className="flex-row items-center justify-end gap-2 flex-1">
-          <Image
-            source={{ uri: match.teamB.logo }}
-            className="w-8 h-8 rounded border border-gray-100"
-            resizeMode="contain"
-          />
-          <Text className="text-secondary font-semibold text-sm">
-            {match.teamB.name}
-          </Text>
-        </View>
-      </View>
-
-      {/* Rank Row */}
-      <View className="flex-row justify-between items-center px-6 mb-3">
-        <Text className="text-secondary/60 text-xs">Rank</Text>
-        <Text className="text-secondary font-medium text-xs">
-          {rank === "N/A" || !rank ? "" : rank}
-        </Text>
-      </View>
-
-      {/* Separator line */}
-      <View className="h-[1px] bg-gray-50 w-full mb-3" />
-
-      {/* Bottom Result text */}
-      <View className="items-center pb-3">
-        <Text className={`text-sm font-bold ${footer.text}`}>{footer.val}</Text>
+        {/* Amount */}
+        <TranslatedText
+          className="text-base font-semibold text-center font-roboto"
+          style={{
+            color: config.amountColor,
+          }}
+        >
+          {config.formatAmount(actualWin)}
+        </TranslatedText>
       </View>
     </View>
   );
