@@ -36,7 +36,8 @@ export function CustomTabBar({
         if (
           navOptions.href === null ||
           route.name === "match-details/[id]" ||
-          route.name === "prediction-success"
+          route.name === "prediction-success" ||
+          route.name === "prediction-failed"
         )
           return null;
 

@@ -17,6 +17,7 @@ export default function ProtectedLayout() {
       {/* Hidden Screens inside the Tabs layout (or via Stack, but simple enough to hide from TabBar) */}
       <Tabs.Screen name="match-details/[id]" options={{ href: null }} />
       <Tabs.Screen name="prediction-success" options={{ href: null }} />
+      <Tabs.Screen name="prediction-failed" options={{ href: null }} />
     </Tabs>
   );
 }

@@ -76,8 +76,8 @@ export default function ProtectedIndex() {
     <LinearGradient
       colors={["#FFF0CE", "#FFFFFF", "#FFFFFF"]}
       locations={[0, 0.1559, 0.9525]}
-      start={{ x: 0.5, y: 0 }}
-      end={{ x: 0.45, y: 1 }}
+      start={{ x: 0.48, y: 0 }}
+      end={{ x: 0.52, y: 1 }}
       className="flex-1"
     >
       {/* Light status bar for contrasting correctly */}
