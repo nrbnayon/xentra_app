@@ -5,16 +5,17 @@ import LeaderboardFilter, {
 } from "@/components/Screens/Leaderboard/LeaderboardFilters";
 import { LeaderboardCardSkeleton } from "@/components/Skeleton/LeaderboardSkeleton";
 import { TranslatedText } from "@/components/ui/TranslatedText";
+import { mockLeagues, mockMatches } from "@/data/mock";
 import { LeaderboardMatch, leaderboardMatches } from "@/data/mockLeaderboard";
 import { LinearGradient } from "expo-linear-gradient";
-import { useState } from "react";
-import { FlatList, StatusBar, View } from "react-native";
+import { useMemo, useState } from "react";
+import { Alert, FlatList, StatusBar, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function LeaderboardTabScreen() {
   const insets = useSafeAreaInsets();
-  const [selectedLeague, setSelectedLeague] = useState("Select League");
-  const [selectedMatch, setSelectedMatch] = useState("Select Match");
+  const [selectedLeagueId, setSelectedLeagueId] = useState<string | null>(null);
+  const [selectedMatchId, setSelectedMatchId] = useState<string | null>(null);
   const [selectedTab, setSelectedTab] = useState<LeaderboardTab>("all");
   const [refreshing, setRefreshing] = useState(false);
   const [activeDetail, setActiveDetail] = useState<LeaderboardMatch | null>(
@@ -26,10 +27,62 @@ export default function LeaderboardTabScreen() {
     setTimeout(() => setRefreshing(false), 1500);
   };
 
-  // Filter based on selected tab
+  const selectedLeagueName = useMemo(() => {
+    return (
+      mockLeagues.find((l) => l.id === selectedLeagueId)?.name ||
+      "Select League"
+    );
+  }, [selectedLeagueId]);
+
+  const selectedMatchName = useMemo(() => {
+    return (
+      mockMatches.find((m) => m.id === selectedMatchId)?.title || "Select Match"
+    );
+  }, [selectedMatchId]);
+
+  // Options for picking
+  const handleSelectLeague = () => {
+    Alert.alert("Select League", "Choose a league to filter by", [
+      {
+        text: "All Leagues",
+        onPress: () => {
+          setSelectedLeagueId(null);
+          setSelectedMatchId(null);
+        },
+      },
+      ...mockLeagues.map((l) => ({
+        text: l.name,
+        onPress: () => {
+          setSelectedLeagueId(l.id);
+          setSelectedMatchId(null);
+        },
+      })),
+      { text: "Cancel", style: "cancel" },
+    ]);
+  };
+
+  const handleSelectMatch = () => {
+    // Filter matches by selected league if any
+    const availableMatches = selectedLeagueId
+      ? mockMatches.filter((m) => m.leagueId === selectedLeagueId)
+      : mockMatches;
+
+    Alert.alert("Select Match", "Choose a match to filter by", [
+      { text: "All Matches", onPress: () => setSelectedMatchId(null) },
+      ...availableMatches.map((m) => ({
+        text: m.title,
+        onPress: () => setSelectedMatchId(m.id),
+      })),
+      { text: "Cancel", style: "cancel" },
+    ]);
+  };
+
+  // Filter based on selected tab, league, and match
   const filtered = leaderboardMatches.filter((m) => {
-    if (selectedTab === "all") return true;
-    return m.status === selectedTab;
+    const tabMatch = selectedTab === "all" || m.status === selectedTab;
+    const leagueMatch = !selectedLeagueId || m.leagueId === selectedLeagueId;
+    const specificMatch = !selectedMatchId || m.matchId === selectedMatchId;
+    return tabMatch && leagueMatch && specificMatch;
   });
 
   // If viewing a specific match leaderboard
@@ -78,11 +131,11 @@ export default function LeaderboardTabScreen() {
 
               {/* Filters: dropdowns + tabs */}
               <LeaderboardFilter
-                selectedLeague={selectedLeague}
-                selectedMatch={selectedMatch}
+                selectedLeague={selectedLeagueName}
+                selectedMatch={selectedMatchName}
                 selectedTab={selectedTab}
-                onSelectLeague={() => {}}
-                onSelectMatch={() => {}}
+                onSelectLeague={handleSelectLeague}
+                onSelectMatch={handleSelectMatch}
                 onSelectTab={setSelectedTab}
               />
             </View>

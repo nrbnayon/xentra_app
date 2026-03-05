@@ -1,8 +1,18 @@
+// src\components\Screens\Leaderboard\LeaderboardDetail.tsx
 import { TranslatedText } from "@/components/ui/TranslatedText";
 import { LeaderboardEntry, LeaderboardMatch } from "@/data/mockLeaderboard";
+import { BlurView } from "expo-blur";
 import { LinearGradient } from "expo-linear-gradient";
 import { ChevronLeft } from "lucide-react-native";
-import { FlatList, ImageBackground, Pressable, Text, View } from "react-native";
+import {
+  Dimensions,
+  FlatList,
+  Image,
+  ImageBackground,
+  Pressable,
+  Text,
+  View,
+} from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface Props {
@@ -10,120 +20,287 @@ interface Props {
   onBack: () => void;
 }
 
-const RANK_COLORS: Record<number, string> = {
-  1: "#FDE68A", // gold
-  2: "#D1FAE5", // silver/green
-  3: "#BAE6FD", // bronze/blue
+// Exact row background colors from Figma
+const ROW_BG: Record<number, string> = {
+  1: "#ffddb1",
+  2: "#d5ffb1",
+  3: "#b1e5ff",
 };
 
 function LeaderboardRow({ entry }: { entry: LeaderboardEntry }) {
-  const rowBg = RANK_COLORS[entry.rank] ?? "transparent";
-  const isTopRank = entry.rank <= 3;
+  const bg = ROW_BG[entry.rank] ?? "transparent";
 
   return (
     <View
-      className="flex-row items-center px-4 py-3.5"
-      style={{ backgroundColor: rowBg }}
+      style={{
+        flexDirection: "row",
+        alignItems: "center",
+        paddingHorizontal: 12,
+        paddingVertical: 12,
+        borderRadius: 8,
+        backgroundColor: bg,
+      }}
     >
       {/* Rank */}
-      <Text
-        className="font-bold text-sm w-10"
-        style={{ color: isTopRank ? "#303030" : "#686868" }}
-      >
+      <Text className="font-roboto font-normal text-lg text-[#242424] w-10">
         #{entry.rank}
       </Text>
 
-      {/* Player Name */}
-      <Text
-        className="flex-1 text-sm font-medium"
-        style={{ color: isTopRank ? "#303030" : "#686868" }}
-      >
+      {/* Player name */}
+      <Text className="font-roboto font-normal text-lg text-[#242424] text-center flex-1">
         {entry.playerName}
       </Text>
 
       {/* Result */}
-      {entry.result && (
-        <Text className="font-bold text-sm" style={{ color: "#FFAC33" }}>
-          {entry.result}
-        </Text>
-      )}
+      <View style={{ width: 40, alignItems: "flex-end" }}>
+        {entry.result ? (
+          <TranslatedText className="font-roboto font-bold text-lg text-[#ff8001]">
+            {entry.result}
+          </TranslatedText>
+        ) : null}
+      </View>
     </View>
   );
 }
 
 export default function LeaderboardDetail({ match, onBack }: Props) {
   const insets = useSafeAreaInsets();
+  const BANNER_HEIGHT = 195;
 
   return (
-    <View className="flex-1 bg-white" style={{ paddingTop: insets.top }}>
-      {/* Header */}
-      <View className="flex-row items-center px-4 pb-3 pt-2">
-        <Pressable
-          onPress={onBack}
-          className="w-9 h-9 rounded-full bg-gray-100 items-center justify-center mr-3"
-        >
-          <ChevronLeft size={20} color="#303030" />
-        </Pressable>
-        <TranslatedText className="text-[#303030] text-xl font-bold">
-          Leaderboard
-        </TranslatedText>
-      </View>
+    <LinearGradient
+      colors={["#FFF0CE", "#FFFFFF", "#FFFFFF"]}
+      locations={[0, 0.1559, 0.9525]}
+      start={{ x: 0.48, y: 0 }}
+      end={{ x: 0.52, y: 1 }}
+      style={{ flex: 1 }}
+    >
+      <View style={{ flex: 1, paddingTop: insets.top }}>
+        {/* ── Header ── */}
+        <View className="flex-row items-center gap-4 px-5 pt-2 pb-4">
+          {/* Back button — frosted glass pill, 36×36 */}
+          <Pressable
+            onPress={onBack}
+            className="w-9 h-9 rounded-full items-center justify-center bg-white border border-[#f6f6f6] shadow-md"
+          >
+            <ChevronLeft size={20} color="#303030" />
+          </Pressable>
 
-      {/* Hero Banner */}
-      <View className="mx-4 rounded-2xl overflow-hidden mb-4">
-        <ImageBackground
-          source={
-            typeof match.backgroundImage === "string"
-              ? { uri: match.backgroundImage }
-              : match.backgroundImage
-          }
-          style={{ width: "100%" }}
-          resizeMode="cover"
+          <TranslatedText className="text-[#303030] font-semibold text-xl">
+            Leaderboard
+          </TranslatedText>
+        </View>
+
+        {/* ── Hero Banner ── */}
+        <View
+          className="w-[90%] bg-white h-40 rounded-2xl mx-auto mb-8"
+          style={{
+            height: BANNER_HEIGHT,
+            overflow: "hidden",
+          }}
         >
           <LinearGradient
-            colors={["rgba(0,0,0,0.45)", "rgba(0,0,0,0.7)"]}
-            className="px-5 py-5"
+            colors={["rgba(119,119,119,0.2)", "rgba(0,0,0,0)"]}
+            locations={[0.004, 0.2054]}
+            start={{ x: 0.5, y: 0 }}
+            end={{ x: 0.5, y: 1 }}
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+            }}
+          />
+
+          <ImageBackground
+            source={
+              typeof match.backgroundImage === "string"
+                ? { uri: match.backgroundImage }
+                : match.backgroundImage
+            }
+            style={{ width: "100%", height: "100%" }}
+            resizeMode="cover"
           >
-            {/* Team vs Team pill */}
-            <View className="items-center mb-3">
+            {/* ── Bottom curve: white rounded bar to fake the curve cutout ── */}
+            <View className="absolute -bottom-[120px] left-0 right-0 h-40 bg-white border-none rounded-full" />
+
+            {/* ── Orange stripes — LEFT ── */}
+            <View
+              style={{
+                position: "absolute",
+                left: 10,
+                top: 88,
+              }}
+            >
               <View
-                className="flex-row items-center px-4 py-1.5 rounded-full"
-                style={{ backgroundColor: "#FFAC33" }}
+                style={{
+                  height: 4,
+                  width: 85,
+                  backgroundColor: "#ffa238",
+                  borderRadius: 50,
+                  marginBottom: 8,
+                }}
+              />
+              <View
+                style={{
+                  height: 4,
+                  width: 85,
+                  backgroundColor: "#ffa238",
+                  borderRadius: 50,
+                  marginLeft: 7,
+                }}
+              />
+            </View>
+
+            {/* ── Orange stripes — RIGHT ── */}
+            <View
+              style={{
+                position: "absolute",
+                right: 10,
+                top: 88,
+                alignItems: "flex-end",
+              }}
+            >
+              <View
+                style={{
+                  height: 4,
+                  width: 85,
+                  backgroundColor: "#ffa238",
+                  borderRadius: 50,
+                  marginBottom: 8,
+                }}
+              />
+              <View
+                style={{
+                  height: 4,
+                  width: 85,
+                  backgroundColor: "#ffa238",
+                  borderRadius: 50,
+                  marginRight: 7,
+                }}
+              />
+            </View>
+
+            <View
+              style={{
+                position: "absolute",
+                left: 0,
+                bottom:0,
+                right: 0,
+                alignItems: "center",
+              }}
+            >
+              <BlurView
+                intensity={90} 
+                tint="dark"
+                style={{
+                  width: 250,
+                  height: 120,
+                  borderRadius: 16,
+                  overflow: "hidden",
+                }}
               >
-                <Text className="text-white font-bold text-sm">
-                  {match.teamA.name}
-                </Text>
-                <Text className="text-white font-bold text-sm mx-2"> V/S </Text>
-                <Text className="text-white font-bold text-sm">
-                  {match.teamB.name}
-                </Text>
-              </View>
-            </View>
+                <LinearGradient
+                  colors={["rgba(36,36,36,0.5)", "rgba(255,145,0,0.5)"]}
+                  locations={[0.3787, 1]}
+                  start={{ x: 0.5, y: 0 }}
+                  end={{ x: 0.5, y: 1 }}
+                  style={{
+                    flex: 1,
+                    padding: 16,
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  {/* Teams Pill */}
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      gap: 12,
+                      backgroundColor: "#f4900c",
+                      borderRadius: 30,
+                      paddingHorizontal: 16,
+                      paddingVertical: 5,
+                    }}
+                  >
+                    <TranslatedText className="text-[#f3f3f3] font-bold text-2xl font-roboto text-shadow-xl">
+                      {match.teamA.name}
+                    </TranslatedText>
 
-            {/* Position */}
-            <View className="items-center">
-              <Text className="text-white font-extrabold text-xl">
-                Your Position #{match.userPosition} of {match.totalParticipants}
-              </Text>
-              <Text className="text-white/80 text-sm mt-0.5">
-                Total Participants: {match.totalParticipants}
-              </Text>
+                    <Text
+                      style={{
+                        fontFamily: "Roboto_600SemiBold",
+                        fontSize: 14,
+                        color: "#f3f3f3",
+                      }}
+                    >
+                      V/S
+                    </Text>
+
+                    <TranslatedText className="text-[#f3f3f3] font-bold text-2xl font-roboto text-shadow-xl">   
+                      {match.teamB.name}
+                    </TranslatedText>
+                  </View>
+
+                  {/* Position */}
+                  <Text
+                    style={{
+                      marginTop: 6,
+                      color: "#ffffff",
+                      textAlign: "center",
+                    }}
+                  >
+                    <TranslatedText className="text-[#f3f3f3] font-bold text-xl font-roboto">
+                      Your Position{" "}
+                    </TranslatedText>
+                    <TranslatedText className="text-[#f3f3f3] font-bold text-xl font-roboto">
+                      #{match.userPosition} of {match.totalParticipants}
+                    </TranslatedText>
+                  </Text>
+
+                  {/* Participants */}
+                  <TranslatedText className="text-[#f3f3f3] font-medium text-xl font-roboto">
+                    Total Participants: {match.totalParticipants}
+                  </TranslatedText>
+                </LinearGradient>
+              </BlurView>
             </View>
-          </LinearGradient>
-        </ImageBackground>
+          </ImageBackground>
+        </View>
+
+        {/* ===== BACKGROUND WAVE IMAGE (CORRECT WAY) ===== */}
+        <Image
+          source={require("../../../../assets/icons/leaderboard_bg.png")}
+          style={{
+            position: "absolute",
+            width: "100%",
+            height: "80%",
+            opacity: 1,
+            // top: 250,
+            left: 0,
+            right: 0,
+            bottom: -50,
+          }}
+          resizeMode="cover"
+        />
+
+        {/* ── Rankings FlatList ── */}
+        <FlatList
+          data={match.entries}
+          keyExtractor={(item) => String(item.rank)}
+          renderItem={({ item }) => <LeaderboardRow entry={item} />}
+          showsVerticalScrollIndicator={false}
+          style={{ zIndex: 1 }}
+          contentContainerStyle={{
+            paddingHorizontal: 20,
+            paddingTop: 16,
+            paddingBottom: 120,
+            gap: 12,
+          }}
+        />
       </View>
-
-      {/* Rankings List */}
-      <FlatList
-        data={match.entries}
-        keyExtractor={(item) => String(item.rank)}
-        renderItem={({ item }) => <LeaderboardRow entry={item} />}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 120 }}
-        ItemSeparatorComponent={() => (
-          <View className="h-[1px] bg-gray-50 mx-4" />
-        )}
-      />
-    </View>
+    </LinearGradient>
   );
 }
