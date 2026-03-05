@@ -5,8 +5,17 @@ import { View } from "react-native";
 export const PredictionSkeleton = () => {
   return (
     <View
-      className="w-full bg-white rounded-2xl mb-4 pt-4 pb-1"
-      style={SHADOWS.card}
+      className="w-full bg-white rounded-2xl mb-4 py-4"
+      style={[
+        SHADOWS.card,
+        {
+          shadowColor: "#656565",
+          shadowOpacity: 0.18,
+          shadowRadius: 45,
+          shadowOffset: { width: 0, height: 0 },
+          elevation: 8,
+        },
+      ]}
     >
       {/* Top row */}
       <View className="flex-row justify-between items-center px-4 mb-3">

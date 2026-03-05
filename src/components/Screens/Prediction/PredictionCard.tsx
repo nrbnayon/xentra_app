@@ -35,13 +35,22 @@ const STATUS_CONFIG = {
 } as const;
 
 export default function PredictionCard({ prediction }: Props) {
-  const { match, status, rank, actualWin } = prediction;
+  const { match, status, rank, actualWin, date: predictionDate } = prediction;
 
   const config =
     STATUS_CONFIG[status as keyof typeof STATUS_CONFIG] ??
     STATUS_CONFIG.pending;
 
   const displayRank = rank && rank !== "N/A" ? String(rank) : null;
+  const displayDate =
+    predictionDate ||
+    (match.date instanceof Date
+      ? match.date.toLocaleDateString("en-GB", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+        })
+      : String(match.date));
 
   return (
     <View
@@ -80,15 +89,11 @@ export default function PredictionCard({ prediction }: Props) {
         >
           {/* Title row */}
           <View className="flex-row justify-between items-center w-full">
-            <TranslatedText
-              className="text-sm font-medium text-[#3e3e3e] font-roboto"
-            >
+            <TranslatedText className="text-md font-medium text-[#3E3E3E] font-roboto">
               {match.title}
             </TranslatedText>
-            <TranslatedText
-              className="text-sm text-[#686868] font-roboto"
-            >
-              Date:15 Jan, 2026
+            <TranslatedText className="text-md text-[#686868] font-roboto">
+              {displayDate}
             </TranslatedText>
           </View>
 
@@ -98,11 +103,10 @@ export default function PredictionCard({ prediction }: Props) {
             <View className="flex-1 flex-row items-center justify-center gap-2">
               <Image
                 source={{ uri: match.teamA.logo }}
-                className="w-6 h-6 rounded"
+                className="w-7 h-7 rounded"
                 resizeMode="contain"
               />
-              <TranslatedText
-                className="text-sm font-semibold text-[#3e3e3e] font-roboto"              >
+              <TranslatedText className="text-md font-semibold text-[#3e3e3e] font-roboto">
                 {match.teamA.name}
               </TranslatedText>
             </View>
@@ -128,12 +132,10 @@ export default function PredictionCard({ prediction }: Props) {
             <View className="flex-1 flex-row items-center justify-center gap-2">
               <Image
                 source={{ uri: match.teamB.logo }}
-                className="w-6 h-6 rounded"
+                className="w-7 h-7 rounded"
                 resizeMode="contain"
               />
-              <TranslatedText
-                className="text-md font-semibold text-[#3e3e3e] font-roboto"
-              >
+              <TranslatedText className="text-md font-semibold text-[#3e3e3e] font-roboto">
                 {match.teamB.name}
               </TranslatedText>
             </View>
@@ -141,14 +143,11 @@ export default function PredictionCard({ prediction }: Props) {
 
           {/* Rank row */}
           <View className="flex-row justify-between items-center w-full">
-            <TranslatedText
-              className="text-md text-[#686868] font-roboto"
-            >
+            <TranslatedText className="text-md text-[#686868] font-roboto">
               Rank
             </TranslatedText>
             {displayRank && (
-              <TranslatedText
-                className="text-base font-medium text-[#686868] font-roboto"              >
+              <TranslatedText className="text-base font-medium text-[#686868] font-roboto">
                 {displayRank}
               </TranslatedText>
             )}

@@ -88,7 +88,7 @@ export default function PredictionTab() {
           ItemSeparatorComponent={() => <View className="h-4" />}
           contentContainerStyle={{
             paddingBottom: 40,
-            paddingHorizontal: 4, // Horizontal room for shadows
+            paddingHorizontal: 6, // Horizontal room for shadows
             paddingTop: 10,
           }}
           ListEmptyComponent={

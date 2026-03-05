@@ -11,6 +11,7 @@ export interface PredictionHistoryItem {
   actualWin: number;
   rank: string; // e.g. "3/200"
   timestamp: string;
+  date?: string;
 }
 
 // Merge mock matches into some mock predictions
@@ -28,6 +29,7 @@ export const mockPredictions: PredictionHistoryItem[] = [
     actualWin: 0,
     rank: "N/A",
     timestamp: "2026-01-14T10:00:00Z",
+    date: "15 Jan, 2026",
   },
   {
     id: "p2",
@@ -40,6 +42,7 @@ export const mockPredictions: PredictionHistoryItem[] = [
     actualWin: 200,
     rank: "3/200",
     timestamp: "2026-01-15T10:00:00Z",
+    date: "15 Jan, 2026",
   },
   {
     id: "p3",
@@ -52,5 +55,6 @@ export const mockPredictions: PredictionHistoryItem[] = [
     actualWin: -200,
     rank: "13/200",
     timestamp: "2026-01-12T10:00:00Z",
+    date: "15 Jan, 2026",
   },
 ];

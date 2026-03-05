@@ -76,7 +76,7 @@ export default function PredictionTabs({
             <Pressable
               key={tab.id}
               onPress={() => onSelectStatus(tab.id as any)}
-              className={`flex-row items-center px-5 py-2.5 rounded-full border ${
+              className={`flex-row items-center px-4 py-2.5 rounded-full border ${
                 isSelected
                   ? "bg-[#1C5898] border-[#1C5898]"
                   : "bg-white border-white"
