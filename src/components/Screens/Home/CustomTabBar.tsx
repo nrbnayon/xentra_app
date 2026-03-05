@@ -70,7 +70,7 @@ export function CustomTabBar({
               );
             case "prediction":
               return <LineChart size={size} color={color} />; // Wavy chart line
-            case "trophy":
+            case "leaderboard":
               return (
                 <Trophy
                   size={size}

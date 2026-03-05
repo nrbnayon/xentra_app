@@ -10,7 +10,7 @@ export default function ProtectedLayout() {
     >
       <Tabs.Screen name="index" options={{ title: "Home" }} />
       <Tabs.Screen name="prediction" options={{ title: "Prediction" }} />
-      <Tabs.Screen name="trophy" options={{ title: "Trophy" }} />
+      <Tabs.Screen name="leaderboard" options={{ title: "Leaderboard" }} />
       <Tabs.Screen name="wallet" options={{ title: "Wallet" }} />
       <Tabs.Screen name="profile" options={{ title: "Profile" }} />
 

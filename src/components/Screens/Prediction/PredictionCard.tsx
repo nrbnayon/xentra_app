@@ -1,7 +1,7 @@
 import { TranslatedText } from "@/components/ui/TranslatedText";
 import { PredictionHistoryItem } from "@/data/mockPredictions";
 import { SHADOWS } from "@/lib/shadows";
-import { Image, View } from "react-native";
+import { Image, Text, View } from "react-native";
 
 interface Props {
   prediction: PredictionHistoryItem;
@@ -54,7 +54,7 @@ export default function PredictionCard({ prediction }: Props) {
 
   return (
     <View
-      className="w-full bg-white rounded-xl overflow-visible"
+      className="w-full bg-white rounded-xl overflow-visible mb-4 border-none"
       style={[
         SHADOWS.card,
         {
@@ -92,9 +92,9 @@ export default function PredictionCard({ prediction }: Props) {
             <TranslatedText className="text-md font-medium text-[#3E3E3E] font-roboto">
               {match.title}
             </TranslatedText>
-            <TranslatedText className="text-md text-[#686868] font-roboto">
+            <Text className="text-md text-[#686868] font-roboto">
               {displayDate}
-            </TranslatedText>
+            </Text>
           </View>
 
           {/* Teams + Score */}
@@ -116,7 +116,7 @@ export default function PredictionCard({ prediction }: Props) {
               className="items-center justify-center px-3 py-2 rounded-xs"
               style={{ backgroundColor: "#fdf4e0" }}
             >
-              <TranslatedText
+              <Text
                 className="text-[32px] font-semibold text-center font-roboto"
                 style={{
                   color: "#ffac33",
@@ -125,7 +125,7 @@ export default function PredictionCard({ prediction }: Props) {
               >
                 {prediction.predictedTeamAScore}:
                 {prediction.predictedTeamBScore}
-              </TranslatedText>
+              </Text>
             </View>
 
             {/* Team B */}
@@ -147,22 +147,22 @@ export default function PredictionCard({ prediction }: Props) {
               Rank
             </TranslatedText>
             {displayRank && (
-              <TranslatedText className="text-base font-medium text-[#686868] font-roboto">
+              <Text className="text-base font-medium text-[#686868] font-roboto">
                 {displayRank}
-              </TranslatedText>
+              </Text>
             )}
           </View>
         </View>
 
         {/* Amount */}
-        <TranslatedText
+        <Text
           className="text-base font-semibold text-center font-roboto"
           style={{
             color: config.amountColor,
           }}
         >
           {config.formatAmount(actualWin)}
-        </TranslatedText>
+        </Text>
       </View>
     </View>
   );
