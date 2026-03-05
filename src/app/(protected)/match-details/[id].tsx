@@ -22,6 +22,7 @@ export default function MatchDetails() {
 
   const match = mockMatches.find((m) => m.id === id) || mockMatches[0];
 
+  const [selectedTeam, setSelectedTeam] = useState<string | null>(null);
   const [teamAScore, setTeamAScore] = useState("");
   const [teamBScore, setTeamBScore] = useState("");
 
@@ -30,11 +31,15 @@ export default function MatchDetails() {
   const remainingBalance = currentBalance - entryFee;
 
   const handlePredict = () => {
-    // In a real app we'd validate the scores and subtract balance here
-    if (!teamAScore || !teamBScore) return;
+    if (!selectedTeam || !teamAScore || !teamBScore) return;
+
+    if (currentBalance < entryFee) {
+      router.replace("/(protected)/prediction-failed" as any);
+      return;
+    }
 
     // Navigate to success
-    router.replace("/(protected)/prediction-success");
+    router.replace("/(protected)/prediction-success" as any);
   };
 
   return (
@@ -43,9 +48,10 @@ export default function MatchDetails() {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <LinearGradient
-        colors={["#E6F4FE", "#FFFFFF"]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 0, y: 0.3 }}
+        colors={["#BEE3FF", "#FFFFFF", "#FFFFFF"]}
+        locations={[0, 0.238, 0.9525]}
+        start={{ x: 0.5, y: 0 }}
+        end={{ x: 0.45, y: 1 }}
         className="flex-1"
       >
         <ScrollView
@@ -70,7 +76,14 @@ export default function MatchDetails() {
 
           {/* Teams Selection / Display */}
           <View className="flex-row gap-4 mb-8">
-            <View className="flex-1 bg-white border border-[#E5E7EB] rounded-2xl items-center p-6 shadow-sm">
+            <Pressable
+              onPress={() => setSelectedTeam(match.teamA.id)}
+              className={`flex-1 bg-white border-2 rounded-2xl items-center p-6 shadow-sm ${
+                selectedTeam === match.teamA.id
+                  ? "border-primary"
+                  : "border-[#E5E7EB]"
+              }`}
+            >
               <View className="w-16 h-12 mb-3 shadow-sm border border-gray-100 bg-white items-center justify-center rounded">
                 <Image
                   source={{ uri: match.teamA.logo }}
@@ -81,9 +94,16 @@ export default function MatchDetails() {
               <Text className="text-[#374151] font-semibold text-lg">
                 {match.teamA.name}
               </Text>
-            </View>
+            </Pressable>
 
-            <View className="flex-1 bg-white border border-[#E5E7EB] rounded-2xl items-center p-6 shadow-sm">
+            <Pressable
+              onPress={() => setSelectedTeam(match.teamB.id)}
+              className={`flex-1 bg-white border-2 rounded-2xl items-center p-6 shadow-sm ${
+                selectedTeam === match.teamB.id
+                  ? "border-primary"
+                  : "border-[#E5E7EB]"
+              }`}
+            >
               <View className="w-16 h-12 mb-3 shadow-sm border border-gray-100 bg-white items-center justify-center rounded">
                 <Image
                   source={{ uri: match.teamB.logo }}
@@ -94,7 +114,7 @@ export default function MatchDetails() {
               <Text className="text-[#374151] font-semibold text-lg">
                 {match.teamB.name}
               </Text>
-            </View>
+            </Pressable>
           </View>
 
           {/* Scores Inputs */}
@@ -150,8 +170,12 @@ export default function MatchDetails() {
           {/* Submit Button */}
           <Button
             onPress={handlePredict}
-            disabled={!teamAScore || !teamBScore}
-            className="w-full py-4 mt-auto rounded-xl bg-primary"
+            disabled={!selectedTeam || !teamAScore || !teamBScore}
+            className={`w-full py-4 mt-auto rounded-xl ${
+              !selectedTeam || !teamAScore || !teamBScore
+                ? "bg-gray-300"
+                : "bg-primary"
+            }`}
           >
             Predict Now
           </Button>
