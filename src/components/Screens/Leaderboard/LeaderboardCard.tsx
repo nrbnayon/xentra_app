@@ -33,7 +33,7 @@ export default function LeaderboardCard({ match, onViewLeaderboard }: Props) {
 
   return (
     <View
-      className="w-full bg-white rounded-xl p-4 mb-6"
+      className="w-full bg-white rounded-xl p-4 mb-8"
       style={{
         shadowColor: "#656565",
         shadowOffset: { width: 0, height: 0 },
@@ -66,7 +66,7 @@ export default function LeaderboardCard({ match, onViewLeaderboard }: Props) {
         <TranslatedText className="text-[#3e3e3e] font-semibold text-base flex-1 mr-2">
           {match.title}
         </TranslatedText>
-        <Text className="text-[#686868] text-xs">{match.dateTime}</Text>
+        <Text className="text-secondary text-md">{match.dateTime}</Text>
       </View>
 
       {/* Teams + Score */}
@@ -111,7 +111,7 @@ export default function LeaderboardCard({ match, onViewLeaderboard }: Props) {
 
       {/* Prize Pool */}
       <View className="flex-row justify-between items-center mb-2">
-        <TranslatedText className="text-[#686868] text-md">
+        <TranslatedText className="text-secondary text-md">
           Prize Pool:
         </TranslatedText>
         <Text className="text-[#303030] font-semibold text-md">
@@ -121,7 +121,7 @@ export default function LeaderboardCard({ match, onViewLeaderboard }: Props) {
 
       {/* Participants */}
       <View className="flex-row justify-between items-center mb-5">
-        <TranslatedText className="text-[#686868] text-md">
+        <TranslatedText className="text-secondary text-md">
           Participants:
         </TranslatedText>
         <Text className="text-[#303030] font-semibold text-md">

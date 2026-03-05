@@ -1,6 +1,8 @@
 import LeaderboardCard from "@/components/Screens/Leaderboard/LeaderboardCard";
 import LeaderboardDetail from "@/components/Screens/Leaderboard/LeaderboardDetail";
-import LeaderboardFilters from "@/components/Screens/Leaderboard/LeaderboardFilters";
+import LeaderboardFilter, {
+  LeaderboardTab,
+} from "@/components/Screens/Leaderboard/LeaderboardFilters";
 import { LeaderboardCardSkeleton } from "@/components/Skeleton/LeaderboardSkeleton";
 import { TranslatedText } from "@/components/ui/TranslatedText";
 import { LeaderboardMatch, leaderboardMatches } from "@/data/mockLeaderboard";
@@ -9,13 +11,11 @@ import { useState } from "react";
 import { FlatList, StatusBar, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-type Tab = "all" | "latest" | "upcoming" | "completed";
-
-export default function LeaderboardTab() {
+export default function LeaderboardTabScreen() {
   const insets = useSafeAreaInsets();
   const [selectedLeague, setSelectedLeague] = useState("Select League");
   const [selectedMatch, setSelectedMatch] = useState("Select Match");
-  const [selectedTab, setSelectedTab] = useState<Tab>("all");
+  const [selectedTab, setSelectedTab] = useState<LeaderboardTab>("all");
   const [refreshing, setRefreshing] = useState(false);
   const [activeDetail, setActiveDetail] = useState<LeaderboardMatch | null>(
     null,
@@ -70,14 +70,14 @@ export default function LeaderboardTab() {
             paddingTop: 8,
           }}
           ListHeaderComponent={
-            <View className="mb-2">
+            <View className="mb-6">
               {/* Title */}
-              <TranslatedText className="text-[#303030] text-2xl font-bold mb-5">
+              <TranslatedText className="text-[#303030] text-3xl font-bold mb-6 font-roboto">
                 Leaderboard
               </TranslatedText>
 
               {/* Filters: dropdowns + tabs */}
-              <LeaderboardFilters
+              <LeaderboardFilter
                 selectedLeague={selectedLeague}
                 selectedMatch={selectedMatch}
                 selectedTab={selectedTab}
@@ -100,7 +100,7 @@ export default function LeaderboardTab() {
           ListEmptyComponent={
             !refreshing ? (
               <View className="items-center py-20">
-                <TranslatedText className="text-[#686868] text-base">
+                <TranslatedText className="text-[#686868] text-base font-roboto">
                   No leaderboards found.
                 </TranslatedText>
               </View>

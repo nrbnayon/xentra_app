@@ -1,105 +1,104 @@
-import { TranslatedText } from "@/components/ui/TranslatedText";
+import { SHADOWS } from "@/lib/shadows";
 import { ChevronDown } from "lucide-react-native";
 import { Pressable, Text, View } from "react-native";
 
-type Tab = "all" | "latest" | "upcoming" | "completed";
+export type LeaderboardTab = "all" | "latest" | "upcoming" | "completed";
 
 interface Props {
-  selectedLeague: string;
-  selectedMatch: string;
-  selectedTab: Tab;
-  onSelectLeague: () => void;
-  onSelectMatch: () => void;
-  onSelectTab: (tab: Tab) => void;
+  selectedTab: LeaderboardTab;
+  onSelectTab: (tab: LeaderboardTab) => void;
+  selectedLeague?: string;
+  selectedMatch?: string;
+  onSelectLeague?: () => void;
+  onSelectMatch?: () => void;
 }
 
-const TABS: { id: Tab; label: string }[] = [
+const TABS: { id: LeaderboardTab; label: string }[] = [
   { id: "all", label: "All" },
   { id: "latest", label: "Latest" },
   { id: "upcoming", label: "Upcoming" },
   { id: "completed", label: "Completed" },
 ];
 
-export default function LeaderboardFilters({
-  selectedLeague,
-  selectedMatch,
+export default function LeaderboardFilter({
   selectedTab,
+  onSelectTab,
+  selectedLeague = "Select League",
+  selectedMatch = "Select Match",
   onSelectLeague,
   onSelectMatch,
-  onSelectTab,
 }: Props) {
   return (
-    <View className="mb-4">
+    <View className="gap-[18px]">
       {/* Dropdowns row */}
-      <View className="flex-row gap-3 mb-4">
-        {/* League Picker */}
+      <View className="flex-row items-center justify-end gap-[6px]">
+        {/* Select League */}
         <Pressable
           onPress={onSelectLeague}
-          className="flex-1 flex-row items-center justify-between bg-white border border-gray-100 rounded-full px-4 py-2.5"
-          style={{
-            shadowColor: "#181818",
-            shadowOffset: { width: 0, height: 1 },
-            shadowOpacity: 0.08,
-            shadowRadius: 6,
-            elevation: 2,
-          }}
+          className="flex-row items-center gap-[6px] px-[12px] py-[6px] rounded-[50px] bg-white"
+          style={SHADOWS.tabInactive as object}
         >
           <Text
-            className="text-[#303030] text-sm font-medium"
-            numberOfLines={1}
+            style={{
+              fontFamily: "Roboto_400Regular",
+              fontSize: 14,
+              color: "#181818",
+              lineHeight: 18,
+            }}
           >
             {selectedLeague}
           </Text>
-          <ChevronDown size={16} color="#686868" />
+          <ChevronDown size={14} color="#181818" />
         </Pressable>
 
-        {/* Match Picker */}
+        {/* Select Match */}
         <Pressable
           onPress={onSelectMatch}
-          className="flex-1 flex-row items-center justify-between bg-white border border-gray-100 rounded-full px-4 py-2.5"
-          style={{
-            shadowColor: "#181818",
-            shadowOffset: { width: 0, height: 1 },
-            shadowOpacity: 0.08,
-            shadowRadius: 6,
-            elevation: 2,
-          }}
+          className="flex-row items-center gap-[6px] px-[12px] py-[6px] rounded-[50px] bg-white"
+          style={SHADOWS.tabInactive as object}
         >
           <Text
-            className="text-[#303030] text-sm font-medium"
-            numberOfLines={1}
+            style={{
+              fontFamily: "Roboto_400Regular",
+              fontSize: 14,
+              color: "#181818",
+              lineHeight: 18,
+            }}
           >
             {selectedMatch}
           </Text>
-          <ChevronDown size={16} color="#686868" />
+          <ChevronDown size={14} color="#181818" />
         </Pressable>
       </View>
 
-      {/* Status Tabs */}
-      <View className="flex-row">
+      {/* Underline tabs */}
+      <View className="flex-row items-center h-[26px]">
         {TABS.map((tab) => {
-          const isSelected = selectedTab === tab.id;
+          const isActive = selectedTab === tab.id;
           return (
             <Pressable
               key={tab.id}
               onPress={() => onSelectTab(tab.id)}
-              className="mr-5 pb-1.5"
+              className="flex-1 items-center justify-center px-[10px] py-[4px]"
               style={
-                isSelected
+                isActive
                   ? {
-                      borderBottomWidth: 2,
-                      borderBottomColor: "#1C5898",
+                      borderBottomWidth: 1,
+                      borderBottomColor: "#0d2947",
                     }
-                  : {}
+                  : undefined
               }
             >
-              <TranslatedText
-                className={`text-sm font-semibold ${
-                  isSelected ? "text-primary" : "text-[#686868]"
-                }`}
+              <Text
+                style={{
+                  fontFamily: "Roboto_400Regular",
+                  fontSize: 14,
+                  color: "#1c5898",
+                  lineHeight: 18,
+                }}
               >
                 {tab.label}
-              </TranslatedText>
+              </Text>
             </Pressable>
           );
         })}
