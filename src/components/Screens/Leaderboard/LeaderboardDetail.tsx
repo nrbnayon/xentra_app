@@ -4,15 +4,7 @@ import { LeaderboardEntry, LeaderboardMatch } from "@/data/mockLeaderboard";
 import { BlurView } from "expo-blur";
 import { LinearGradient } from "expo-linear-gradient";
 import { ChevronLeft } from "lucide-react-native";
-import {
-  Dimensions,
-  FlatList,
-  Image,
-  ImageBackground,
-  Pressable,
-  Text,
-  View,
-} from "react-native";
+import { FlatList, Image, ImageBackground, Pressable, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface Props {
@@ -134,20 +126,17 @@ export default function LeaderboardDetail({ match, onBack }: Props) {
               }}
             >
               <View
+                className="bg-[#FFA238] rounded-full mb-1"
                 style={{
-                  height: 4,
-                  width: 85,
-                  backgroundColor: "#ffa238",
-                  borderRadius: 50,
-                  marginBottom: 8,
+                  height: 6,
+                  width: 70,
                 }}
               />
               <View
+                className="bg-[#FFA238] rounded-full"
                 style={{
-                  height: 4,
-                  width: 85,
-                  backgroundColor: "#ffa238",
-                  borderRadius: 50,
+                  height: 6,
+                  width: 70,
                   marginLeft: 7,
                 }}
               />
@@ -163,20 +152,17 @@ export default function LeaderboardDetail({ match, onBack }: Props) {
               }}
             >
               <View
+                className="bg-[#FFA238] rounded-full mb-1"
                 style={{
-                  height: 4,
-                  width: 85,
-                  backgroundColor: "#ffa238",
-                  borderRadius: 50,
-                  marginBottom: 8,
+                  height: 6,
+                  width: 70,
                 }}
               />
               <View
+                className="bg-[#FFA238] rounded-full"
                 style={{
-                  height: 4,
-                  width: 85,
-                  backgroundColor: "#ffa238",
-                  borderRadius: 50,
+                  height: 6,
+                  width: 70,
                   marginRight: 7,
                 }}
               />
@@ -186,13 +172,13 @@ export default function LeaderboardDetail({ match, onBack }: Props) {
               style={{
                 position: "absolute",
                 left: 0,
-                bottom:0,
+                bottom: 0,
                 right: 0,
                 alignItems: "center",
               }}
             >
               <BlurView
-                intensity={90} 
+                intensity={90}
                 tint="dark"
                 style={{
                   width: 250,
@@ -239,7 +225,7 @@ export default function LeaderboardDetail({ match, onBack }: Props) {
                       V/S
                     </Text>
 
-                    <TranslatedText className="text-[#f3f3f3] font-bold text-2xl font-roboto text-shadow-xl">   
+                    <TranslatedText className="text-[#f3f3f3] font-bold text-2xl font-roboto text-shadow-xl">
                       {match.teamB.name}
                     </TranslatedText>
                   </View>

@@ -60,7 +60,7 @@ export const leaderboardMatches: LeaderboardMatch[] = [
     participants: 142,
     dateTime: "15 Jan, 2026, 8.30am",
     status: "upcoming",
-    backgroundImage: mockMatches[0].backgroundImage,
+    backgroundImage: mockMatches[1].backgroundImage,
     userPosition: 12,
     totalParticipants: 100,
     entries: generateEntries(),
