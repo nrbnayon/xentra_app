@@ -59,4 +59,32 @@ export const SHADOWS = {
       boxShadow: "0px 2px 10px rgba(24,24,24,0.18)",
     },
   }),
+  card: Platform.select({
+    ios: {
+      shadowColor: "#656565",
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.15,
+      shadowRadius: 12,
+    },
+    android: {
+      elevation: 5,
+    },
+    web: {
+      boxShadow: "0px 4px 12px rgba(101, 101, 101, 0.15)",
+    },
+  }),
+  tabInactive: Platform.select({
+    ios: {
+      shadowColor: "#181818",
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.12,
+      shadowRadius: 8,
+    },
+    android: {
+      elevation: 3,
+    },
+    web: {
+      boxShadow: "0px 2px 8px rgba(24, 24, 24, 0.12)",
+    },
+  }),
 };
