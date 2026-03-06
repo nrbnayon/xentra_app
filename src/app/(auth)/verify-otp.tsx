@@ -71,7 +71,7 @@ export default function VerifyOTPPage() {
 
         <View className="flex-row justify-center mt-6">
           <Text className="text-secondary text-sm font-medium">
-            Didn't get OTP?{" "}
+            Didn&apos;t get OTP?{" "}
           </Text>
           <Pressable onPress={handleResend}>
             <Text className="text-yellow font-bold text-sm">Resent</Text>

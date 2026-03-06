@@ -201,7 +201,7 @@ export default function SignUpPage() {
               className="mt-0.5 rounded-md border-gray-300"
             />
             <Text className="text-[13px] text-foreground/80 leading-[20px] flex-1">
-              I confirm that I am 18+ and agree to XENTRA's{" "}
+              I confirm that I am 18+ and agree to XENTRA&apos;s{" "}
               <Text
                 onPress={() => router.push("/(public)/terms")}
                 className="text-yellow font-bold"

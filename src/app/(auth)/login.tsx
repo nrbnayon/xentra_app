@@ -252,7 +252,7 @@ export default function LoginPage() {
 
       {/* ── Footer ──────────────────────────────────────── */}
       <View className="flex-row justify-center mt-6">
-        <Text className="text-foreground">Don't have an account? </Text>
+        <Text className="text-foreground">Don&apos;t have an account? </Text>
         <Pressable onPress={() => router.push("/(auth)/sign-up")}>
           <Text className="text-yellow font-bold">Sign Up</Text>
         </Pressable>

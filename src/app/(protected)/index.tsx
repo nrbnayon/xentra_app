@@ -139,7 +139,8 @@ export default function ProtectedIndex() {
                   No data available
                 </TranslatedText>
                 <TranslatedText className="text-secondary/60 text-center px-10">
-                  We couldn't find any matches matching your current filters.
+                  We couldn&apos;t find any matches matching your current
+                  filters.
                 </TranslatedText>
               </View>
             ) : null
