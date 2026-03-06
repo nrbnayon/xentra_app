@@ -8,6 +8,7 @@ interface User {
   full_name?: string;
   phone_number?: string;
   profile_photo?: string;
+  profile_picture?: string;
   role: "user" | "admin";
 }
 

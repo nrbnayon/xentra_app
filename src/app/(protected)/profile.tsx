@@ -4,6 +4,7 @@ import { ProfileMain } from "@/components/Screens/Profile/ProfileMain";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useToastStore } from "@/store/useToastStore";
 import { LinearGradient } from "expo-linear-gradient";
+import { router } from "expo-router";
 import { useState } from "react";
 import { View } from "react-native";
 
@@ -20,6 +21,7 @@ export default function ProfileTab() {
       await signOut();
       setShowLogoutModal(false);
       showToast("Logged out successfully", "success");
+      router.replace("/(auth)/login");
     } catch (error) {
       showToast("Failed to logout", "error");
     }

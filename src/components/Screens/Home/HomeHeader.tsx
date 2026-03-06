@@ -13,7 +13,7 @@ const UserAvatar =
 export default function HomeHeader() {
   const { user } = useAuthStore();
   const { translate, currentLanguage } = useLanguage();
-  const userName = user?.full_name || "Jack";
+  const userName = user?.full_name || "Xentra User";
 
   return (
     <View className="flex-row items-center justify-between mb-6">
@@ -62,9 +62,13 @@ export default function HomeHeader() {
           </Text>
         </LinearGradient>
         {/* Avatar */}
-        <Pressable className="w-10 h-10 rounded-full overflow-hidden border-2 border-white shadow-sm">
+        <Pressable className="w-10 h-10 rounded-full overflow-hidden border-2 border-white shadow-sm bg-gray-200">
           <Image
-            source={{ uri: UserAvatar }}
+            source={
+              user?.profile_photo || user?.profile_picture
+                ? { uri: user.profile_photo || user.profile_picture }
+                : { uri: UserAvatar }
+            }
             className="w-full h-full"
             resizeMode="cover"
           />

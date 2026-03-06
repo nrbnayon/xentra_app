@@ -79,7 +79,7 @@ export function AccountSettings({ onBack }: Props) {
 
     if (!result.canceled) {
       const uri = result.assets[0].uri;
-      await updateUser({ profile_photo: uri });
+      await updateUser({ profile_photo: uri, profile_picture: uri });
       showToast("Profile photo updated", "success");
     }
   };
@@ -127,7 +127,9 @@ export function AccountSettings({ onBack }: Props) {
               >
                 <Image
                   source={
-                    user?.profile_photo ? { uri: user.profile_photo } : avatar
+                    user?.profile_photo || user?.profile_picture
+                      ? { uri: user.profile_photo || user.profile_picture }
+                      : avatar
                   }
                   style={{ width: "100%", height: "100%" }}
                   contentFit="cover"
@@ -162,7 +164,7 @@ export function AccountSettings({ onBack }: Props) {
                   marginBottom: 2,
                 }}
               >
-                {user?.full_name || "Jhon Doe Smith"}
+                {user?.full_name || "Xentra User"}
               </Text>
               {user?.email_address && (
                 <Text
@@ -284,7 +286,7 @@ export function AccountSettings({ onBack }: Props) {
               </View>
             ) : (
               <Text style={{ fontSize: 16, color: "#686868" }}>
-                {user?.full_name || "Enter Name"}
+                {user?.full_name || "Xentra User"}
               </Text>
             )}
           </View>

@@ -67,8 +67,8 @@ export function ProfileMain({ onEditAccount, onLogout }: Props) {
           >
             <Image
               source={
-                user?.profile_photo
-                  ? { uri: user.profile_photo }
+                user?.profile_photo || user?.profile_picture
+                  ? { uri: user.profile_photo || user.profile_picture }
                   : require("@/assets/images/user-avatar.png")
               }
               style={{ width: "100%", height: "100%" }}
@@ -84,7 +84,7 @@ export function ProfileMain({ onEditAccount, onLogout }: Props) {
                 marginBottom: 2,
               }}
             >
-              {user?.full_name || "Jhon Doe Smith"}
+              {user?.full_name || "Xentra User"}
             </Text>
             {user?.email_address && (
               <Text style={{ fontSize: 14, color: "#6C6C6C", marginBottom: 6 }}>
