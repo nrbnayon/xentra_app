@@ -1,9 +1,15 @@
 import { SHADOWS } from "@/lib/shadows";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { LinearGradient } from "expo-linear-gradient";
-import { Home, LineChart, Trophy, User, Wallet } from "lucide-react-native";
 import { Platform, Pressable, Text } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import {
+  HomeIcon,
+  LeaderboardIcon,
+  PredictionIcon,
+  ProfileIcon,
+  WalletIcon,
+} from "./TabIcons";
 
 export function CustomTabBar({
   state,
@@ -58,44 +64,19 @@ export function CustomTabBar({
         };
 
         const renderIcon = (color: string) => {
-          const size = 24;
           switch (route.name) {
             case "index":
-              return (
-                <Home
-                  size={size}
-                  color={color}
-                  fill={isFocused ? color : "white"}
-                />
-              );
+              return <HomeIcon color={color} />;
             case "prediction":
-              return <LineChart size={size} color={color} />; // Wavy chart line
+              return <PredictionIcon color={color} />;
             case "leaderboard":
-              return (
-                <Trophy
-                  size={size}
-                  color={color}
-                  fill={isFocused ? color : "transparent"}
-                />
-              );
+              return <LeaderboardIcon color={color} />;
             case "wallet":
-              return (
-                <Wallet
-                  size={size}
-                  color={color}
-                  fill={isFocused ? color : "transparent"}
-                />
-              );
+              return <WalletIcon isSelected={isFocused} />;
             case "profile":
-              return (
-                <User
-                  size={size}
-                  color={color}
-                  fill={isFocused ? color : "transparent"}
-                />
-              );
+              return <ProfileIcon color={color} />;
             default:
-              return <Home size={size} color={color} />;
+              return <HomeIcon color={color} />;
           }
         };
 
