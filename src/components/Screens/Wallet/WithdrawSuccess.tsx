@@ -1,14 +1,7 @@
 import { LinearGradient } from "expo-linear-gradient";
-import { ChevronLeft, X } from "lucide-react-native";
+import { X } from "lucide-react-native";
 import { useEffect, useMemo } from "react";
-import {
-  Dimensions,
-  Image,
-  Pressable,
-  ScrollView,
-  Text,
-  View,
-} from "react-native";
+import { Dimensions, Image, ScrollView, Text, View } from "react-native";
 import Animated, {
   Easing,
   useAnimatedStyle,
@@ -19,6 +12,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { BackButton } from "../../../components/ui/BackButton";
 import { ActionButton, PRIMARY } from "./Common";
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
@@ -205,24 +199,7 @@ export function WithdrawSuccess({
           zIndex: 10,
         }}
       >
-        <Pressable
-          onPress={onDone}
-          style={{
-            width: 32,
-            height: 32,
-            borderRadius: 20,
-            backgroundColor: "#FFFFFF",
-            alignItems: "center",
-            justifyContent: "center",
-            shadowColor: "#000",
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.1,
-            shadowRadius: 4,
-            elevation: 3,
-          }}
-        >
-          <ChevronLeft size={22} color="#303030" />
-        </Pressable>
+        <BackButton onPress={onDone} />
       </View>
 
       <ScrollView

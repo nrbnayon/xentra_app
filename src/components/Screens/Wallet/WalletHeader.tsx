@@ -1,5 +1,5 @@
-import { ChevronLeft } from "lucide-react-native";
-import { Pressable, Text, View } from "react-native";
+import { BackButton } from "@/components/ui/BackButton";
+import { Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface Props {
@@ -18,19 +18,7 @@ export function WalletHeader({ title, onBack }: Props) {
       }}
     >
       <View style={{ flexDirection: "row", alignItems: "center", gap: 16 }}>
-        <Pressable
-          onPress={onBack}
-          style={{
-            width: 32,
-            height: 32,
-            borderRadius: 20,
-            backgroundColor: "#FFFFFF",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <ChevronLeft size={20} color="#303030" />
-        </Pressable>
+        <BackButton onPress={onBack} />
         <Text style={{ fontSize: 20, fontWeight: "700", color: "#303030" }}>
           {title}
         </Text>

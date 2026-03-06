@@ -1,13 +1,12 @@
+import { BackButton } from "@/components/ui/BackButton";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { ChevronLeft } from "lucide-react-native";
 import React from "react";
 import {
   Keyboard,
   KeyboardAvoidingView,
   Platform,
-  Pressable,
   ScrollView,
   Text,
   TouchableWithoutFeedback,
@@ -50,13 +49,7 @@ export default function AuthLayout({
         style={{ paddingTop: insets.top + 12, marginBottom: 0 }}
       >
         {showBackButton ? (
-          <Pressable
-            onPress={handleBack}
-            className="w-9 h-9 items-center justify-center bg-white/80 rounded-full shadow-sm border border-gray-100"
-            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-          >
-            <ChevronLeft size={22} color="#1E3A8A" />
-          </Pressable>
+          <BackButton onPress={handleBack} />
         ) : (
           /* invisible spacer so layout stays consistent */
           <View className="w-9 h-9" />

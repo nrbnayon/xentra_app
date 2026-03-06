@@ -1,8 +1,8 @@
+import { BackButton } from "@/components/ui/BackButton";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
-import { ChevronLeft } from "lucide-react-native";
 import { useEffect, useMemo } from "react";
-import { Dimensions, Image, Pressable, Text, View } from "react-native";
+import { Dimensions, Image, Text, View } from "react-native";
 import Animated, {
   Easing,
   useAnimatedStyle,
@@ -180,13 +180,10 @@ export default function PredictionSuccess() {
           zIndex: 10,
         }}
       >
-        {/* Header Back Button */}
-        <Pressable
+        <BackButton
           onPress={() => router.replace("/(protected)/" as any)}
-          className="w-10 h-10 bg-white rounded-full items-center justify-center shadow-sm mb-12"
-        >
-          <ChevronLeft size={24} color="#111111" />
-        </Pressable>
+          style={{ marginBottom: 48 }}
+        />
 
         <View className="flex-1 items-center justify-center -mt-20">
           <Image

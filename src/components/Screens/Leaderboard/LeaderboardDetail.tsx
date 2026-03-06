@@ -1,10 +1,10 @@
 // src\components\Screens\Leaderboard\LeaderboardDetail.tsx
+import { BackButton } from "@/components/ui/BackButton";
 import { TranslatedText } from "@/components/ui/TranslatedText";
 import { LeaderboardEntry, LeaderboardMatch } from "@/data/mockLeaderboard";
 import { BlurView } from "expo-blur";
 import { LinearGradient } from "expo-linear-gradient";
-import { ChevronLeft } from "lucide-react-native";
-import { FlatList, Image, ImageBackground, Pressable, Text, View } from "react-native";
+import { FlatList, Image, ImageBackground, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface Props {
@@ -70,13 +70,7 @@ export default function LeaderboardDetail({ match, onBack }: Props) {
       <View style={{ flex: 1, paddingTop: insets.top }}>
         {/* ── Header ── */}
         <View className="flex-row items-center gap-4 px-5 pt-2 pb-4">
-          {/* Back button — frosted glass pill, 36×36 */}
-          <Pressable
-            onPress={onBack}
-            className="w-9 h-9 rounded-full items-center justify-center bg-white border border-[#f6f6f6] shadow-md"
-          >
-            <ChevronLeft size={20} color="#303030" />
-          </Pressable>
+          <BackButton onPress={onBack} />
 
           <TranslatedText className="text-[#303030] font-semibold text-xl">
             Leaderboard

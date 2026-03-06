@@ -37,12 +37,12 @@ export function AccountSettings({ onBack }: Props) {
     elevation: 8,
   };
 
-  const handleSaveName = () => {
+  const handleSaveName = async () => {
     if (!name.trim()) {
       showToast("Name cannot be empty", "error");
       return;
     }
-    // Mock save
+    await updateUser({ full_name: name });
     showToast("Name updated successfully", "success");
     setEditMode("none");
   };
@@ -223,7 +223,12 @@ export function AccountSettings({ onBack }: Props) {
                 Name
               </TranslatedText>
               {editMode !== "name" && (
-                <TouchableOpacity onPress={() => setEditMode("name")}>
+                <TouchableOpacity
+                  onPress={() => {
+                    setName(user?.full_name || "");
+                    setEditMode("name");
+                  }}
+                >
                   <UserPen size={18} color="#303030" />
                 </TouchableOpacity>
               )}
@@ -278,7 +283,9 @@ export function AccountSettings({ onBack }: Props) {
                 </View>
               </View>
             ) : (
-              <Text style={{ fontSize: 16, color: "#686868" }}>{name}</Text>
+              <Text style={{ fontSize: 16, color: "#686868" }}>
+                {user?.full_name || "Enter Name"}
+              </Text>
             )}
           </View>
 

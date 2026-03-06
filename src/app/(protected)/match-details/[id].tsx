@@ -1,8 +1,8 @@
+import { BackButton } from "@/components/ui/BackButton";
 import { Button } from "@/components/ui/button";
 import { mockMatches } from "@/data/mock";
 import { LinearGradient } from "expo-linear-gradient";
 import { router, useLocalSearchParams } from "expo-router";
-import { ChevronLeft } from "lucide-react-native";
 import { useState } from "react";
 import {
   Image,
@@ -62,13 +62,10 @@ export default function MatchDetails() {
             paddingBottom: insets.bottom + 20,
           }}
         >
-          {/* Header */}
-          <Pressable
+          <BackButton
             onPress={() => router.back()}
-            className="w-10 h-10 bg-white rounded-full items-center justify-center shadow-sm mb-6"
-          >
-            <ChevronLeft size={24} color="#111111" />
-          </Pressable>
+            style={{ marginBottom: 24 }}
+          />
 
           <Text className="text-2xl font-bold text-[#1F2937] mb-6">
             Select Your Team
