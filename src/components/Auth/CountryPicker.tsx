@@ -61,7 +61,7 @@ export default function CountryPicker({
         >
           <Pressable className="mt-auto" onPress={(e) => e.stopPropagation()}>
             <View
-              className="bg-white rounded-t-3xl max-h-[80%] w-full"
+              className="bg-white rounded-t-3xl min-h-[50%] w-full"
               style={{
                 paddingBottom: insets.bottom + 16,
               }}

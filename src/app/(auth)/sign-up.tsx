@@ -3,6 +3,7 @@ import AuthLayout from "@/components/Auth/AuthLayout";
 import CountryPicker from "@/components/Auth/CountryPicker";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { TranslatedText } from "@/components/ui/TranslatedText";
 import { Country } from "@/constants/countries";
 import { cn } from "@/lib/utils";
 import { useToastStore } from "@/store/useToastStore";
@@ -116,7 +117,7 @@ export default function SignUpPage() {
       <View className="gap-1 mb-6">
         {/* Phone Field */}
         <View className="gap-2 mb-4">
-          <Text className="text-base font-semibold text-foreground">Phone</Text>
+          <TranslatedText className="text-base font-semibold text-foreground">Phone</TranslatedText>
           <View className="flex-row gap-2">
             <CountryPicker
               selectedCountry={selectedCountry}
@@ -200,32 +201,32 @@ export default function SignUpPage() {
               }}
               className="mt-0.5 rounded-md border-gray-300"
             />
-            <Text className="text-[13px] text-foreground/80 leading-[20px] flex-1">
+            <TranslatedText className="text-[13px] text-foreground/80 leading-[20px] flex-1">
               I confirm that I am 18+ and agree to XENTRA&apos;s{" "}
-              <Text
+              <TranslatedText
                 onPress={() => router.push("/(public)/terms")}
                 className="text-yellow font-bold"
               >
                 Terms & Conditions
-              </Text>
+              </TranslatedText>
               {", "}
-              <Text
+              <TranslatedText
                 onPress={() => router.push("/(public)/privacy")}
                 className="text-yellow font-bold"
               >
                 Privacy Policy
-              </Text>
+              </TranslatedText>
               {" and "}
-              <Text
+              <TranslatedText
                 onPress={() => router.push("/(public)/contest-rules")}
                 className="text-yellow font-bold"
               >
                 Contest Rules
-              </Text>
-            </Text>
+              </TranslatedText>
+            </TranslatedText>
           </Pressable>
           {errors.terms ? (
-            <Text className="text-red-500 text-xs px-1">{errors.terms}</Text>
+            <TranslatedText className="text-red-500 text-xs px-1">{errors.terms}</TranslatedText>
           ) : null}
         </View>
       </View>
@@ -244,15 +245,15 @@ export default function SignUpPage() {
         {isSubmitting ? (
           <ActivityIndicator color="white" />
         ) : (
-          <Text className="text-white font-bold text-lg">Sign Up</Text>
+          <TranslatedText className="text-white font-bold text-lg">Sign Up</TranslatedText>
         )}
       </Button>
 
       {/* Footer */}
       <View className="flex-row justify-center mt-6">
-        <Text className="text-foreground">Already have an account? </Text>
+        <TranslatedText className="text-foreground">Already have an account? </TranslatedText>
         <Pressable onPress={() => router.push("/(auth)/login")}>
-          <Text className="text-yellow font-bold">Sign In</Text>
+          <TranslatedText className="text-yellow font-bold">Sign In</TranslatedText>
         </Pressable>
       </View>
     </AuthLayout>

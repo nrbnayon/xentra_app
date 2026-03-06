@@ -1,6 +1,7 @@
 import AuthLayout from "@/components/Auth/AuthLayout";
 import CountryPicker from "@/components/Auth/CountryPicker";
 import { Button } from "@/components/ui/button";
+import { TranslatedText } from "@/components/ui/TranslatedText";
 import { Country } from "@/constants/countries";
 import { useToastStore } from "@/store/useToastStore";
 import { router } from "expo-router";
@@ -81,7 +82,7 @@ export default function ForgotPasswordPage() {
     >
       {/* Phone Field */}
       <View className="gap-2 mb-8">
-        <Text className="text-base font-semibold text-foreground">Phone</Text>
+        <TranslatedText className="text-base font-semibold text-foreground">Phone</TranslatedText>
         <View className="flex-row gap-2">
           <CountryPicker
             selectedCountry={selectedCountry}
@@ -105,7 +106,7 @@ export default function ForgotPasswordPage() {
           </View>
         </View>
         {phoneError ? (
-          <Text className="text-red-500 text-xs px-1">{phoneError}</Text>
+          <TranslatedText className="text-red-500 text-xs px-1">{phoneError}</TranslatedText>
         ) : null}
       </View>
 
@@ -118,7 +119,7 @@ export default function ForgotPasswordPage() {
         {isSubmitting ? (
           <ActivityIndicator color="white" />
         ) : (
-          <Text className="text-white font-bold text-base">Reset Password</Text>
+          <TranslatedText className="text-white font-bold text-base">Reset Password</TranslatedText>
         )}
       </Button>
     </AuthLayout>

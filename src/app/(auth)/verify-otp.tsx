@@ -1,6 +1,7 @@
 import AuthLayout from "@/components/Auth/AuthLayout";
 import OtpInput from "@/components/Auth/OtpInput";
 import { Button } from "@/components/ui/button";
+import { TranslatedText } from "@/components/ui/TranslatedText";
 import { useToastStore } from "@/store/useToastStore";
 import { router, useLocalSearchParams } from "expo-router";
 import { useState } from "react";
@@ -70,11 +71,11 @@ export default function VerifyOTPPage() {
         />
 
         <View className="flex-row justify-center mt-6">
-          <Text className="text-secondary text-sm font-medium">
+          <TranslatedText className="text-secondary text-sm font-medium">
             Didn&apos;t get OTP?{" "}
-          </Text>
+          </TranslatedText>
           <Pressable onPress={handleResend}>
-            <Text className="text-yellow font-bold text-sm">Resent</Text>
+            <TranslatedText className="text-yellow font-bold text-sm">Resent</TranslatedText>
           </Pressable>
         </View>
       </View>
@@ -87,7 +88,7 @@ export default function VerifyOTPPage() {
         {isVerifying ? (
           <ActivityIndicator color="white" />
         ) : (
-          <Text className="text-white font-bold text-lg">Verify</Text>
+          <TranslatedText className="text-white font-bold text-lg">Verify</TranslatedText>
         )}
       </Button>
     </AuthLayout>

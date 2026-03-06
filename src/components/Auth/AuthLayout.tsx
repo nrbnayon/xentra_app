@@ -13,6 +13,7 @@ import {
   View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { TranslatedText } from "../ui/TranslatedText";
 
 interface AuthLayoutProps {
   children: React.ReactNode;
@@ -62,14 +63,14 @@ export default function AuthLayout({
         {(title || subtitle) && (
           <View className="items-center gap-2 mb-10">
             {title ? (
-              <Text className="text-4xl font-bold text-primary text-center leading-10">
+              <TranslatedText className="text-4xl font-bold text-primary text-center leading-10">
                 {title}
-              </Text>
+              </TranslatedText>
             ) : null}
             {subtitle ? (
-              <Text className="text-base text-secondary text-center leading-5 px-2">
+              <TranslatedText className="text-base text-secondary text-center leading-5 px-2">
                 {subtitle}
-              </Text>
+              </TranslatedText>
             ) : null}
           </View>
         )}

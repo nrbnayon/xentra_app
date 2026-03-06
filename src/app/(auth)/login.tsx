@@ -2,6 +2,7 @@ import AuthLayout from "@/components/Auth/AuthLayout";
 import CountryPicker from "@/components/Auth/CountryPicker";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { TranslatedText } from "@/components/ui/TranslatedText";
 import { Country } from "@/constants/countries";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useToastStore } from "@/store/useToastStore";
@@ -123,7 +124,7 @@ export default function LoginPage() {
       <View className="gap-5 mb-10">
         {/* Phone Field */}
         <View className="gap-2">
-          <Text className="text-base font-semibold text-foreground">Phone</Text>
+          <TranslatedText className="text-base font-semibold text-foreground">Phone</TranslatedText>
 
           <View className="flex-row gap-2">
             {/* Country Dial Picker */}
@@ -160,15 +161,15 @@ export default function LoginPage() {
           </View>
 
           {phoneError ? (
-            <Text className="text-red-500 text-xs px-1">{phoneError}</Text>
+            <TranslatedText className="text-red-500 text-xs px-1">{phoneError}</TranslatedText>
           ) : null}
         </View>
 
         {/* Password Field */}
         <View className="gap-2">
-          <Text className="text-base font-semibold text-foreground">
+          <TranslatedText className="text-base font-semibold text-foreground">
             Password
-          </Text>
+          </TranslatedText>
 
           <View
             className={`flex-row items-center h-14 rounded-xl border px-3.5 gap-2 bg-white ${
@@ -204,7 +205,7 @@ export default function LoginPage() {
           </View>
 
           {passwordError ? (
-            <Text className="text-red-500 text-xs px-1">{passwordError}</Text>
+            <TranslatedText className="text-red-500 text-xs px-1">{passwordError}</TranslatedText>
           ) : null}
 
           {/* Remember me + Forgot */}
@@ -215,18 +216,18 @@ export default function LoginPage() {
               hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
             >
               <Checkbox checked={rememberMe} onCheckedChange={setRememberMe} />
-              <Text className="text-sm text-foreground font-medium">
+              <TranslatedText className="text-sm text-foreground font-medium">
                 Remember me
-              </Text>
+              </TranslatedText>
             </Pressable>
 
             <Pressable
               onPress={() => router.push("/(auth)/forgot-password")}
               hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
             >
-              <Text className="text-sm font-semibold text-yellow">
+              <TranslatedText className="text-sm font-semibold text-yellow">
                 Forget Password?
-              </Text>
+              </TranslatedText>
             </Pressable>
           </View>
         </View>

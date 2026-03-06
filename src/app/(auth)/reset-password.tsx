@@ -1,6 +1,7 @@
 import AuthInput from "@/components/Auth/AuthInput";
 import AuthLayout from "@/components/Auth/AuthLayout";
 import { Button } from "@/components/ui/button";
+import { TranslatedText } from "@/components/ui/TranslatedText";
 import { useToastStore } from "@/store/useToastStore";
 import { router } from "expo-router";
 import { Lock } from "lucide-react-native";
@@ -122,9 +123,9 @@ export default function ResetPasswordPage() {
         {!errors.confirmPassword &&
           confirmPassword.length > 0 &&
           newPassword === confirmPassword && (
-            <Text className="text-green-600 text-xs px-1 -mt-2">
+            <TranslatedText className="text-green-600 text-xs px-1 -mt-2">
               ✓ Passwords match
-            </Text>
+            </TranslatedText>
           )}
       </View>
 
@@ -137,7 +138,7 @@ export default function ResetPasswordPage() {
         {isSubmitting ? (
           <ActivityIndicator color="white" />
         ) : (
-          <Text className="text-white font-bold text-base">Reset Password</Text>
+          <TranslatedText className="text-white font-bold text-base">Reset Password</TranslatedText>
         )}
       </Button>
     </AuthLayout>

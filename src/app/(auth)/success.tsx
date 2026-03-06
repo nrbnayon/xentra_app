@@ -5,6 +5,7 @@ import { Check } from "lucide-react-native";
 import { Text, View } from "react-native";
 
 import { useEffect } from "react";
+import { TranslatedText } from "@/components/ui/TranslatedText";
 
 export default function SuccessPage() {
   const { mode } = useLocalSearchParams<{ mode: string }>();
@@ -39,14 +40,14 @@ export default function SuccessPage() {
 
         {/* Text Section */}
         <View className="items-center gap-3">
-          <Text className="text-4xl font-bold text-primary text-center">
+          <TranslatedText className="text-4xl font-bold text-primary text-center">
             Congratulations!
-          </Text>
-          <Text className="text-base text-secondary text-center px-8 leading-6">
+          </TranslatedText>
+          <TranslatedText className="text-base text-secondary text-center px-8 leading-6">
             {mode === "signup"
               ? "Account created successful! You'll be redirected to the sign in screen now"
               : "Password Reset successful! You'll be redirected to the sign in screen now"}
-          </Text>
+          </TranslatedText>
         </View>
 
         {/* Button */}
@@ -54,7 +55,7 @@ export default function SuccessPage() {
           onPress={handleSignIn}
           className="w-full h-14 rounded-xl bg-primary"
         >
-          <Text className="text-white font-bold text-base">Sign In</Text>
+          <TranslatedText className="text-white font-bold text-base">Sign In</TranslatedText>
         </Button>
       </View>
     </AuthLayout>
