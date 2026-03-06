@@ -21,15 +21,15 @@ export function WalletHeader({ title, onBack }: Props) {
         <Pressable
           onPress={onBack}
           style={{
-            width: 40,
-            height: 40,
+            width: 32,
+            height: 32,
             borderRadius: 20,
-            backgroundColor: "#F0F4F8",
+            backgroundColor: "#FFFFFF",
             alignItems: "center",
             justifyContent: "center",
           }}
         >
-          <ChevronLeft size={22} color="#303030" />
+          <ChevronLeft size={20} color="#303030" />
         </Pressable>
         <Text style={{ fontSize: 20, fontWeight: "700", color: "#303030" }}>
           {title}

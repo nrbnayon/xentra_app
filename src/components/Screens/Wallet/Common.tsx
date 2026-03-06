@@ -15,7 +15,7 @@ export function ActionButton({ label, onPress, disabled }: ActionButtonProps) {
       onPress={onPress}
       disabled={disabled}
       className={cn(
-        "bg-primary rounded-3 py-4 items-center rounded",
+        "bg-primary rounded-3 py-3 items-center rounded",
         disabled && "opacity-60 bg-[#8FAAC7]",
       )}
       style={({ pressed }) => [pressed && !disabled && { opacity: 0.8 }]}
@@ -41,13 +41,13 @@ export function FormInput({
   return (
     <TextInput
       placeholder={placeholder}
-      placeholderTextColor="#B0B0B0"
+      placeholderTextColor="#8A8A8A"
       value={value}
       onChangeText={onChangeText}
       keyboardType={keyboardType ?? "default"}
-      className="h-[52px] rounded-xl border border-[#E0E0E0] px-4 text-[15px] text-[#303030] bg-[#FAFAFA]"
+      className="h-[52px] rounded-md border border-[#EDEDED] px-4 text-base text-[#303030] bg-white"
       style={{
-        lineHeight: 20, // Better alignment
+        lineHeight: 20,
       }}
     />
   );

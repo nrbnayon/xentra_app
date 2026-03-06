@@ -16,8 +16,10 @@ export interface WalletStats {
 
 export type WalletStep =
   | "main"
-  | "deposit-option"
   | "deposit-amount"
+  | "deposit-option"
+  | "deposit-number"
   | "withdraw-amount"
+  | "withdraw-option"
   | "withdraw-number"
-  | "withdraw-success";
+  | "success";

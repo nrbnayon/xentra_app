@@ -5,12 +5,20 @@ import { ActionButton, PRIMARY } from "./Common";
 import { WalletHeader } from "./WalletHeader";
 
 interface Props {
+  title: string;
+  buttonLabel: string;
   methods: string[];
   onBack: () => void;
   onNext: (method: string) => void;
 }
 
-export function DepositOption({ methods, onBack, onNext }: Props) {
+export function DepositOption({
+  title,
+  buttonLabel,
+  methods,
+  onBack,
+  onNext,
+}: Props) {
   const [selected, setSelected] = useState<string | null>(null);
 
   return (
@@ -21,7 +29,7 @@ export function DepositOption({ methods, onBack, onNext }: Props) {
       end={{ x: 0.45, y: 1 }}
       className="flex-1"
     >
-      <WalletHeader title="Deposit Option" onBack={onBack} />
+      <WalletHeader title={title} onBack={onBack} />
       <View style={{ flex: 1, paddingHorizontal: 20, paddingTop: 24 }}>
         {methods.map((method) => (
           <Pressable
@@ -67,7 +75,7 @@ export function DepositOption({ methods, onBack, onNext }: Props) {
 
         <View style={{ marginTop: 8 }}>
           <ActionButton
-            label="Deposit"
+            label={buttonLabel}
             onPress={() => selected && onNext(selected)}
             disabled={!selected}
           />

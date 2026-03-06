@@ -16,83 +16,110 @@ import { useState } from "react";
 
 export default function WalletTab() {
   const [step, setStep] = useState<WalletStep>("main");
-  const [depositMethod, setDepositMethod] = useState("");
-  const [withdrawAmount, setWithdrawAmount] = useState("");
-  const [withdrawNumber, setWithdrawNumber] = useState("");
+  const [selectedMethod, setSelectedMethod] = useState("");
+  const [currentAmount, setCurrentAmount] = useState("");
+  const [currentNumber, setCurrentNumber] = useState("");
+  const [activeFlow, setActiveFlow] = useState<"deposit" | "withdraw">(
+    "deposit",
+  );
+  const [transactionStatus, setTransactionStatus] = useState<
+    "success" | "failure"
+  >("success");
 
-  // ── Deposit flow ──
-  if (step === "deposit-option") {
-    return (
-      <DepositOption
-        methods={PAYMENT_METHODS}
-        onBack={() => setStep("main")}
-        onNext={(method) => {
-          setDepositMethod(method);
-          setStep("deposit-amount");
-        }}
-      />
-    );
-  }
+  const resetFlow = () => {
+    setCurrentAmount("");
+    setSelectedMethod("");
+    setCurrentNumber("");
+    setStep("main");
+  };
 
+  // 1. Amount Step (Image 1 & 2)
   if (step === "deposit-amount") {
     return (
       <DepositAmount
-        onBack={() => setStep("deposit-option")}
-        onConfirm={() => {
-          // In a real app, logic to process deposit would go here
-          setStep("main");
+        onBack={() => setStep("main")}
+        onConfirm={(amt) => {
+          setCurrentAmount(amt);
+          setActiveFlow("deposit");
+          setStep("deposit-option");
         }}
       />
     );
   }
 
-  // ── Withdraw flow ──
   if (step === "withdraw-amount") {
     return (
       <WithdrawAmount
         onBack={() => setStep("main")}
-        onNext={(amount) => {
-          setWithdrawAmount(amount);
-          setStep("withdraw-number");
+        onNext={(amt) => {
+          setCurrentAmount(amt);
+          setActiveFlow("withdraw");
+          setStep("withdraw-option");
         }}
       />
     );
   }
 
-  if (step === "withdraw-number") {
+  // 2. Option Step (Image 3 & 4)
+  if (step === "deposit-option" || step === "withdraw-option") {
+    const isDeposit = step === "deposit-option";
+    return (
+      <DepositOption
+        title={isDeposit ? "Deposit Option" : "Withdraw Option"}
+        buttonLabel={isDeposit ? "Deposit" : "Withdraw"}
+        methods={PAYMENT_METHODS}
+        onBack={() => setStep(isDeposit ? "deposit-amount" : "withdraw-amount")}
+        onNext={(method) => {
+          setSelectedMethod(method);
+          setStep(isDeposit ? "deposit-number" : "withdraw-number");
+        }}
+      />
+    );
+  }
+
+  // 3. Number Step (Image 5)
+  if (step === "deposit-number" || step === "withdraw-number") {
+    const isDeposit = step === "deposit-number";
     return (
       <WithdrawNumber
-        onBack={() => setStep("withdraw-amount")}
-        onSubmit={(number) => {
-          setWithdrawNumber(number);
-          setStep("withdraw-success");
+        title={isDeposit ? "Deposit Amount" : "Withdraw Amount"}
+        buttonLabel={isDeposit ? "Deposit" : "Withdraw"}
+        onBack={() => setStep(isDeposit ? "deposit-option" : "withdraw-option")}
+        onSubmit={(num) => {
+          setCurrentNumber(num);
+          setTransactionStatus("success");
+          setStep("success");
         }}
       />
     );
   }
 
-  if (step === "withdraw-success") {
+  // 4. Success Step
+  if (step === "success") {
     return (
       <WithdrawSuccess
-        amount={withdrawAmount}
-        method="Moncash"
-        accountNumber={withdrawNumber}
-        onDone={() => {
-          setWithdrawAmount("");
-          setWithdrawNumber("");
-          setStep("main");
-        }}
+        status={transactionStatus}
+        amount={currentAmount}
+        method={selectedMethod}
+        accountNumber={currentNumber}
+        onDone={resetFlow}
       />
     );
   }
 
-  // ── Main wallet ──
+  // Main Wallet Dashboard
   return (
     <WalletMain
       stats={MOCK_WALLET_STATS}
       transactions={MOCK_TRANSACTIONS}
-      onDeposit={() => setStep("deposit-option")}
-      onWithdraw={() => setStep("withdraw-amount")}
+      onDeposit={() => {
+        setActiveFlow("deposit");
+        setStep("deposit-amount");
+      }}
+      onWithdraw={() => {
+        setActiveFlow("withdraw");
+        setStep("withdraw-amount");
+      }}
     />
   );
 }

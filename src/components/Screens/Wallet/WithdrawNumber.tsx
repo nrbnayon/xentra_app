@@ -5,11 +5,18 @@ import { ActionButton, FormInput } from "./Common";
 import { WalletHeader } from "./WalletHeader";
 
 interface Props {
+  title: string;
+  buttonLabel: string;
   onBack: () => void;
   onSubmit: (number: string) => void;
 }
 
-export function WithdrawNumber({ onBack, onSubmit }: Props) {
+export function WithdrawNumber({
+  title,
+  buttonLabel,
+  onBack,
+  onSubmit,
+}: Props) {
   const [number, setNumber] = useState("");
 
   return (
@@ -20,7 +27,7 @@ export function WithdrawNumber({ onBack, onSubmit }: Props) {
       end={{ x: 0.45, y: 1 }}
       className="flex-1"
     >
-      <WalletHeader title="Withdraw Amount" onBack={onBack} />
+      <WalletHeader title={title} onBack={onBack} />
       <View style={{ flex: 1, paddingHorizontal: 20, paddingTop: 24 }}>
         <Text
           style={{
@@ -33,7 +40,7 @@ export function WithdrawNumber({ onBack, onSubmit }: Props) {
           Moncash/Natcash Number
         </Text>
         <FormInput
-          placeholder="Enter Number"
+          placeholder="Enter Account Number"
           value={number}
           onChangeText={setNumber}
           keyboardType="phone-pad"
@@ -43,7 +50,7 @@ export function WithdrawNumber({ onBack, onSubmit }: Props) {
         </Text>
         <View style={{ marginTop: 20 }}>
           <ActionButton
-            label="Withdraw"
+            label={buttonLabel}
             onPress={() => number && onSubmit(number)}
             disabled={!number}
           />
