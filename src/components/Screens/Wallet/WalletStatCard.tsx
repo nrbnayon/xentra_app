@@ -1,3 +1,4 @@
+import { TranslatedText } from "@/components/ui/TranslatedText";
 import { ReactNode } from "react";
 import { Text, View } from "react-native";
 
@@ -53,7 +54,7 @@ export function WalletStatCard({
         >
           {value}
         </Text>
-        <Text
+        <TranslatedText
           style={{
             fontSize: isLarge ? 13 : 11,
             color: "#6B7280",
@@ -61,7 +62,7 @@ export function WalletStatCard({
           }}
         >
           {label}
-        </Text>
+        </TranslatedText>
       </View>
     </View>
   );

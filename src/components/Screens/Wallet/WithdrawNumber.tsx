@@ -1,8 +1,9 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { useState } from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import { ActionButton, FormInput } from "./Common";
 import { WalletHeader } from "./WalletHeader";
+import { TranslatedText } from "@/components/ui/TranslatedText";
 
 interface Props {
   title: string;
@@ -29,7 +30,7 @@ export function WithdrawNumber({
     >
       <WalletHeader title={title} onBack={onBack} />
       <View style={{ flex: 1, paddingHorizontal: 20, paddingTop: 24 }}>
-        <Text
+        <TranslatedText
           style={{
             fontSize: 16,
             fontWeight: "600",
@@ -38,16 +39,16 @@ export function WithdrawNumber({
           }}
         >
           Moncash/Natcash Number
-        </Text>
+        </TranslatedText>
         <FormInput
           placeholder="Enter Account Number"
           value={number}
           onChangeText={setNumber}
           keyboardType="phone-pad"
         />
-        <Text style={{ fontSize: 13, color: "#9E9E9E", marginTop: 6 }}>
+        <TranslatedText style={{ fontSize: 13, color: "#9E9E9E", marginTop: 6 }}>
           Enter your Moncash/Natcash number
-        </Text>
+        </TranslatedText>
         <View style={{ marginTop: 20 }}>
           <ActionButton
             label={buttonLabel}

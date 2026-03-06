@@ -7,7 +7,7 @@ import { useToastStore } from "@/store/useToastStore";
 import { router } from "expo-router";
 import parsePhoneNumberFromString, { CountryCode } from "libphonenumber-js";
 import { useState } from "react";
-import { ActivityIndicator, Text, TextInput, View } from "react-native";
+import { ActivityIndicator,  TextInput, View } from "react-native";
 
 export default function ForgotPasswordPage() {
   const [phone, setPhone] = useState("");

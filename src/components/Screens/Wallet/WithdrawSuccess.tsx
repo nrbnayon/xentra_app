@@ -14,6 +14,7 @@ import Animated, {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { BackButton } from "../../../components/ui/BackButton";
 import { ActionButton, PRIMARY } from "./Common";
+import { TranslatedText } from "@/components/ui/TranslatedText";
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
@@ -244,7 +245,7 @@ export function WithdrawSuccess({
         >
           {status === "success" ? "Congratulations!" : "Transaction Failed"}
         </Text>
-        <Text
+        <TranslatedText
           style={{
             fontSize: 14,
             color: "#6B7280",
@@ -257,7 +258,7 @@ export function WithdrawSuccess({
           {status === "success"
             ? "Your transaction request has been submitted successfully."
             : "Something went wrong with your transaction. Please try again later."}
-        </Text>
+        </TranslatedText>
 
         <View
           style={{
@@ -291,9 +292,9 @@ export function WithdrawSuccess({
                 paddingVertical: 8,
               }}
             >
-              <Text style={{ fontSize: 14, color: "#6B7280", flex: 1 }}>
+              <TranslatedText style={{ fontSize: 14, color: "#6B7280", flex: 1 }}>
                 {row.label}
-              </Text>
+              </TranslatedText>
               <Text
                 style={{
                   fontSize: 14,

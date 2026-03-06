@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Text, View } from "react-native";
 import { ActionButton, FormInput } from "./Common";
 import { WalletHeader } from "./WalletHeader";
+import { TranslatedText } from "@/components/ui/TranslatedText";
 
 interface Props {
   onBack: () => void;
@@ -22,7 +23,7 @@ export function WithdrawAmount({ onBack, onNext }: Props) {
     >
       <WalletHeader title="Withdraw Amount" onBack={onBack} />
       <View style={{ flex: 1, paddingHorizontal: 20, paddingTop: 24 }}>
-        <Text
+        <TranslatedText
           style={{
             fontSize: 16,
             fontWeight: "600",
@@ -31,7 +32,7 @@ export function WithdrawAmount({ onBack, onNext }: Props) {
           }}
         >
           Withdraw Amount
-        </Text>
+        </TranslatedText>
         <FormInput
           placeholder="Enter amount"
           value={amount}

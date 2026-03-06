@@ -1,5 +1,6 @@
 import { BackButton } from "@/components/ui/BackButton";
-import { Text, View } from "react-native";
+import { TranslatedText } from "@/components/ui/TranslatedText";
+import { View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface Props {
@@ -19,9 +20,9 @@ export function WalletHeader({ title, onBack }: Props) {
     >
       <View style={{ flexDirection: "row", alignItems: "center", gap: 16 }}>
         <BackButton onPress={onBack} />
-        <Text style={{ fontSize: 20, fontWeight: "700", color: "#303030" }}>
+        <TranslatedText style={{ fontSize: 20, fontWeight: "700", color: "#303030" }}>
           {title}
-        </Text>
+        </TranslatedText>
       </View>
     </View>
   );

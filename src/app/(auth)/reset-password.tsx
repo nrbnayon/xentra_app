@@ -6,7 +6,7 @@ import { useToastStore } from "@/store/useToastStore";
 import { router } from "expo-router";
 import { Lock } from "lucide-react-native";
 import { useState } from "react";
-import { ActivityIndicator, Text, View } from "react-native";
+import { ActivityIndicator, View } from "react-native";
 
 export default function ResetPasswordPage() {
   const [currentPassword, setCurrentPassword] = useState("");

@@ -1,7 +1,9 @@
 import { TranslatedText } from "@/components/ui/TranslatedText";
+import { useLanguage } from "@/context/LanguageContext";
 import { useAuthStore } from "@/store/useAuthStore";
 import { Image } from "expo-image";
-import { Calendar, LogOut, Settings } from "lucide-react-native";
+import { router } from "expo-router";
+import { Calendar, Languages, LogOut, Settings } from "lucide-react-native";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -13,6 +15,7 @@ interface Props {
 export function ProfileMain({ onEditAccount, onLogout }: Props) {
   const { user } = useAuthStore();
   const insets = useSafeAreaInsets();
+  const { currentLanguage } = useLanguage();
 
   const shadowStyle = {
     shadowColor: "#656565",
@@ -118,6 +121,29 @@ export function ProfileMain({ onEditAccount, onLogout }: Props) {
             <TranslatedText className="text-xl font-medium text-[#6C6C6C]">
               Account Settings
             </TranslatedText>
+          </Pressable>
+
+          {/* Language Selection */}
+          <Pressable
+            className="flex-row items-center py-3"
+            onPress={() => router.push("/(public)/language-select")}
+            style={({ pressed }) => ({
+              opacity: pressed ? 0.6 : 1,
+            })}
+          >
+            <View className="flex-row items-center flex-1">
+              <Languages
+                size={24}
+                color="#6C6C6C"
+                style={{ marginRight: 16 }}
+              />
+              <TranslatedText className="text-xl font-medium text-[#6C6C6C]">
+                Language
+              </TranslatedText>
+            </View>
+            <Text className="text-base text-primary/70 font-semibold">
+              {currentLanguage.name}
+            </Text>
           </Pressable>
 
           {/* Logout */}

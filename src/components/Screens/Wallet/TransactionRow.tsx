@@ -1,3 +1,4 @@
+import { TranslatedText } from "@/components/ui/TranslatedText";
 import { Transaction, TransactionStatus } from "@/types/wallet";
 import { Text, View } from "react-native";
 
@@ -30,12 +31,12 @@ export function TransactionRow({ transaction, isLast }: Props) {
         borderBottomColor: "#F5F5F5",
       }}
     >
-      <Text style={{ flex: 1, fontSize: 13, color: "#444" }}>
+      <TranslatedText style={{ flex: 1, fontSize: 13, color: "#444" }}>
         {transaction.date}
-      </Text>
-      <Text style={{ flex: 1, fontSize: 13, color: "#444" }}>
+      </TranslatedText>
+      <TranslatedText style={{ flex: 1, fontSize: 13, color: "#444" }}>
         {transaction.reason}
-      </Text>
+      </TranslatedText>
       <Text style={{ flex: 1, fontSize: 13, color: "#444" }}>
         {transaction.amount}
       </Text>
@@ -48,9 +49,9 @@ export function TransactionRow({ transaction, isLast }: Props) {
             paddingVertical: 4,
           }}
         >
-          <Text style={{ fontSize: 12, fontWeight: "600", color: ss.text }}>
+          <TranslatedText style={{ fontSize: 12, fontWeight: "600", color: ss.text }}>
             {transaction.status}
-          </Text>
+          </TranslatedText>
         </View>
       </View>
     </View>

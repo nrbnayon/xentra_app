@@ -2,7 +2,7 @@ import AuthLayout from "@/components/Auth/AuthLayout";
 import { Button } from "@/components/ui/button";
 import { router, useLocalSearchParams } from "expo-router";
 import { Check } from "lucide-react-native";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 
 import { useEffect } from "react";
 import { TranslatedText } from "@/components/ui/TranslatedText";

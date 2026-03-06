@@ -6,15 +6,17 @@ import {
   WithdrawNumber,
   WithdrawSuccess,
 } from "@/components/Screens/Wallet";
+import { WalletSkeleton } from "@/components/Skeleton/WalletSkeleton";
 import {
   MOCK_TRANSACTIONS,
   MOCK_WALLET_STATS,
   PAYMENT_METHODS,
 } from "@/data/mockWallet";
 import { WalletStep } from "@/types/wallet";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function WalletTab() {
+  const [isLoading, setIsLoading] = useState(true);
   const [step, setStep] = useState<WalletStep>("main");
   const [selectedMethod, setSelectedMethod] = useState("");
   const [currentAmount, setCurrentAmount] = useState("");
@@ -25,6 +27,18 @@ export default function WalletTab() {
   const [transactionStatus, setTransactionStatus] = useState<
     "success" | "failure"
   >("success");
+
+  useEffect(() => {
+    // Simulate loading
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isLoading && step === "main") {
+    return <WalletSkeleton />;
+  }
 
   const resetFlow = () => {
     setCurrentAmount("");

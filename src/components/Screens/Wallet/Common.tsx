@@ -1,3 +1,4 @@
+import { TranslatedText } from "@/components/ui/TranslatedText";
 import { cn } from "@/lib/utils";
 import { Pressable, Text, TextInput } from "react-native";
 
@@ -20,7 +21,7 @@ export function ActionButton({ label, onPress, disabled }: ActionButtonProps) {
       )}
       style={({ pressed }) => [pressed && !disabled && { opacity: 0.8 }]}
     >
-      <Text className="text-white text-base font-bold">{label}</Text>
+      <TranslatedText className="text-white text-base font-bold">{label}</TranslatedText>
     </Pressable>
   );
 }

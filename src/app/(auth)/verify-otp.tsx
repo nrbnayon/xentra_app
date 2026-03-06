@@ -5,7 +5,7 @@ import { TranslatedText } from "@/components/ui/TranslatedText";
 import { useToastStore } from "@/store/useToastStore";
 import { router, useLocalSearchParams } from "expo-router";
 import { useState } from "react";
-import { ActivityIndicator, Pressable, Text, View } from "react-native";
+import { ActivityIndicator, Pressable, View } from "react-native";
 
 export default function VerifyOTPPage() {
   const { mode, phone } = useLocalSearchParams<{

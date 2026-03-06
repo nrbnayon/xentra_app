@@ -1,11 +1,12 @@
 import { Transaction, WalletStats } from "@/types/wallet";
 import { LinearGradient } from "expo-linear-gradient";
 import { Banknote, Briefcase, Wallet } from "lucide-react-native";
-import { ScrollView, Text, View } from "react-native";
+import { ScrollView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { ActionButton } from "./Common";
 import { TransactionRow } from "./TransactionRow";
 import { WalletStatCard } from "./WalletStatCard";
+import { TranslatedText } from "@/components/ui/TranslatedText";
 
 interface Props {
   stats: WalletStats;
@@ -38,7 +39,7 @@ export function WalletMain({
         }}
         showsVerticalScrollIndicator={false}
       >
-        <Text
+        <TranslatedText
           style={{
             fontSize: 22,
             fontWeight: "700",
@@ -47,7 +48,7 @@ export function WalletMain({
           }}
         >
           Wallet Details
-        </Text>
+        </TranslatedText>
 
         <WalletStatCard
           label="Balance"
@@ -75,7 +76,7 @@ export function WalletMain({
           />
         </View>
 
-        <Text
+        <TranslatedText
           style={{
             fontSize: 18,
             fontWeight: "700",
@@ -84,7 +85,7 @@ export function WalletMain({
           }}
         >
           Transaction History
-        </Text>
+        </TranslatedText>
 
         <View
           style={{
@@ -105,7 +106,7 @@ export function WalletMain({
             }}
           >
             {["Date", "Reasons", "Amount", "Status"].map((h) => (
-              <Text
+              <TranslatedText
                 key={h}
                 style={{
                   flex: 1,
@@ -116,7 +117,7 @@ export function WalletMain({
                 }}
               >
                 {h}
-              </Text>
+              </TranslatedText>
             ))}
           </View>
 

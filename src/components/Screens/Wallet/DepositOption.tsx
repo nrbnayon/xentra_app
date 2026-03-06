@@ -1,8 +1,9 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { useState } from "react";
-import { Pressable, Text, View } from "react-native";
+import { Pressable, View } from "react-native";
 import { ActionButton, PRIMARY } from "./Common";
 import { WalletHeader } from "./WalletHeader";
+import { TranslatedText } from "@/components/ui/TranslatedText";
 
 interface Props {
   title: string;
@@ -47,7 +48,7 @@ export function DepositOption({
               backgroundColor: selected === method ? "#EEF4FB" : "#FAFAFA",
             }}
           >
-            <Text style={{ fontSize: 15, color: "#444" }}>{method}</Text>
+            <TranslatedText style={{ fontSize: 15, color: "#444" }}>{method}</TranslatedText>
             <View
               style={{
                 width: 22,
