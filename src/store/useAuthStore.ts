@@ -7,6 +7,7 @@ interface User {
   email_address?: string;
   full_name?: string;
   phone_number?: string;
+  profile_photo?: string;
   role: "user" | "admin";
 }
 
@@ -20,6 +21,7 @@ interface AuthState {
   signOut: () => Promise<void>;
   checkAuth: () => Promise<void>;
   deleteAccount: () => Promise<void>;
+  updateUser: (data: Partial<User>) => Promise<void>;
 }
 
 const TOKEN_KEY = "xentra-auth-token";
@@ -159,6 +161,19 @@ export const useAuthStore = create<AuthState>((set) => ({
       set({ isAuthenticated: false });
     } finally {
       set({ isLoading: false });
+    }
+  },
+
+  updateUser: async (data: Partial<User>) => {
+    try {
+      const { user } = useAuthStore.getState();
+      if (!user) return;
+
+      const updatedUser = { ...user, ...data };
+      await safeStorage.setItem(USER_KEY, JSON.stringify(updatedUser));
+      set({ user: updatedUser });
+    } catch (error) {
+      console.error("Update user error:", error);
     }
   },
 }));
